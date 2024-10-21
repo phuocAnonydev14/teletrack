@@ -27,6 +27,7 @@ import { useQueryState } from 'nuqs';
 import { TableCategory } from '@/common/enums/tableCategory';
 import Link from 'next/link';
 import { BadgeIcon } from '@/components/icons';
+import { CommonTable } from '@/components/table';
 
 export const AppTrackTable = () => {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -52,7 +53,7 @@ export const AppTrackTable = () => {
       cell: ({ row, renderValue }) => {
         return (
           <Link href={'/apps/1'}>
-            <div className="flex min-w-[40dvw] items-center gap-2 md:min-w-[20dvw]">
+            <div className="flex min-w-[50dvw] items-center gap-2 md:min-w-[20dvw]">
               <img
                 src={row.original.image}
                 className="h-10 w-10 rounded-md bg-gradient-to-r from-[#24C6DCCC] to-[#514A9DCC] p-[1px]"
@@ -170,70 +171,32 @@ export const AppTrackTable = () => {
           Subscribers
         </Button>
       </div>
-      <Table className="border-collapse">
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow className="border-[#0F0F0F] bg-[#3A485680]" key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead
-                    key={header.id}
-                    className="border-4 border-[#0F0F0F] px-8 py-3 text-xl font-bold text-primary-foreground"
-                  >
-                    <div
-                      className="relative flex cursor-pointer select-none items-center gap-2"
-                      onClick={header.column.getToggleSortingHandler()}
-                      title={
-                        header.column.getCanSort()
-                          ? header.column.getNextSortingOrder() === 'asc'
-                            ? 'Sort ascending'
-                            : header.column.getNextSortingOrder() === 'desc'
-                              ? 'Sort descending'
-                              : 'Clear sort'
-                          : undefined
-                      }
-                    >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(header.column.columnDef.header, header.getContext())}
-                      {{
-                        asc: <SortBox column={header.column} />,
-                        desc: <SortBox column={header.column} />,
-                      }[header.column.getIsSorted() as string] ?? null}
-                    </div>
-                  </TableHead>
-                );
-              })}
+      <CommonTable table={table}>
+        {table.getRowModel().rows?.length ? (
+          table.getRowModel().rows.map((row) => (
+            <TableRow
+              className="border-[#0F0F0F] bg-[#3A485680]"
+              key={row.id}
+              data-state={row.getIsSelected() && 'selected'}
+            >
+              {row.getVisibleCells().map((cell) => (
+                <TableCell
+                  key={cell.id}
+                  className="min-w-[200px] border-4 border-[#0F0F0F] px-8 py-3 md:min-w-max"
+                >
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </TableCell>
+              ))}
             </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody className="border">
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                className="border-[#0F0F0F] bg-[#3A485680]"
-                key={row.id}
-                data-state={row.getIsSelected() && 'selected'}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell
-                    key={cell.id}
-                    className="min-w-[200px] border-4 border-[#0F0F0F] px-8 py-3"
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+          ))
+        ) : (
+          <TableRow>
+            <TableCell colSpan={columns.length} className="h-24 text-center">
+              No results.
+            </TableCell>
+          </TableRow>
+        )}
+      </CommonTable>
     </div>
   );
 };

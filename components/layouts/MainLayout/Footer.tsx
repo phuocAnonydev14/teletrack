@@ -9,7 +9,7 @@ export const Footer = () => {
         <Link href={'/'}>
           <Image src={logo.src} alt="Teletrack Logo" width={logo.width} height={logo.height} />
         </Link>
-        <div className="flex items-center gap-10">
+        <div className="flex flex-col justify-start gap-x-10 gap-y-2 md:flex-row md:items-center">
           <Link href={'/compare'}>
             <p className="text-xl font-semibold">Compare</p>
           </Link>

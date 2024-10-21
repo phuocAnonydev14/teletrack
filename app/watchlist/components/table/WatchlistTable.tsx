@@ -4,23 +4,14 @@ import { AppTrack } from '@/types/app.type';
 import { mockAppTracks } from '@/mocks/table';
 import {
   ColumnDef,
-  flexRender,
   getCoreRowModel,
   getSortedRowModel,
   SortingState,
   useReactTable,
 } from '@tanstack/react-table';
 import { formatNumberWithSpacing } from '@/lib/utils';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
+import { TableCell, TableRow } from '@/components/ui/table';
 import React, { useMemo, useState } from 'react';
-import { SortBox } from '@/app/components/table/SortBox';
 import { AppTrackTableRank } from '@/app/components/table/AppTrackTableRank';
 import {
   closestCenter,
@@ -36,6 +27,8 @@ import { arrayMove, SortableContext } from '@dnd-kit/sortable';
 import { SortableItem } from '@/app/watchlist/components/SortableItem';
 import { StaticTableRow } from '@/app/watchlist/components/table/StaticTableRow';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
+import { CommonTable } from '@/components/table';
+import Link from 'next/link';
 
 export const WatchlistTable = () => {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -55,14 +48,21 @@ export const WatchlistTable = () => {
       header: 'Name',
       cell: ({ row, renderValue }) => {
         return (
-          <div className="flex items-center gap-2">
-            <img
-              src={row.original.image}
-              className="h-10 w-10 rounded-md bg-gradient-to-r from-[#24C6DCCC] to-[#514A9DCC] p-[1px]"
-              alt={row.original.name}
-            />
-            <p className="text-2xl font-bold leading-none">{row.original.name}</p>
-          </div>
+          <Link
+            href={'/apps/1'}
+            onClick={() => {
+              console.log('clicking');
+            }}
+          >
+            <div className="flex min-w-[50dvw] items-center gap-2 md:min-w-[20dvw]">
+              <img
+                src={row.original.image}
+                className="h-10 w-10 rounded-md bg-gradient-to-r from-[#24C6DCCC] to-[#514A9DCC] p-[1px]"
+                alt={row.original.name}
+              />
+              <p className="text-2xl font-bold leading-none">{row.original.name}</p>
+            </div>
+          </Link>
         );
       },
     },
@@ -151,9 +151,12 @@ export const WatchlistTable = () => {
   const [activeId, setActiveId] = useState<any>();
   const items = useMemo(() => appTracks?.map(({ id }) => id), [appTracks]);
   const sensors = useSensors(
-    useSensor(MouseSensor, {}),
-    useSensor(TouchSensor, {}),
-    useSensor(KeyboardSensor, {}),
+    useSensor(MouseSensor, {
+      activationConstraint: { delay: 100, tolerance: 1 },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: { delay: 100, tolerance: 1 },
+    }),
   );
 
   function handleDragStart(event: any) {
@@ -183,7 +186,7 @@ export const WatchlistTable = () => {
     }
     const row = table.getRowModel().rows.find(({ original }) => original.id === activeId);
     return row;
-  }, [activeId, table.getRowModel().rows]);
+  }, [activeId, table]);
 
   return (
     <div>
@@ -198,60 +201,21 @@ export const WatchlistTable = () => {
         <div className="flex items-center justify-center gap-3 border-4 border-[#0F0F0F] bg-[#3A485680] px-8 py-3 text-xl font-bold text-primary-foreground">
           <p>Get started with your Watchlist today!</p>
         </div>
-        {/**/}
-        <Table className="border-collapse">
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow className="border-[#0F0F0F] bg-[#3A485680]" key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead
-                      key={header.id}
-                      className="border-4 border-[#0F0F0F] px-8 py-3 text-xl font-bold text-primary-foreground"
-                    >
-                      <div
-                        className="relative flex cursor-pointer select-none items-center gap-2"
-                        onClick={header.column.getToggleSortingHandler()}
-                        title={
-                          header.column.getCanSort()
-                            ? header.column.getNextSortingOrder() === 'asc'
-                              ? 'Sort ascending'
-                              : header.column.getNextSortingOrder() === 'desc'
-                                ? 'Sort descending'
-                                : 'Clear sort'
-                            : undefined
-                        }
-                      >
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(header.column.columnDef.header, header.getContext())}
-                        {{
-                          asc: <SortBox column={header.column} />,
-                          desc: <SortBox column={header.column} />,
-                        }[header.column.getIsSorted() as string] ?? null}
-                      </div>
-                    </TableHead>
-                  );
-                })}
+        <CommonTable table={table}>
+          <SortableContext items={appTracks}>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => {
+                return <SortableItem key={row.id} row={row} />;
+              })
+            ) : (
+              <TableRow>
+                <TableCell colSpan={columns.length} className="h-24 text-center">
+                  No results.
+                </TableCell>
               </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody className="border">
-            <SortableContext items={appTracks}>
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => {
-                  return <SortableItem key={row.id} row={row} />;
-                })
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={columns.length} className="h-24 text-center">
-                    No results.
-                  </TableCell>
-                </TableRow>
-              )}
-            </SortableContext>
-          </TableBody>
-        </Table>
+            )}
+          </SortableContext>
+        </CommonTable>
         <DragOverlay>
           {activeId && (
             <table style={{ width: '100%' }}>

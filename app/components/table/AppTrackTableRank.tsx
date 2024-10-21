@@ -1,11 +1,6 @@
 'use client';
 
-import {
-  ArrowDownIcon,
-  ArrowUpIcon,
-  ArrowUpIcon as ArrowUpIcon2,
-  BookMarkIcon,
-} from '@/components/icons';
+import { BookMarkIcon } from '@/components/icons';
 import { AppTrack } from '@/types/app.type';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useState } from 'react';
@@ -23,7 +18,7 @@ export const AppTrackTableRank = (props: AppTrackTableRankProps) => {
   return (
     <div className="relative flex items-center justify-center gap-2">
       <div
-        className="absolute -left-4 top-1/2 -translate-y-1/3"
+        className="absolute -left-2 top-1/2 -translate-y-1/3 md:-left-4"
         onClick={() => setIsBookmarked(!isBookmarked)}
       >
         <TooltipProvider>
