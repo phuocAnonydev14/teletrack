@@ -8,28 +8,27 @@ import { SelectedBtn } from '@/app/compare/components/SelectApp';
 
 interface SearchHeaderPopoverProps extends PropsWithChildren {
   val: string;
+  onClose?: () => void;
 }
 
-export const SearchHeaderPopover = (props: SearchHeaderPopoverProps) => {
+export const SearchHeaderPopover = ({ onClose }: SearchHeaderPopoverProps) => {
   return (
     <Card className="absolute left-0 top-[70px] z-40 max-h-[70dvh] min-h-40 w-full overflow-auto rounded-lg bg-[#1dc3d93d] p-4 backdrop-blur-[26px] md:top-[50px]">
       <div className="flex flex-col gap-5">
         <div className="flex flex-col gap-3">
           <TitleBox name="Trending Apps" />
           <div className="flex flex-col gap-5">
-            <AppSearchBox />
-            <AppSearchBox />
-            <AppSearchBox />
-            <AppSearchBox />
+            <AppSearchBox onClose={onClose} />
+            <AppSearchBox onClose={onClose} />
+            <AppSearchBox onClose={onClose} />
           </div>
         </div>{' '}
         <div className="flex flex-col gap-3">
           <TitleBox name="New Apps" />
           <div className="flex flex-col gap-5">
-            <AppSearchBox />
-            <AppSearchBox />
-            <AppSearchBox />
-            <AppSearchBox />
+            <AppSearchBox onClose={onClose} />
+            <AppSearchBox onClose={onClose} />
+            <AppSearchBox onClose={onClose} />
           </div>
         </div>
         <div className="flex flex-col gap-3">
@@ -53,9 +52,9 @@ const TitleBox = ({ name }: { name: string }) => {
   );
 };
 
-const AppSearchBox = () => {
+const AppSearchBox = ({ onClose }: Pick<SearchHeaderPopoverProps, 'onClose'>) => {
   return (
-    <Link href={'/apps/1'}>
+    <Link href={'/apps/1'} onClick={() => onClose && onClose()}>
       <div className="flex justify-between gap-3 hover:text-primary">
         <div className="flex items-center gap-2">
           <div className="">

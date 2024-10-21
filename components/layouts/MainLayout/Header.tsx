@@ -18,40 +18,49 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import Image from 'next/image';
 import logo from '@/components/assets/logo.png';
 import Link from 'next/link';
+import { useMediaQuery } from 'usehooks-ts';
 export const Header = () => {
   const [openLogin, setOpenLogin] = useState(false);
   const [isOpenSheet, setIsOpenSheet] = useState(false);
-
+  const [openSearchModal, setOpenSearchModal] = useState(false);
+  const matches = useMediaQuery('(max-width: 768px)');
   return (
-    <div className="flex items-center justify-between gap-5 py-5">
-      <div className="block md:hidden">
-        <Sheet open={isOpenSheet} onOpenChange={setIsOpenSheet}>
-          <SheetTrigger>
-            <Button size="icon" variant="secondary">
-              <MenuIcon />
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left" className={'bg-[#2A272A]'}>
-            <HomeMenu isMobile={true} actionClose={() => setIsOpenSheet(false)} />
-          </SheetContent>
-        </Sheet>
+    <div className="flex items-center justify-between gap-6 py-5">
+      <div className="flex items-center gap-2">
+        <div className="block md:hidden">
+          <Sheet open={isOpenSheet} onOpenChange={setIsOpenSheet}>
+            <SheetTrigger>
+              <Button size="icon" variant="secondary">
+                <MenuIcon />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className={'bg-[#2A272A]'}>
+              <HomeMenu isMobile={true} actionClose={() => setIsOpenSheet(false)} />
+            </SheetContent>
+          </Sheet>
+        </div>
+        <Link href={'/'}>
+          <Image
+            src={logo.src}
+            alt="Teletrack Logo"
+            width={matches ? 150 : logo.width}
+            height={matches ? 150 : logo.height}
+          />
+        </Link>
       </div>
-      <Link href={'/'}>
-        <Image src={logo.src} alt="Teletrack Logo" width={logo.width} height={logo.height} />
-      </Link>
       <div className="flex items-center gap-2">
         <div className="hidden md:block">
           <SearchHeader />
         </div>
         <div className="block md:hidden">
           <Button size="icon" variant="secondary">
-            <Dialog>
+            <Dialog open={openSearchModal} onOpenChange={setOpenSearchModal}>
               <DialogTrigger asChild>
                 <SearchIcon />
               </DialogTrigger>
-              <DialogContent className="top-[20%] min-w-[90dvw]">
+              <DialogContent className="top-[10%] min-w-[90dvw]">
                 <div className="mt-5">
-                  <SearchHeader />
+                  <SearchHeader onClose={() => setOpenSearchModal(false)} />
                 </div>
               </DialogContent>
             </Dialog>

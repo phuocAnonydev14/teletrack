@@ -52,7 +52,7 @@ export const AppTrackTable = () => {
       cell: ({ row, renderValue }) => {
         return (
           <Link href={'/apps/1'}>
-            <div className="flex items-center gap-2">
+            <div className="flex min-w-[40dvw] items-center gap-2 md:min-w-[20dvw]">
               <img
                 src={row.original.image}
                 className="h-10 w-10 rounded-md bg-gradient-to-r from-[#24C6DCCC] to-[#514A9DCC] p-[1px]"

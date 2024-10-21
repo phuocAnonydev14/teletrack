@@ -9,7 +9,11 @@ import { cn } from '@/lib/utils';
 import { SearchHeaderPopover } from '@/components/layouts/MainLayout/SearchHeaderPopover';
 import useClickOutside from '@/hooks/useClickOutside';
 
-export const SearchHeader = () => {
+interface SearchHeaderProps {
+  onClose?: () => void;
+}
+
+export const SearchHeader = ({ onClose }: SearchHeaderProps) => {
   const [debouncedValue, setValue] = useDebounceValue('', 500);
   const [loading, setLoading] = useState<boolean>(false);
   const [isFocus, setIsFocus] = useState(false);
@@ -38,7 +42,7 @@ export const SearchHeader = () => {
           setValue(e.target.value);
         }}
       />
-      {isFocus && debouncedValue && <SearchHeaderPopover val={debouncedValue} />}
+      {isFocus && debouncedValue && <SearchHeaderPopover onClose={onClose} val={debouncedValue} />}
     </div>
   );
 };
