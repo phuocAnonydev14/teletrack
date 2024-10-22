@@ -4,7 +4,8 @@ import { BookMarkIcon } from '@/components/icons';
 import { AppTrack } from '@/types/app.type';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useState } from 'react';
-import { ArrowUpIconFixedColor } from '@/components/icons/ArrowUpIconFixedColor';
+import ArrowUp from '@/components/assets/table/arrow-up.png';
+import Image from 'next/image';
 
 interface AppTrackTableRankProps {
   appTrack: AppTrack;
@@ -18,7 +19,7 @@ export const AppTrackTableRank = (props: AppTrackTableRankProps) => {
   return (
     <div className="relative flex items-center justify-center gap-2">
       <div
-        className="absolute -left-2 top-1/2 -translate-y-1/3 md:-left-4"
+        className="absolute -left-2 top-1/2 z-40 -translate-y-1/3 md:-left-4"
         onClick={() => setIsBookmarked(!isBookmarked)}
       >
         <TooltipProvider>
@@ -38,7 +39,14 @@ export const AppTrackTableRank = (props: AppTrackTableRankProps) => {
 
       {isGlobalRank && (
         <div className="absolute -right-4 flex items-center gap-1">
-          <ArrowUpIconFixedColor />
+          {/*<ArrowUpIconFixedColor />*/}
+          <Image src={ArrowUp.src} alt="Arrow up" width={ArrowUp.width} height={ArrowUp.height} />
+          {/*<Image*/}
+          {/*  src={ArrowDown.src}*/}
+          {/*  alt="Arrow down"*/}
+          {/*  width={ArrowDown.width}*/}
+          {/*  height={ArrowDown.height}*/}
+          {/*/>*/}
           <p className="text-xl font-bold text-[#1DC467]">10</p>
         </div>
       )}

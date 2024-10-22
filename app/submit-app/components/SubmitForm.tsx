@@ -79,7 +79,7 @@ export const SubmitForm = () => {
                         <SelectValue placeholder="Other" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent>
+                    <SelectContent className="bg-[#6A7888]">
                       <SelectItem value="m@example.com">m@example.com</SelectItem>
                       <SelectItem value="m@google.com">m@google.com</SelectItem>
                       <SelectItem value="m@support.com">m@support.com</SelectItem>
@@ -102,7 +102,7 @@ export const SubmitForm = () => {
                         <SelectValue placeholder="Choose your language *" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent>
+                    <SelectContent className="bg-[#6A7888]">
                       <SelectItem value="m@example.com">English</SelectItem>
                       <SelectItem value="m@google.com">Vietnamese</SelectItem>
                     </SelectContent>

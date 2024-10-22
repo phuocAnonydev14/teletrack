@@ -1,11 +1,9 @@
 'use client';
 
-import { FC } from 'react';
 import { BadgeIcon, BookMarkIcon } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import { PlusIcon } from 'lucide-react';
 import { AppTrack } from '@/types/app.type';
-import { formatNumberWithSpacing } from '@/lib/utils';
 
 const mockAppTrack: AppTrack = {
   id: (Math.random() * 1000).toString(),
@@ -94,7 +92,7 @@ const MetricBox = (props: MetricBox) => {
   const { amount, name } = props;
 
   return (
-    <div className="flex min-w-[30%] flex-1 flex-col gap-1 rounded-xl bg-[#414754] px-4 py-[10px]">
+    <div className="flex flex-1 flex-col gap-1 rounded-xl bg-[#414754] px-4 py-[10px] sm:min-w-[30%]">
       <p className="text-linear text-[40px] font-black text-primary">{amount}</p>
       <p className="text-xl font-extrabold">{name}</p>
     </div>

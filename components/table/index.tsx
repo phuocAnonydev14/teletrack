@@ -15,7 +15,7 @@ export const CommonTable = (props: CommonTableProps) => {
   const { table, children } = props;
 
   return (
-    <Table className="border-collapse">
+    <Table className="border-collapse overflow-auto">
       <TableHeader>
         {table.getHeaderGroups().map((headerGroup) => (
           <TableRow className="border-[#0F0F0F] bg-[#3A485680]" key={headerGroup.id}>

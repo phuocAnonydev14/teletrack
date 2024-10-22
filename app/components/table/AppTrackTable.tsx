@@ -11,16 +11,8 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { formatNumberWithSpacing } from '@/lib/utils';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
+import { TableCell, TableRow } from '@/components/ui/table';
 import { useState } from 'react';
-import { SortBox } from '@/app/components/table/SortBox';
 import { AppTrackTableRank } from '@/app/components/table/AppTrackTableRank';
 import { Button } from '@/components/ui/button';
 import { useQueryState } from 'nuqs';
@@ -149,7 +141,7 @@ export const AppTrackTable = () => {
   });
 
   return (
-    <div>
+    <div className="overflow-auto">
       <div className="flex items-center justify-center gap-3 border-4 border-[#0F0F0F] bg-[#3A485680] px-8 py-3 text-xl font-bold text-primary-foreground">
         <p>Ranked By:</p>
         <Button

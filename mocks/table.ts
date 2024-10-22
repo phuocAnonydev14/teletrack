@@ -39,7 +39,7 @@ export const mockAppTracks: AppTrack[] = [
   },
   {
     id: (Math.random() * 1000).toString(),
-    order: 100,
+    order: 90,
     name: 'SEED updates 4',
     image:
       'https://seeddao.gitbook.io/~gitbook/image?url=https%3A%2F%2F2590762305-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252FGDg1dndoyRDbESZqHxbk%252Ficon%252FLGXvyroqbiHX0405KwcQ%252Flogo_color.png%3Falt%3Dmedia%26token%3D15dc5d3f-7eab-476b-ab5a-26db7db8ec27&width=32&dpr=1&quality=100&sign=71e238f1&sv=1',

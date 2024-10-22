@@ -30,9 +30,9 @@ export const Header = () => {
         <div className="block md:hidden">
           <Sheet open={isOpenSheet} onOpenChange={setIsOpenSheet}>
             <SheetTrigger>
-              <Button size="icon" variant="secondary">
-                <MenuIcon />
-              </Button>
+              {/*<Button size="icon" variant="secondary">*/}
+              <MenuIcon />
+              {/*</Button>*/}
             </SheetTrigger>
             <SheetContent side="left" className={'bg-[#2A272A]'}>
               <HomeMenu isMobile={true} actionClose={() => setIsOpenSheet(false)} />
@@ -53,18 +53,18 @@ export const Header = () => {
           <SearchHeader />
         </div>
         <div className="block md:hidden">
-          <Button size="icon" variant="secondary">
-            <Dialog open={openSearchModal} onOpenChange={setOpenSearchModal}>
-              <DialogTrigger asChild>
+          <Dialog open={openSearchModal} onOpenChange={setOpenSearchModal}>
+            <DialogTrigger asChild>
+              <Button size="icon" variant="secondary">
                 <SearchIcon />
-              </DialogTrigger>
-              <DialogContent className="top-[10%] min-w-[90dvw]">
-                <div className="mt-5">
-                  <SearchHeader onClose={() => setOpenSearchModal(false)} />
-                </div>
-              </DialogContent>
-            </Dialog>
-          </Button>
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="top-[10%] min-w-[90dvw]">
+              <div className="mt-5">
+                <SearchHeader onClose={() => setOpenSearchModal(false)} />
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
         <Button
           className="flex items-center gap-1 text-lg font-semibold"
