@@ -141,7 +141,7 @@ export const AppTrackTable = () => {
   });
 
   return (
-    <div className="overflow-visible">
+    <div>
       <div className="flex items-center justify-center gap-3 border-4 border-[#0F0F0F] bg-[#3A485680] px-8 py-3 text-xl font-bold text-primary-foreground">
         <p>Ranked By:</p>
         <Button
@@ -167,7 +167,7 @@ export const AppTrackTable = () => {
         {table.getRowModel().rows?.length ? (
           table.getRowModel().rows.map((row) => (
             <TableRow
-              className="overflow-visible border-[#0F0F0F] bg-[#3A485680]"
+              className="border-[#0F0F0F] bg-[#3A485680]"
               key={row.id}
               data-state={row.getIsSelected() && 'selected'}
             >
