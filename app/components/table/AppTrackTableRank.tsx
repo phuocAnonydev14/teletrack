@@ -17,9 +17,10 @@ export const AppTrackTableRank = (props: AppTrackTableRankProps) => {
   const [isBookmarked, setIsBookmarked] = useState(false);
 
   return (
-    <div className="relative flex items-center justify-center gap-2">
+    <div className="relative flex items-center justify-center gap-2 overflow-visible">
       <div
-        className="absolute -left-2 top-1/2 z-40 -translate-y-1/3 md:-left-4"
+        style={{ zIndex: 4000000000 }}
+        className="absolute -left-2 top-1/2 z-50 -translate-y-1/3 md:-left-4"
         onClick={() => setIsBookmarked(!isBookmarked)}
       >
         <TooltipProvider>
@@ -27,7 +28,7 @@ export const AppTrackTableRank = (props: AppTrackTableRankProps) => {
             <TooltipTrigger>
               <BookMarkIcon isBookmarked={isBookmarked} />
             </TooltipTrigger>
-            <TooltipContent className="bg-[#befcff4d] font-medium text-[#BEFCFF]">
+            <TooltipContent className="bg-[#BEFCFF4D] font-medium text-[#BEFCFF] backdrop-blur-3xl">
               <p>Add to watchlist</p>
             </TooltipContent>
           </Tooltip>

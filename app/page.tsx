@@ -6,7 +6,7 @@ export default function Home({
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col overflow-visible">
       <AppTrackTable />
     </div>
   );
