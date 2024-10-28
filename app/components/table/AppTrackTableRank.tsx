@@ -19,8 +19,7 @@ export const AppTrackTableRank = (props: AppTrackTableRankProps) => {
   return (
     <div className="relative flex items-center justify-center gap-2 overflow-visible">
       <div
-        style={{ zIndex: 4000000000 }}
-        className="absolute -left-2 top-1/2 z-50 -translate-y-1/3 md:-left-4"
+        className="absolute -left-2 top-1/2 -translate-y-1/3 md:-left-4"
         onClick={() => setIsBookmarked(!isBookmarked)}
       >
         <TooltipProvider>

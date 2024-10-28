@@ -24,7 +24,7 @@ export const SelectedBtn = ({ name }: { name: string }) => {
   return (
     <Button
       variant="secondary"
-      className="flex items-start gap-2 bg-[#BEFCFF] font-bold text-[#0F0F0F] hover:bg-[#9ff7fb]"
+      className="flex items-center gap-2 bg-[#BEFCFF] font-bold text-[#0F0F0F] hover:bg-[#9ff7fb]"
     >
       {name}
       <X size={18} />

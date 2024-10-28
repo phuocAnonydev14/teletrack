@@ -39,7 +39,7 @@ export function SortableItem({ row }: Props) {
       {row.getVisibleCells().map((cell) => (
         <TableCell
           key={cell.id}
-          className="min-w-[200px] border-4 border-[#0F0F0F] px-8 py-3 md:min-w-max"
+          className="min-w-[200px] border-4 border-[#0F0F0F] px-8 py-3"
           onClick={() => {
             console.log('clicking sadasdsad');
           }}

@@ -22,7 +22,7 @@ export const SearchHeaderPopover = ({ onClose }: SearchHeaderPopoverProps) => {
             <AppSearchBox onClose={onClose} />
             <AppSearchBox onClose={onClose} />
           </div>
-        </div>{' '}
+        </div>
         <div className="flex flex-col gap-3">
           <TitleBox name="New Apps" />
           <div className="flex flex-col gap-5">

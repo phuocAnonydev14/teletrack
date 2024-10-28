@@ -31,7 +31,7 @@ export const SearchHeader = ({ onClose }: SearchHeaderProps) => {
         {loading ? <LoadingIcon /> : <Search size={20} />}
       </div>
       <Input
-        size={isFocus ? 100 : 30}
+        size={isFocus ? 70 : 30}
         onFocus={() => {
           setIsFocus(true);
         }}
