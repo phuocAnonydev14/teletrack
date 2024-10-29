@@ -71,11 +71,11 @@ export const AppInfo = (props: AppInfoProps) => {
               </Link>
             </div>
           </div>
-          <div className="flex items-center gap-3">
-            <Button className="flex gap-2" variant="secondary">
-              <BookMarkIcon /> 2.2M
+          <div className="text-appInfoButton flex items-center gap-3">
+            <Button size="sm" className="flex gap-2" variant="outline">
+              <BookMarkIcon fill="hsl(var(--app-info-button))" /> 2.2M
             </Button>
-            <Button className="flex gap-1" variant="secondary">
+            <Button size="sm" className="flex gap-1" variant="outline">
               <PlusIcon /> Add To Watchlist
             </Button>
           </div>
@@ -100,7 +100,7 @@ const MetricBox = (props: MetricBox) => {
   const { amount, name } = props;
 
   return (
-    <div className="flex flex-1 flex-col gap-1 rounded-xl bg-appInfoMetric px-4 py-[10px] sm:min-w-[30%]">
+    <div className="flex flex-1 flex-col gap-1 rounded-xl bg-appInfoMetric px-4 py-[10px] sm:min-w-[40%] lg:min-w-[30%]">
       <p className="text-linear text-[40px] font-black text-primary">{amount}</p>
       <p className="text-xl font-extrabold">{name}</p>
     </div>

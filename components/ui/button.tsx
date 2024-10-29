@@ -12,8 +12,7 @@ const buttonVariants = cva(
         default:
           'bg-primary text-primary-foreground shadow text-white bg-[linear-gradient(95.22deg,_#24C6DC_-27.75%,_#005C85_124.99%)] text-xl font-semibold leading-[normal]',
         destructive: 'bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90',
-        outline:
-          'border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground',
+        outline: 'border border-appInfoButton bg-transparent shadow-sm ',
         secondary: 'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
@@ -21,7 +20,7 @@ const buttonVariants = cva(
       size: {
         default: 'lg:h-12 h-10 px-5 py-2',
         sm: 'lg:h-8 h-6 rounded-md px-3 text-xs',
-        lg: 'lg:h-10 h-8 rounded-md px-8',
+        lg: 'lg:h-10 h-8 rounded-md px-5',
         icon: 'lg:h-12 h-10 p-3',
       },
     },

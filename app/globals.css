@@ -49,6 +49,7 @@ body {
     --input-bg: 189 16% 83%;
     --app-info-bg: 190 12% 91%;
     --app-info-metric: 189 16% 83%;
+    --app-info-button: 187 72% 50%;
   }
   .dark {
     --background: 0 0% 3.9%;
@@ -85,6 +86,7 @@ body {
     --input-bg: 212 12% 47%;
     --app-info-bg: 210 16% 17%;
     --app-info-metric: 221 13% 29%;
+    --app-info-button: 187 72% 50%;
   }
 }
 

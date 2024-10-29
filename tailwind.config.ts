@@ -60,6 +60,7 @@ const config: Config = {
         inputBg: 'hsl(var(--input-bg))',
         appInfoBg: 'hsl(var(--app-info-bg))',
         appInfoMetric: 'hsl(var(--app-info-metric))',
+        appInfoButton: 'hsl(var(--app-info-button))',
       },
       borderRadius: {
         lg: 'var(--radius)',
