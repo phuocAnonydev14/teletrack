@@ -1,13 +1,12 @@
-import logo from '@/components/assets/logo.png';
-import Image from 'next/image';
 import Link from 'next/link';
+import { Logo } from '@/components/layouts/MainLayout/Logo';
 
 export const Footer = () => {
   return (
-    <div className="bg-[#2A272A] p-10">
+    <div className="bg-homeMenuBg p-10">
       <div className="flex flex-wrap items-center justify-between gap-5">
         <Link href={'/'}>
-          <Image src={logo.src} alt="Teletrack Logo" width={logo.width} height={logo.height} />
+          <Logo />
         </Link>
         <div className="flex flex-col justify-start gap-x-10 gap-y-2 md:flex-row md:items-center">
           <Link href={'/compare'}>
@@ -21,14 +20,14 @@ export const Footer = () => {
           </Link>
         </div>
       </div>
-      <div className="my-10 h-[1px] w-full bg-white" />
+      <div className="mb-10 mt-2 h-[1px] w-full bg-foreground" />
       <div className="flex justify-center gap-1 text-center">
-        <p className="font-bold text-[#FCFCFC]">Our bot:</p>
+        <p className="font-bold text-foreground">Our bot:</p>
         <Link className="text-linear" href={''}>
           @teletrending_bot
         </Link>
       </div>
-      <p className="mt-4 text-center text-[#D6D6D6]"> All rights reserved.</p>
+      <p className="mt-4 text-center text-gray-600"> All rights reserved.</p>
     </div>
   );
 };

@@ -17,7 +17,6 @@ import {
   closestCenter,
   DndContext,
   DragOverlay,
-  KeyboardSensor,
   MouseSensor,
   TouchSensor,
   useSensor,
@@ -198,14 +197,14 @@ export const WatchlistTable = () => {
         collisionDetection={closestCenter}
         modifiers={[restrictToVerticalAxis]}
       >
-        <div className="flex items-center justify-center gap-3 border-4 border-[#0F0F0F] bg-[#3A485680] px-8 py-3 text-xl font-bold text-primary-foreground">
-          <p>Get started with your Watchlist today!</p>
+        <div className="flex items-center justify-center gap-3 border-4 border-tableBorder bg-tableBg px-8 py-3 text-primary-foreground">
+          <p className="text-xl font-bold">Get started with your Watchlist today!</p>
         </div>
         <CommonTable table={table}>
           <SortableContext items={appTracks}>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => {
-                return <SortableItem key={row.id} row={row} />;
+              table.getRowModel().rows.map((row, index) => {
+                return <SortableItem key={row.id} row={row} index={index} />;
               })
             ) : (
               <TableRow>
@@ -218,7 +217,7 @@ export const WatchlistTable = () => {
         </CommonTable>
         <DragOverlay>
           {activeId && (
-            <table style={{ width: '100%' }}>
+            <table className="w-full">
               <tbody>
                 <StaticTableRow row={selectedRow} />
               </tbody>

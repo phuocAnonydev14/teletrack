@@ -22,7 +22,7 @@ export function Chart(props: CharProps) {
   const { chartData, chartConfig, title, amount } = props;
 
   return (
-    <Card className="rounded-xl bg-[#252C33]">
+    <Card className="rounded-xl bg-homeMenuBg">
       <CardHeader className="mb-5">
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center gap-3">

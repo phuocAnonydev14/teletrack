@@ -14,6 +14,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { cn } from '@/lib/utils';
+import { useTheme } from 'next-themes';
 
 const formSchema = z.object({
   botLink: z.string().min(2).max(50),
@@ -26,7 +28,8 @@ export const SubmitForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
-
+  const { resolvedTheme } = useTheme();
+  const isDarkTheme = resolvedTheme === 'dark';
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
   }
@@ -43,7 +46,10 @@ export const SubmitForm = () => {
                 <FormControl className="w-full">
                   <Input
                     placeholder="@username, link bot... *"
-                    className="w-3xl bg-[#6A7888] placeholder:text-white"
+                    className={cn(
+                      'w-3xl bg-inputBg placeholder:text-white',
+                      !isDarkTheme && 'placeholder:text-black',
+                    )}
                     {...field}
                   />
                 </FormControl>
@@ -59,7 +65,10 @@ export const SubmitForm = () => {
                 <FormControl className="w-full">
                   <Input
                     placeholder="@username, link channel... *"
-                    className="w-3xl bg-[#6A7888] placeholder:text-white"
+                    className={cn(
+                      'w-3xl bg-inputBg placeholder:text-white',
+                      !isDarkTheme && 'placeholder:text-black',
+                    )}
                     {...field}
                   />
                 </FormControl>
@@ -75,11 +84,11 @@ export const SubmitForm = () => {
                 <FormControl className="w-full">
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger className="bg-[#6A7888]">
+                      <SelectTrigger className="bg-inputBg">
                         <SelectValue placeholder="Other" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent className="bg-[#6A7888]">
+                    <SelectContent className="bg-inputBg">
                       <SelectItem value="m@example.com">m@example.com</SelectItem>
                       <SelectItem value="m@google.com">m@google.com</SelectItem>
                       <SelectItem value="m@support.com">m@support.com</SelectItem>
@@ -98,11 +107,11 @@ export const SubmitForm = () => {
                 <FormControl className="w-full">
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger className="bg-[#6A7888]">
+                      <SelectTrigger className="bg-inputBg">
                         <SelectValue placeholder="Choose your language *" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent className="bg-[#6A7888]">
+                    <SelectContent className="bg-inputBg">
                       <SelectItem value="m@example.com">English</SelectItem>
                       <SelectItem value="m@google.com">Vietnamese</SelectItem>
                     </SelectContent>
@@ -120,7 +129,10 @@ export const SubmitForm = () => {
                 <FormControl className="w-full">
                   <Textarea
                     placeholder="Why your app should be accepted? "
-                    className="w-3xl bg-[#6A7888] placeholder:text-white"
+                    className={cn(
+                      'w-3xl bg-inputBg placeholder:text-white',
+                      !isDarkTheme && 'placeholder:text-black',
+                    )}
                     {...field}
                     rows={4}
                   />

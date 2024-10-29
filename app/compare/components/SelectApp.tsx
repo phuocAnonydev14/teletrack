@@ -6,7 +6,7 @@ import { X } from 'lucide-react';
 
 export const SelectApp = () => {
   return (
-    <div className="flex flex-col gap-9 rounded-xl bg-[#252C33] px-[50px] py-10">
+    <div className="flex flex-col gap-9 rounded-xl bg-homeMenuBg px-[50px] py-10">
       <Input
         placeholder="Enter apps you want to compare here..."
         className="bg-white text-[#0F0F0F] placeholder:text-[#0F0F0F]"

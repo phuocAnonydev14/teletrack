@@ -27,7 +27,7 @@ export const SearchHeader = ({ onClose }: SearchHeaderProps) => {
 
   return (
     <div className="relative" ref={ref}>
-      <div className="absolute left-1 top-1/2 -translate-y-1/2 text-[#0F0F0F]">
+      <div className="absolute left-3 top-1/2 -translate-y-1/2 text-[#0F0F0F]">
         {loading ? <LoadingIcon /> : <Search size={20} />}
       </div>
       <Input
@@ -35,8 +35,8 @@ export const SearchHeader = ({ onClose }: SearchHeaderProps) => {
         onFocus={() => {
           setIsFocus(true);
         }}
-        placeholder="Search apps. channel. contact or coin"
-        className={cn('bg-white pl-7 text-[#0F0F0F] transition placeholder:text-[#0F0F0F]')}
+        placeholder="Search apps. channel. contact or coin..."
+        className={cn('bg-white pl-10 text-[#0F0F0F] transition placeholder:text-[#0F0F0F]')}
         onChange={(e) => {
           setLoading(true);
           setValue(e.target.value);

@@ -6,6 +6,8 @@ import { flexRender } from '@tanstack/react-table';
 import { SortBox } from '@/app/components/table/SortBox';
 import { AppTrack } from '@/types/app.type';
 import { Table as TableType } from '@tanstack/react-table';
+import { useTheme } from 'next-themes';
+import { cn } from '@/lib/utils';
 
 interface CommonTableProps extends PropsWithChildren {
   table: TableType<AppTrack>;
@@ -13,17 +15,22 @@ interface CommonTableProps extends PropsWithChildren {
 
 export const CommonTable = (props: CommonTableProps) => {
   const { table, children } = props;
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
   return (
     <Table className="border-collapse">
       <TableHeader>
         {table.getHeaderGroups().map((headerGroup) => (
-          <TableRow className="border-[#0F0F0F] bg-[#3A485680]" key={headerGroup.id}>
+          <TableRow className="border-tableBorder bg-[#3A485680]" key={headerGroup.id}>
             {headerGroup.headers.map((header) => {
               return (
                 <TableHead
                   key={header.id}
-                  className="border-4 border-[#0F0F0F] px-8 py-3 text-xl font-bold text-primary-foreground"
+                  className={cn(
+                    'border-4 border-tableBorder px-8 py-3 text-lg font-bold text-primary-foreground md:text-xl',
+                    !isDark && 'bg-[#CCD8DA]',
+                  )}
                 >
                   <div
                     className="relative flex cursor-pointer select-none items-center gap-2"

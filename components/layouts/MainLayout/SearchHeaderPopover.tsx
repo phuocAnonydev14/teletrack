@@ -13,7 +13,7 @@ interface SearchHeaderPopoverProps extends PropsWithChildren {
 
 export const SearchHeaderPopover = ({ onClose }: SearchHeaderPopoverProps) => {
   return (
-    <Card className="absolute left-0 top-[70px] z-40 max-h-[70dvh] min-h-40 w-full overflow-auto rounded-lg bg-[#1dc3d93d] p-4 backdrop-blur-[26px] md:top-[50px]">
+    <Card className="absolute left-0 top-[70px] z-40 max-h-[70dvh] min-h-40 w-full overflow-auto rounded-lg bg-[#1dc3d93d] p-4 text-white backdrop-blur-[26px] md:top-[50px]">
       <div className="flex flex-col gap-5">
         <div className="flex flex-col gap-3">
           <TitleBox name="Trending Apps" />
@@ -55,7 +55,7 @@ const TitleBox = ({ name }: { name: string }) => {
 const AppSearchBox = ({ onClose }: Pick<SearchHeaderPopoverProps, 'onClose'>) => {
   return (
     <Link href={'/apps/1'} onClick={() => onClose && onClose()}>
-      <div className="flex justify-between gap-3 hover:text-primary">
+      <div className="flex justify-between gap-3 hover:text-secondary-foreground">
         <div className="flex items-center gap-2">
           <div className="">
             <img

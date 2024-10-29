@@ -7,9 +7,11 @@ import { CSS } from '@dnd-kit/utilities';
 import { TableCell, TableRow } from '@/components/ui/table';
 import { flexRender, Row } from '@tanstack/react-table';
 import { AppTrack } from '@/types/app.type';
+import { cn } from '@/lib/utils';
 
 interface Props {
   row: Row<AppTrack>;
+  index: number;
 }
 
 interface Context {
@@ -18,7 +20,7 @@ interface Context {
   ref(node: HTMLElement | null): void;
 }
 
-export function SortableItem({ row }: Props) {
+export function SortableItem({ row, index }: Props) {
   const { attributes, listeners, transform, transition, setNodeRef, isDragging } = useSortable({
     id: row.original.id,
   });
@@ -30,20 +32,14 @@ export function SortableItem({ row }: Props) {
 
   return (
     <TableRow
-      className="border-[#0F0F0F] bg-[#3A485680]"
+      className={cn('border-tableBorder', index % 2 === 0 ? 'bg-tableRowEven' : 'bg-tableRowOdd')}
       ref={setNodeRef}
       style={style}
       {...attributes}
       {...listeners}
     >
       {row.getVisibleCells().map((cell) => (
-        <TableCell
-          key={cell.id}
-          className="min-w-[200px] border-4 border-[#0F0F0F] px-8 py-3"
-          onClick={() => {
-            console.log('clicking sadasdsad');
-          }}
-        >
+        <TableCell key={cell.id} className="min-w-[200px] border-4 border-tableBorder px-8 py-3">
           {flexRender(cell.column.columnDef.cell, cell.getContext())}
         </TableCell>
       ))}
