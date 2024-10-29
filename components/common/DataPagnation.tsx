@@ -58,8 +58,9 @@ export function DataTablePagination<TData>(props: DataTablePaginationProps<TData
         </div>
         <div className="flex items-center space-x-2">
           <Button
-            variant="outline"
-            className="hidden h-8 w-8 p-0 lg:flex"
+            size="icon"
+            variant="ghost"
+            className="hidden w-10 border-gray-400 p-0 md:h-2 lg:flex"
             onClick={() => handleFetchPage(1)}
             disabled={+currentPage === 1}
           >
@@ -67,18 +68,19 @@ export function DataTablePagination<TData>(props: DataTablePaginationProps<TData
             <DoubleArrowLeftIcon className="h-4 w-4" />
           </Button>
           <Button
-            variant="outline"
-            className="h-8 w-8 p-0"
+            size="icon"
+            variant="ghost"
             onClick={async () => handleFetchPage(+currentPage - 1)}
             disabled={+currentPage === 1}
+            className="border-gray-400 p-0 px-2"
           >
             <span className="sr-only">Go to previous page</span>
             <ChevronLeftIcon className="h-4 w-4" />
           </Button>
           <p>{currentPage}</p>
           <Button
-            variant="outline"
-            className="h-8 w-8 p-0"
+            size="icon"
+            variant="ghost"
             onClick={() => handleFetchPage(+currentPage + 1)}
             disabled={+currentPage === maxPage}
           >
@@ -86,7 +88,8 @@ export function DataTablePagination<TData>(props: DataTablePaginationProps<TData
             <ChevronRightIcon className="h-4 w-4" />
           </Button>
           <Button
-            variant="outline"
+            size="icon"
+            variant="ghost"
             className="hidden h-8 w-8 p-0 lg:flex"
             onClick={() => handleFetchPage(maxPage)}
             disabled={+currentPage === maxPage}
