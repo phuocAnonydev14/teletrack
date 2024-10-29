@@ -9,7 +9,7 @@ import {
   ChartTooltipContent,
 } from '@/components/ui/chart';
 import { Input } from '@/components/ui/input';
-import { formatNumberWithSpacing } from '@/lib/utils';
+import { formatNumber } from '@/lib/utils';
 
 interface CharProps {
   chartData: Record<any, any>[];
@@ -29,7 +29,7 @@ export function Chart(props: CharProps) {
             <div className="w-max rounded-[5px] bg-secondary px-[10px] py-[5px] text-2xl font-bold text-secondary-foreground">
               {title}
             </div>
-            <p className="text-3xl font-bold">{amount && formatNumberWithSpacing(amount)}</p>
+            <p className="text-3xl font-bold">{amount && formatNumber(amount, true)}</p>
           </div>
           <div className="flex items-center gap-1">
             <Input type="radio" checked />

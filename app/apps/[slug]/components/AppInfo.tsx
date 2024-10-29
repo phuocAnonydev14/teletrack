@@ -42,7 +42,7 @@ export const AppInfo = (props: AppInfoProps) => {
       <img
         src={appDetail.Logo}
         alt="App Logo"
-        className="hidden w-max max-w-full rounded-md bg-gradient-to-r from-[#24C6DCCC] to-[#514A9DCC] p-[5px] lg:block lg:w-[40%]"
+        className="hidden max-h-[550px] w-max max-w-full rounded-md bg-gradient-to-r from-[#24C6DCCC] to-[#514A9DCC] object-cover object-center p-[5px] lg:block lg:w-[40%]"
       />
       <div className="w-full rounded-[12px] bg-appInfoBg p-[50px] lg:w-[60%]">
         <div className="flex flex-wrap items-start justify-between gap-3">

@@ -14,9 +14,13 @@ export function formatNumberWithSpacing(number: number) {
     .replace(/,/g, ' ');
 }
 
-export const formatNumber = (num: number) => {
-  if (num >= 1_000_000) {
-    return `${Math.floor(num / 1_000_000)}M+`;
+export const formatNumber = (num: number, isNotPlus = false) => {
+  if (num >= 1_000_000_000) {
+    return `${(num / 1_000_000_000).toFixed(2).replace('.', ',')}B${isNotPlus ? '' : '+'}`;
+  } else if (num >= 1_000_000) {
+    return `${(num / 1_000_000).toFixed(2).replace('.', ',')}M${isNotPlus ? '' : '+'}`;
+  } else if (num >= 1_000) {
+    return `${(num / 1_000).toFixed(2).replace('.', ',')}K${isNotPlus ? '' : '+'}`;
   }
   return num.toString();
 };
