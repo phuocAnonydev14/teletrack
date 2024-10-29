@@ -2,7 +2,6 @@
 
 import { MoonIcon, SunIcon } from '@/components/icons';
 import { useTheme } from 'next-themes';
-import { useRef } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,9 +11,8 @@ import {
 import { Button } from '@/components/ui/button';
 
 export const ThemeSwitch = () => {
-  const { setTheme, theme } = useTheme();
-  const inputRef = useRef();
-  const isDarkTheme = theme === 'dark';
+  const { setTheme, resolvedTheme } = useTheme();
+  const isDarkTheme = resolvedTheme === 'dark';
 
   const handleToggleTheme = (mode: string) => {
     setTheme(mode);
@@ -30,6 +28,7 @@ export const ThemeSwitch = () => {
       <DropdownMenuContent>
         <DropdownMenuItem onClick={() => handleToggleTheme('dark')}>Dark</DropdownMenuItem>
         <DropdownMenuItem onClick={() => handleToggleTheme('light')}>Light</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => handleToggleTheme('system')}>System</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

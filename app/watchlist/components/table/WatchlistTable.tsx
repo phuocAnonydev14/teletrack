@@ -1,7 +1,6 @@
 'use client';
 
 import { AppTrack } from '@/types/app.type';
-import { mockAppTracks } from '@/mocks/table';
 import {
   ColumnDef,
   getCoreRowModel,
@@ -9,7 +8,7 @@ import {
   SortingState,
   useReactTable,
 } from '@tanstack/react-table';
-import { formatNumberWithSpacing } from '@/lib/utils';
+import { cn, formatNumberWithSpacing } from '@/lib/utils';
 import { TableCell, TableRow } from '@/components/ui/table';
 import React, { useMemo, useState } from 'react';
 import { AppTrackTableRank } from '@/app/components/table/AppTrackTableRank';
@@ -28,10 +27,16 @@ import { StaticTableRow } from '@/app/watchlist/components/table/StaticTableRow'
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import { CommonTable } from '@/components/table';
 import Link from 'next/link';
+import { BadgeIcon } from '@/components/icons';
 
-export const WatchlistTable = () => {
+interface AppTrackTableProps {
+  data: AppTrack[];
+  total: number;
+}
+export const WatchlistTable = (props: AppTrackTableProps) => {
+  const { total, data } = props;
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [appTracks, setAppTracks] = useState(mockAppTracks);
+  const [appTracks, setAppTracks] = useState(data.map((item) => ({ ...item, id: item.username })));
 
   const columns: ColumnDef<AppTrack>[] = [
     {
@@ -47,26 +52,22 @@ export const WatchlistTable = () => {
       header: 'Name',
       cell: ({ row, renderValue }) => {
         return (
-          <Link
-            href={'/apps/1'}
-            onClick={() => {
-              console.log('clicking');
-            }}
-          >
+          <Link href={`/apps/${row.original.username.replace('@', '')}`}>
             <div className="flex min-w-[50dvw] items-center gap-2 md:min-w-[20dvw]">
               <img
-                src={row.original.image}
+                src={''}
                 className="h-10 w-10 rounded-md bg-gradient-to-r from-[#24C6DCCC] to-[#514A9DCC] p-[1px]"
-                alt={row.original.name}
+                alt={row.original.username}
               />
-              <p className="text-2xl font-bold leading-none">{row.original.name}</p>
+              <p className="text-xl font-bold leading-none md:text-2xl">{row.original.username}</p>
+              <BadgeIcon width={20} height={20} />
             </div>
           </Link>
         );
       },
     },
     {
-      accessorKey: 'mau',
+      accessorKey: 'users',
       header: ({ column }) => {
         const isASC = column.getIsSorted() === 'asc';
         return (
@@ -78,14 +79,13 @@ export const WatchlistTable = () => {
       cell: ({ row, renderValue }) => {
         return (
           <div>
-            <p className="text-xl font-bold">{formatNumberWithSpacing(row.original.mau)}</p>
+            <p className="text-xl font-bold">{formatNumberWithSpacing(row.original.users)}</p>
           </div>
         );
       },
-      invertSorting: true,
     },
     {
-      accessorKey: 'dayUpdate',
+      accessorKey: 'change',
       header: ({ column }) => {
         return (
           <div className="flex items-center gap-1">
@@ -96,8 +96,14 @@ export const WatchlistTable = () => {
       invertSorting: true,
       cell: ({ row, renderValue }) => {
         return (
-          <p className="text-xl font-bold text-[#1DC467]">
-            +1 {formatNumberWithSpacing(row.original.dayUpdate)}
+          <p
+            className={cn(
+              'text-xl font-bold text-[#1DC467]',
+              row.original.change < 0 && 'text-[#F84A4A]',
+            )}
+          >
+            {row.original.change > 0 && '+'}
+            {formatNumberWithSpacing(row.original.change)}
           </p>
         );
       },
@@ -106,19 +112,21 @@ export const WatchlistTable = () => {
       accessorKey: 'totalSub',
       header: 'Total Subscribers',
       cell: ({ row, renderValue }) => {
-        return (
-          <p className="text-xl font-bold">{formatNumberWithSpacing(row.original.totalSub)}</p>
-        );
+        return <p className="text-xl font-bold">{formatNumberWithSpacing(row.original.users)}</p>;
       },
-      invertSorting: true,
     },
     {
       accessorKey: 'daySub',
       header: 'Today Subs Change',
       cell: ({ row, renderValue }) => {
         return (
-          <p className="text-xl font-bold text-[#1DC467]">
-            {formatNumberWithSpacing(row.original.daySub)}
+          <p
+            className={cn(
+              'text-xl font-bold text-[#1DC467]',
+              row.original.change < 0 && 'text-[#F84A4A]',
+            )}
+          >
+            {formatNumberWithSpacing(row.original.change)}
           </p>
         );
       },
@@ -129,10 +137,11 @@ export const WatchlistTable = () => {
       header: 'FDV',
       cell: ({ row, renderValue }) => {
         return (
-          <p className="text-xl font-bold">$ {formatNumberWithSpacing(row.original.daySub)}</p>
+          <p className="text-xl font-bold">
+            {row.original.change ? '$ ' + formatNumberWithSpacing(row.original.change) : 'N/A'}
+          </p>
         );
       },
-      invertSorting: true,
     },
   ];
 

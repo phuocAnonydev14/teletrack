@@ -1,4 +1,4 @@
 export enum TableCategory {
-  USERS = 'users',
-  SUBSCRIBERS = 'subscribers',
+  USERS = 'bot',
+  SUBSCRIBERS = 'channel',
 }

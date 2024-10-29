@@ -1,13 +1,26 @@
 import { AppTrackTable } from '@/app/components/table/AppTrackTable';
+import { teleService } from '@/services/tele.service';
+import { AppTrack } from '@/types/app.type';
 
-export default function Home({
-  searchParams,
-}: {
-  searchParams?: { [key: string]: string | string[] | undefined };
-}) {
+const fetchTop50 = async () => {
+  try {
+    const res = await teleService.getTop50({
+      page: 1,
+      limit: 10,
+    });
+    return { data: res.data.data, total: res.data.total };
+  } catch (e) {
+    return { data: [], total: 0 };
+  }
+};
+
+export default async function Home() {
+  const { data, total } = await fetchTop50();
+
+  if (!data) return;
   return (
     <div className="flex flex-col">
-      <AppTrackTable />
+      <AppTrackTable data={data} total={total} />
     </div>
   );
 }

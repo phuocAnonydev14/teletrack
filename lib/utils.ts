@@ -13,3 +13,10 @@ export function formatNumberWithSpacing(number: number) {
     .format(number)
     .replace(/,/g, ' ');
 }
+
+export const formatNumber = (num: number) => {
+  if (num >= 1_000_000) {
+    return `${Math.floor(num / 1_000_000)}M+`;
+  }
+  return num.toString();
+};

@@ -5,7 +5,8 @@
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
-    "prettier"
+    "prettier",
+    "next/typescript"
   ],
   "plugins": ["react", "@typescript-eslint"],
   "parserOptions": {
@@ -19,6 +20,6 @@
     "react/jsx-uses-react": "off",
     "react/prop-types": 0,
     "@typescript-eslint/no-empty-object-type": "warn",
-    "@typescript-eslint/no-explicit-any": "off"
+    "@typescript-eslint/no-explicit-any": "off",
   }
 }

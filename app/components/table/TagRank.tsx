@@ -12,7 +12,7 @@ export const TagRank = (props: { name: string; action: () => void; selectedCate:
 
   return (
     <div onClick={action} className={cn('flex cursor-pointer items-center gap-2')}>
-      <RadioGroupItem value={name} id={name} />
+      <RadioGroupItem value={name} id={name} checked={selectedRank} />
       <Label
         onClick={action}
         htmlFor={name}

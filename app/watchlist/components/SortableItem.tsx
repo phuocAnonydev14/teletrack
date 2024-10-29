@@ -22,7 +22,7 @@ interface Context {
 
 export function SortableItem({ row, index }: Props) {
   const { attributes, listeners, transform, transition, setNodeRef, isDragging } = useSortable({
-    id: row.original.id,
+    id: row.original.id || '',
   });
 
   const style = {

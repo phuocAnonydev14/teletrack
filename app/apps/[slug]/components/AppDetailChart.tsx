@@ -1,38 +1,60 @@
+'use client';
+
 import { Chart } from '@/components/chart';
 import { ChartConfig } from '@/components/ui/chart';
-
-const chartData = [
-  { month: 'January', desktop: 186 },
-  { month: 'February', desktop: 305 },
-  { month: 'March', desktop: 237 },
-  { month: 'April', desktop: 73 },
-  { month: 'May', desktop: 209 },
-  { month: 'June', desktop: 214 },
-];
+import { AppDetail, AppHistory } from '@/types/app.type';
+import { useParams } from 'next/navigation';
+import { teleService } from '@/services/tele.service';
+import { useEffect, useState } from 'react';
 
 const chartConfig = {
-  desktop: {
-    label: 'Desktop',
+  date: {
+    label: 'DATE',
   },
-  mobile: {
-    label: 'Mobile',
-  },
-  ipad: {
-    label: 'Mobile',
+  amount: {
+    label: 'AMOUNT',
   },
 } satisfies ChartConfig;
 
-export const AppDetailChart = () => {
+interface AppDetailChartProps {
+  appDetail: AppDetail;
+}
+
+export const AppDetailChart = (props: AppDetailChartProps) => {
+  const { appDetail } = props;
+  const { slug } = useParams();
+  const [history, setHistory] = useState<AppHistory | null>(null);
+
+  const handleFetchChartData = async () => {
+    try {
+      const { data } = await teleService.getAppHistory(slug.toString());
+      setHistory(data.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    handleFetchChartData();
+  }, [slug]);
+
+  if (!history) return;
+
   return (
     <div className="flex flex-col gap-10">
-      <Chart chartConfig={chartConfig} chartData={chartData} title="USERS" amount={57852147} />
       <Chart
         chartConfig={chartConfig}
-        chartData={chartData}
-        title="SUBSCRIBERS"
-        amount={57852147}
+        chartData={Object.entries(history.Bot).map(([date, amount]) => ({ date, amount }))}
+        title="USERS"
+        amount={appDetail.Bot.users}
       />
-      <Chart chartConfig={chartConfig} chartData={chartData} title="FDV" amount={57852147} />
+      <Chart
+        chartConfig={chartConfig}
+        chartData={Object.entries(history.Channel).map(([date, amount]) => ({ date, amount }))}
+        title="SUBSCRIBERS"
+        amount={appDetail.Channel.users}
+      />
+      {/*<Chart chartConfig={chartConfig} chartData={chartData} title="FDV" amount={57852147} />*/}
     </div>
   );
 };

@@ -16,7 +16,7 @@ export const HomeMenu = (props: HomeMenuProps) => {
   return (
     <div
       className={cn(
-        `bg-homeMenuBg flex items-center justify-center gap-10 px-4 py-[14px]`,
+        `flex items-center justify-center gap-10 bg-homeMenuBg px-4 py-[14px]`,
         isMobile && 'flex-col',
       )}
     >

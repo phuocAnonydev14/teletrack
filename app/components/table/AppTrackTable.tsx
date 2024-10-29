@@ -1,18 +1,18 @@
 'use client';
 
 import { AppTrack } from '@/types/app.type';
-import { mockAppTracks } from '@/mocks/table';
 import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getPaginationRowModel,
   getSortedRowModel,
   SortingState,
   useReactTable,
 } from '@tanstack/react-table';
 import { cn, formatNumberWithSpacing } from '@/lib/utils';
 import { TableCell, TableRow } from '@/components/ui/table';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { AppTrackTableRank } from '@/app/components/table/AppTrackTableRank';
 import { useQueryState } from 'nuqs';
 import { TableCategory } from '@/common/enums/tableCategory';
@@ -21,50 +21,54 @@ import { BadgeIcon } from '@/components/icons';
 import { CommonTable } from '@/components/table';
 import { TagRank } from '@/app/components/table/TagRank';
 import { RadioGroup } from '@/components/ui/radio-group';
-import { useTheme } from 'next-themes';
+import { DataTablePagination } from '@/components/common/DataPagnation';
+import { teleService } from '@/services/tele.service';
 
-const tagRanks = [
-  {
-    name: TableCategory.USERS,
-  },
-  {
-    name: TableCategory.SUBSCRIBERS,
-  },
-];
+const tagRanks = {
+  users: TableCategory.USERS,
+  subscribers: TableCategory.SUBSCRIBERS,
+};
 
-export const AppTrackTable = () => {
+interface AppTrackTableProps {
+  data: AppTrack[];
+  total: number;
+}
+
+export const AppTrackTable = (props: AppTrackTableProps) => {
+  const { total } = props;
   const [sorting, setSorting] = useState<SortingState>([]);
   const [selectedCate, setSelectedCate] = useQueryState('q', {
     defaultValue: '',
   });
-  const [appTracks, setAppTracks] = useState(mockAppTracks);
-  const { theme } = useTheme();
-  const isDark = theme === 'dark';
+  const [appTracks, setAppTracks] = useState(props.data);
+  const [, setCurrentPage] = useQueryState('page');
+  useEffect(() => {
+    setAppTracks(props.data);
+  }, [props]);
 
   const columns: ColumnDef<AppTrack>[] = [
     {
-      accessorKey: 'order',
+      accessorKey: 'rank',
       header: () => (
         <div className="w-full text-center">{selectedCate ? 'Global Rank' : 'No.'}</div>
       ),
       cell: ({ row, renderValue }) => {
         return <AppTrackTableRank isGlobalRank={!!selectedCate} appTrack={row.original} />;
       },
-      invertSorting: true,
     },
     {
-      accessorKey: 'name',
+      accessorKey: 'username',
       header: 'Name',
       cell: ({ row, renderValue }) => {
         return (
-          <Link href={'/apps/1'}>
+          <Link href={`/apps/${row.original.username.replace('@', '')}`}>
             <div className="flex min-w-[50dvw] items-center gap-2 md:min-w-[20dvw]">
               <img
-                src={row.original.image}
+                src={''}
                 className="h-10 w-10 rounded-md bg-gradient-to-r from-[#24C6DCCC] to-[#514A9DCC] p-[1px]"
-                alt={row.original.name}
+                alt={row.original.username}
               />
-              <p className="text-xl font-bold leading-none md:text-2xl">{row.original.name}</p>
+              <p className="text-xl font-bold leading-none md:text-2xl">{row.original.username}</p>
               <BadgeIcon width={20} height={20} />
             </div>
           </Link>
@@ -72,7 +76,7 @@ export const AppTrackTable = () => {
       },
     },
     {
-      accessorKey: 'mau',
+      accessorKey: 'users',
       header: ({ column }) => {
         const isASC = column.getIsSorted() === 'asc';
         return (
@@ -84,14 +88,13 @@ export const AppTrackTable = () => {
       cell: ({ row, renderValue }) => {
         return (
           <div>
-            <p className="text-xl font-bold">{formatNumberWithSpacing(row.original.mau)}</p>
+            <p className="text-xl font-bold">{formatNumberWithSpacing(row.original.users)}</p>
           </div>
         );
       },
-      invertSorting: true,
     },
     {
-      accessorKey: 'dayUpdate',
+      accessorKey: 'change',
       header: ({ column }) => {
         return (
           <div className="flex items-center gap-1">
@@ -102,8 +105,14 @@ export const AppTrackTable = () => {
       invertSorting: true,
       cell: ({ row, renderValue }) => {
         return (
-          <p className="text-xl font-bold text-[#1DC467]">
-            +1 {formatNumberWithSpacing(row.original.dayUpdate)}
+          <p
+            className={cn(
+              'text-xl font-bold text-[#1DC467]',
+              row.original.change < 0 && 'text-[#F84A4A]',
+            )}
+          >
+            {row.original.change > 0 && '+'}
+            {formatNumberWithSpacing(row.original.change)}
           </p>
         );
       },
@@ -112,19 +121,21 @@ export const AppTrackTable = () => {
       accessorKey: 'totalSub',
       header: 'Total Subscribers',
       cell: ({ row, renderValue }) => {
-        return (
-          <p className="text-xl font-bold">{formatNumberWithSpacing(row.original.totalSub)}</p>
-        );
+        return <p className="text-xl font-bold">{formatNumberWithSpacing(row.original.users)}</p>;
       },
-      invertSorting: true,
     },
     {
       accessorKey: 'daySub',
       header: 'Today Subs Change',
       cell: ({ row, renderValue }) => {
         return (
-          <p className="text-xl font-bold text-[#1DC467]">
-            {formatNumberWithSpacing(row.original.daySub)}
+          <p
+            className={cn(
+              'text-xl font-bold text-[#1DC467]',
+              row.original.change < 0 && 'text-[#F84A4A]',
+            )}
+          >
+            {formatNumberWithSpacing(row.original.change)}
           </p>
         );
       },
@@ -135,10 +146,11 @@ export const AppTrackTable = () => {
       header: 'FDV',
       cell: ({ row, renderValue }) => {
         return (
-          <p className="text-xl font-bold">$ {formatNumberWithSpacing(row.original.daySub)}</p>
+          <p className="text-xl font-bold">
+            {row.original.change ? '$ ' + formatNumberWithSpacing(row.original.change) : 'N/A'}
+          </p>
         );
       },
-      invertSorting: true,
     },
   ];
 
@@ -146,15 +158,16 @@ export const AppTrackTable = () => {
     switch (selectedCate) {
       case TableCategory.USERS:
         return columns.filter((column: any) => {
-          console.log(column);
           return !['totalSub', 'daySub'].includes(column.accessorKey);
         });
       case TableCategory.SUBSCRIBERS:
         return columns.filter((column: any) => {
-          return ['order', 'name', 'totalSub', 'daySub'].includes(column.accessorKey);
+          return ['rank', 'username', 'totalSub', 'daySub'].includes(column.accessorKey);
         });
       default:
-        return columns;
+        return columns.filter((column: any) => {
+          return !['totalSub', 'daySub'].includes(column.accessorKey);
+        });
     }
   }, [columns, selectedCate]);
 
@@ -167,7 +180,26 @@ export const AppTrackTable = () => {
     state: {
       sorting,
     },
+    getPaginationRowModel: getPaginationRowModel(),
   });
+
+  const handleFetchPost = async (page: number) => {
+    try {
+      const res = await teleService.getTop50(
+        { page },
+        selectedCate ? tagRanks[selectedCate as 'users' | 'subscribers'] : 'bot',
+      );
+      setAppTracks(res.data?.data || []);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    handleFetchPost(1).then(async () => {
+      await setCurrentPage('1');
+    });
+  }, [selectedCate]);
 
   return (
     <div>
@@ -175,14 +207,14 @@ export const AppTrackTable = () => {
         <p className="text-xl font-bold">Ranked By:</p>
         <RadioGroup>
           <div className="flex items-center gap-5 rounded-xl bg-rankTagBg px-5 py-2">
-            {tagRanks.map((rank) => {
+            {Object.keys(tagRanks).map((rank) => {
               return (
                 <TagRank
                   selectedCate={selectedCate}
-                  key={rank.name}
-                  name={rank.name}
+                  key={rank}
+                  name={rank}
                   action={() => {
-                    setSelectedCate((state) => (state === rank.name ? '' : rank.name));
+                    setSelectedCate((state) => (state === rank ? '' : rank));
                   }}
                 />
               );
@@ -219,6 +251,7 @@ export const AppTrackTable = () => {
           </TableRow>
         )}
       </CommonTable>
+      <DataTablePagination total={total} fetchAction={handleFetchPost} table={table} limit={10} />
     </div>
   );
 };

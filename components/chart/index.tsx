@@ -22,7 +22,7 @@ export function Chart(props: CharProps) {
   const { chartData, chartConfig, title, amount } = props;
 
   return (
-    <Card className="rounded-xl bg-homeMenuBg">
+    <Card className="rounded-xl bg-appInfoBg">
       <CardHeader className="mb-5">
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -50,11 +50,11 @@ export function Chart(props: CharProps) {
           >
             <CartesianGrid vertical={false} stroke="#B6B6B6" strokeDasharray={3} />
             <XAxis
-              dataKey="month"
+              dataKey="date"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
+              tickFormatter={(value) => value}
             />
             <YAxis tickLine={false} axisLine={false} tickMargin={8} tickCount={3} />
             <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dot" />} />

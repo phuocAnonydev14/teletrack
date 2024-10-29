@@ -58,6 +58,8 @@ const config: Config = {
         tableRowEven: 'hsl(var(--table-row-even))',
         tableRowOdd: 'hsl(var(--table-row-odd))',
         inputBg: 'hsl(var(--input-bg))',
+        appInfoBg: 'hsl(var(--app-info-bg))',
+        appInfoMetric: 'hsl(var(--app-info-metric))',
       },
       borderRadius: {
         lg: 'var(--radius)',
