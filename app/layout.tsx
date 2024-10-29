@@ -19,7 +19,7 @@ export default function RootLayout({
       <body className={`antialiased ${catamaranFont.className}`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <MainLayout>
-            <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+            <Suspense>{children}</Suspense>
           </MainLayout>
         </ThemeProvider>
       </body>

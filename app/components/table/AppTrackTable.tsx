@@ -156,11 +156,11 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
 
   const columnFiltered = useMemo(() => {
     switch (selectedCate) {
-      case TableCategory.USERS:
+      case 'users':
         return columns.filter((column: any) => {
           return !['totalSub', 'daySub'].includes(column.accessorKey);
         });
-      case TableCategory.SUBSCRIBERS:
+      case 'subscribers':
         return columns.filter((column: any) => {
           return ['rank', 'username', 'totalSub', 'daySub'].includes(column.accessorKey);
         });
