@@ -66,7 +66,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
               <img
                 src={''}
                 className="h-10 w-10 rounded-md bg-gradient-to-r from-[#24C6DCCC] to-[#514A9DCC] p-[1px]"
-                alt={row.original.username}
+                alt={''}
               />
               <p className="text-xl font-bold leading-none md:text-2xl">{row.original.username}</p>
               <BadgeIcon width={20} height={20} />
@@ -145,11 +145,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
       accessorKey: 'fdv',
       header: 'FDV',
       cell: ({ row, renderValue }) => {
-        return (
-          <p className="text-xl font-bold">
-            {row.original.change ? '$ ' + formatNumberWithSpacing(row.original.change) : 'N/A'}
-          </p>
-        );
+        return <p className="text-xl font-bold">N/A</p>;
       },
     },
   ];
