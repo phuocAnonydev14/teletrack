@@ -1,6 +1,6 @@
 'use client';
 
-import { AppTrack } from '@/types/app.type';
+import { AppDetail, AppTrack } from '@/types/app.type';
 import {
   ColumnDef,
   flexRender,
@@ -10,9 +10,9 @@ import {
   SortingState,
   useReactTable,
 } from '@tanstack/react-table';
-import { cn, formatNumberWithSpacing } from '@/lib/utils';
+import { cn, formatNumberWithSpacing, isAppTrackType } from '@/lib/utils';
 import { TableCell, TableRow } from '@/components/ui/table';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AppTrackTableRank } from '@/app/components/table/AppTrackTableRank';
 import { useQueryState } from 'nuqs';
 import { TableCategory } from '@/common/enums/tableCategory';
@@ -30,23 +30,20 @@ const tagRanks = {
 };
 
 interface AppTrackTableProps {
-  data: AppTrack[];
+  data: AppDetail[];
   total: number;
 }
 
 export const AppTrackTable = (props: AppTrackTableProps) => {
   const { total } = props;
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [selectedCate, setSelectedCate] = useQueryState('q', {
-    defaultValue: '',
-  });
-  const [appTracks, setAppTracks] = useState(props.data);
+  const [selectedCate, setSelectedCate] = useQueryState('q');
+  const [appTracks, setAppTracks] = useState<AppTrack[]>([]);
+  const [appGroup, setAppGroup] = useState<AppDetail[]>(props.data);
   const [, setCurrentPage] = useQueryState('page');
-  useEffect(() => {
-    setAppTracks(props.data);
-  }, [props]);
+  const [totalState, setTotalState] = useState(total);
 
-  const columns: ColumnDef<AppTrack>[] = [
+  const columns: ColumnDef<AppTrack | AppDetail>[] = [
     {
       accessorKey: 'rank',
       header: () => (
@@ -60,15 +57,19 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
       accessorKey: 'username',
       header: 'Name',
       cell: ({ row, renderValue }) => {
+        const nameRender = isAppTrackType(row.original) ? row.original.username : row.original.Name;
         return (
-          <Link href={`/apps/${row.original.username.replace('@', '')}`}>
+          <Link
+            href={`/apps/${(isAppTrackType(row.original) ? nameRender : row.original?.Bot?.username).replace('@', '')}`}
+          >
             <div className="flex min-w-[50dvw] items-center gap-2 md:min-w-[20dvw]">
               <img
-                src={''}
+                src={isAppTrackType(row.original) ? '' : row.original?.Logo}
                 className="h-10 w-10 rounded-md bg-gradient-to-r from-[#24C6DCCC] to-[#514A9DCC] p-[1px]"
                 alt={''}
+                loading="lazy"
               />
-              <p className="text-xl font-bold leading-none md:text-2xl">{row.original.username}</p>
+              <p className="text-xl font-bold leading-none md:text-2xl">{nameRender}</p>
               <BadgeIcon width={20} height={20} />
             </div>
           </Link>
@@ -86,9 +87,12 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
         );
       },
       cell: ({ row, renderValue }) => {
+        const mauRender = isAppTrackType(row.original)
+          ? row.original.users
+          : row.original?.Bot?.users;
         return (
           <div>
-            <p className="text-xl font-bold">{formatNumberWithSpacing(row.original.users)}</p>
+            <p className="text-xl font-bold">{formatNumberWithSpacing(mauRender)}</p>
           </div>
         );
       },
@@ -102,17 +106,16 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
           </div>
         );
       },
-      invertSorting: true,
       cell: ({ row, renderValue }) => {
+        const changeRender = isAppTrackType(row.original)
+          ? row.original.change
+          : row.original?.Bot?.change;
         return (
           <p
-            className={cn(
-              'text-xl font-bold text-[#1DC467]',
-              row.original.change < 0 && 'text-[#F84A4A]',
-            )}
+            className={cn('text-xl font-bold text-[#1DC467]', changeRender < 0 && 'text-[#F84A4A]')}
           >
-            {row.original.change > 0 && '+'}
-            {formatNumberWithSpacing(row.original.change)}
+            {changeRender > 0 && '+'}
+            {formatNumberWithSpacing(changeRender)}
           </p>
         );
       },
@@ -121,54 +124,43 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
       accessorKey: 'totalSub',
       header: 'Total Subscribers',
       cell: ({ row, renderValue }) => {
-        return <p className="text-xl font-bold">{formatNumberWithSpacing(row.original.users)}</p>;
+        const totalSubRender = isAppTrackType(row.original)
+          ? row.original.users
+          : row.original?.Channel?.users;
+        return <p className="text-xl font-bold">{formatNumberWithSpacing(totalSubRender)}</p>;
       },
     },
     {
       accessorKey: 'daySub',
       header: 'Today Subs Change',
       cell: ({ row, renderValue }) => {
+        console.log('row.original', row.original);
+        const changeRender = isAppTrackType(row.original)
+          ? row.original.change
+          : row.original?.Channel?.change;
         return (
           <p
-            className={cn(
-              'text-xl font-bold text-[#1DC467]',
-              row.original.change < 0 && 'text-[#F84A4A]',
-            )}
+            className={cn('text-xl font-bold text-[#1DC467]', changeRender < 0 && 'text-[#F84A4A]')}
           >
-            {formatNumberWithSpacing(row.original.change)}
+            {formatNumberWithSpacing(changeRender)}
           </p>
         );
       },
-      invertSorting: true,
     },
     {
       accessorKey: 'fdv',
       header: 'FDV',
       cell: ({ row, renderValue }) => {
-        return <p className="text-xl font-bold">N/A</p>;
+        const fdvRender = isAppTrackType(row.original) ? 'N/A' : row.original?.FDV;
+        return <p className="text-xl font-bold">{fdvRender}</p>;
       },
     },
   ];
 
-  const columnFiltered = useMemo(() => {
-    switch (selectedCate) {
-      case 'users':
-        return columns.filter((column: any) => {
-          return !['totalSub', 'daySub'].includes(column.accessorKey);
-        });
-      case 'subscribers':
-        return columns.filter((column: any) => {
-          return ['rank', 'username', 'totalSub', 'daySub'].includes(column.accessorKey);
-        });
-      default:
-        return columns.filter((column: any) => {
-          return !['totalSub', 'daySub'].includes(column.accessorKey);
-        });
-    }
-  }, [columns, selectedCate]);
+  const [columnFiltered, setColumnFiltered] = useState<ColumnDef<AppTrack | AppDetail>[]>(columns);
 
   const table = useReactTable({
-    data: appTracks,
+    data: selectedCate ? appTracks : appGroup,
     columns: columnFiltered,
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
@@ -181,10 +173,20 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
 
   const handleFetchPost = async (page: number) => {
     try {
-      const res = await teleService.getTop50(
+      if (!selectedCate) {
+        const res = await teleService.getTop50<AppDetail>({ page, limit: 50 }, 'fdv');
+        setAppGroup(
+          (res.data?.data.map((item, index) => ({ ...item, Order: index + 1 })) as AppDetail[]) ||
+            [],
+        );
+        setTotalState(res.data?.total || 0);
+        return;
+      }
+      const res = await teleService.getTop50<AppTrack>(
         { page },
-        selectedCate ? tagRanks[selectedCate as 'users' | 'subscribers'] : 'bot',
+        tagRanks[selectedCate as 'users' | 'subscribers'],
       );
+      setTotalState(res.data?.total || 0);
       setAppTracks(res.data?.data || []);
     } catch (e) {
       console.log(e);
@@ -192,6 +194,20 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
   };
 
   useEffect(() => {
+    setColumnFiltered(() => {
+      switch (selectedCate) {
+        case 'users':
+          return columns.filter((column: any) => {
+            return !['totalSub', 'daySub'].includes(column.accessorKey);
+          });
+        case 'subscribers':
+          return columns.filter((column: any) => {
+            return ['rank', 'username', 'totalSub', 'daySub'].includes(column.accessorKey);
+          });
+        default:
+          return columns;
+      }
+    });
     handleFetchPost(1).then(async () => {
       await setCurrentPage('1');
     });
@@ -206,7 +222,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
             {Object.keys(tagRanks).map((rank) => {
               return (
                 <TagRank
-                  selectedCate={selectedCate}
+                  selectedCate={selectedCate || ''}
                   key={rank}
                   name={rank}
                   action={() => {
@@ -247,7 +263,12 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
           </TableRow>
         )}
       </CommonTable>
-      <DataTablePagination total={total} fetchAction={handleFetchPost} table={table} limit={10} />
+      <DataTablePagination
+        total={totalState}
+        fetchAction={handleFetchPost}
+        table={table}
+        limit={10}
+      />
     </div>
   );
 };

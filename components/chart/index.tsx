@@ -56,7 +56,13 @@ export function Chart(props: CharProps) {
               tickMargin={8}
               tickFormatter={(value) => value}
             />
-            <YAxis tickLine={false} axisLine={false} tickMargin={8} tickCount={3} />
+            <YAxis
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+              tickCount={3}
+              tickFormatter={(val) => formatNumber(val)}
+            />
             <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dot" />} />
             <defs>
               {Object.keys(chartConfig).map((key, index) => {

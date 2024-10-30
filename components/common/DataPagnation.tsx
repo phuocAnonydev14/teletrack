@@ -30,6 +30,8 @@ export function DataTablePagination<TData>(props: DataTablePaginationProps<TData
     await setCurrentPage(page.toString());
   };
 
+  if (!total) return null;
+
   return (
     <div className="mt-5 flex w-full items-center justify-end px-2">
       <div className="flex items-center space-x-6 lg:space-x-8">
@@ -56,10 +58,10 @@ export function DataTablePagination<TData>(props: DataTablePaginationProps<TData
         <div className="flex w-[100px] items-center justify-center text-[16px] font-medium">
           Page {currentPage} of {maxPage}
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-1">
           <Button
             size="icon"
-            variant="ghost"
+            variant="link"
             className="hidden w-10 border-gray-400 p-0 md:h-2 lg:flex"
             onClick={() => handleFetchPage(1)}
             disabled={+currentPage === 1}
@@ -69,7 +71,7 @@ export function DataTablePagination<TData>(props: DataTablePaginationProps<TData
           </Button>
           <Button
             size="icon"
-            variant="ghost"
+            variant="link"
             onClick={async () => handleFetchPage(+currentPage - 1)}
             disabled={+currentPage === 1}
             className="border-gray-400 p-0 px-2"
@@ -80,7 +82,7 @@ export function DataTablePagination<TData>(props: DataTablePaginationProps<TData
           <p>{currentPage}</p>
           <Button
             size="icon"
-            variant="ghost"
+            variant="link"
             onClick={() => handleFetchPage(+currentPage + 1)}
             disabled={+currentPage === maxPage}
           >
@@ -89,7 +91,7 @@ export function DataTablePagination<TData>(props: DataTablePaginationProps<TData
           </Button>
           <Button
             size="icon"
-            variant="ghost"
+            variant="link"
             className="hidden h-8 w-8 p-0 lg:flex"
             onClick={() => handleFetchPage(maxPage)}
             disabled={+currentPage === maxPage}

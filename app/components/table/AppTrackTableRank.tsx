@@ -1,23 +1,23 @@
 'use client';
 
 import { BookMarkIcon } from '@/components/icons';
-import { AppTrack } from '@/types/app.type';
+import { AppDetail, AppTrack } from '@/types/app.type';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useState } from 'react';
 import ArrowUp from '@/components/assets/table/arrow-up.png';
 import ArrowDown from '@/components/assets/table/arrow-down.png';
 import Image from 'next/image';
-import { cn } from '@/lib/utils';
+import { cn, isAppTrackType } from '@/lib/utils';
 
 interface AppTrackTableRankProps {
-  appTrack: AppTrack;
+  appTrack: AppTrack | AppDetail;
   isGlobalRank: boolean;
 }
 
 export const AppTrackTableRank = (props: AppTrackTableRankProps) => {
   const { appTrack, isGlobalRank } = props;
   const [isBookmarked, setIsBookmarked] = useState(false);
-  const rankChange = appTrack.rankChange;
+  const rankChange = isAppTrackType(appTrack) ? appTrack.rankChange : 0;
   const ArrowImage = rankChange > 0 ? ArrowUp : ArrowDown;
 
   return (
@@ -38,7 +38,7 @@ export const AppTrackTableRank = (props: AppTrackTableRankProps) => {
         </TooltipProvider>
       </div>
       <div className="rounded-[5px] bg-secondary px-[10px] py-[5px] text-2xl font-bold text-secondary-foreground">
-        # {appTrack.rank}
+        # {isAppTrackType(appTrack) ? appTrack.rank : appTrack?.Order}
       </div>
 
       {isGlobalRank && rankChange !== 0 && (

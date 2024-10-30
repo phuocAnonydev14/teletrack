@@ -1,29 +1,22 @@
 'use client';
 
 import React, { PropsWithChildren } from 'react';
-import type { DraggableSyntheticListeners } from '@dnd-kit/core';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { TableCell, TableRow } from '@/components/ui/table';
 import { flexRender, Row } from '@tanstack/react-table';
-import { AppTrack } from '@/types/app.type';
+import { AppDetail, AppTrack } from '@/types/app.type';
 import { cn } from '@/lib/utils';
 
 interface Props {
-  row: Row<AppTrack>;
+  row: Row<AppTrack | AppDetail>;
   index: number;
-}
-
-interface Context {
-  attributes: Record<string, any>;
-  listeners: DraggableSyntheticListeners;
-  ref(node: HTMLElement | null): void;
 }
 
 export function SortableItem({ row, index }: Props) {
   const { attributes, listeners, transform, transition, setNodeRef, isDragging } = useSortable({
     id: row.original.id || '',
-  });
+  } as any);
 
   const style = {
     transform: CSS.Transform.toString(transform),

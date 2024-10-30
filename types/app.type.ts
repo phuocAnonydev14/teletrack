@@ -20,10 +20,13 @@ export interface AppTrack {
 }
 
 export interface AppDetail {
+  id?: string;
+  Order?: number;
   Name: string;
   Logo: string;
   Bot: AppTrack;
   Channel: AppTrack;
+  FDV: number;
 }
 
 export interface AppHistory {

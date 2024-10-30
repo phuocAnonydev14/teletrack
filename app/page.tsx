@@ -1,13 +1,16 @@
 import { AppTrackTable } from '@/app/components/table/AppTrackTable';
 import { teleService } from '@/services/tele.service';
-import { AppTrack } from '@/types/app.type';
+import { AppDetail } from '@/types/app.type';
 
 const fetchTop50 = async () => {
   try {
-    const res = await teleService.getTop50({
-      page: 1,
-      limit: 10,
-    });
+    const res = await teleService.getTop50<AppDetail>(
+      {
+        page: 1,
+        limit: 50,
+      },
+      'fdv',
+    );
     return { data: res.data.data, total: res.data.total };
   } catch (e) {
     return { data: [], total: 0 };

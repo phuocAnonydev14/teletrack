@@ -1,6 +1,6 @@
 'use client';
 
-import { AppTrack } from '@/types/app.type';
+import { AppDetail, AppTrack } from '@/types/app.type';
 import {
   ColumnDef,
   getCoreRowModel,
@@ -8,7 +8,7 @@ import {
   SortingState,
   useReactTable,
 } from '@tanstack/react-table';
-import { cn, formatNumberWithSpacing } from '@/lib/utils';
+import { cn, formatNumberWithSpacing, isAppTrackType } from '@/lib/utils';
 import { TableCell, TableRow } from '@/components/ui/table';
 import React, { useMemo, useState } from 'react';
 import { AppTrackTableRank } from '@/app/components/table/AppTrackTableRank';
@@ -30,17 +30,19 @@ import Link from 'next/link';
 import { BadgeIcon } from '@/components/icons';
 
 interface AppTrackTableProps {
-  data: AppTrack[];
+  data: AppDetail[];
   total: number;
 }
 export const WatchlistTable = (props: AppTrackTableProps) => {
   const { total, data } = props;
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [appTracks, setAppTracks] = useState(data.map((item) => ({ ...item, id: item.username })));
+  const [appTracks, setAppTracks] = useState<AppDetail[]>(
+    data.map((item) => ({ ...item, id: isAppTrackType(item) ? item.username : item.Bot.username })),
+  );
 
-  const columns: ColumnDef<AppTrack>[] = [
+  const columns: ColumnDef<AppTrack | AppDetail>[] = [
     {
-      accessorKey: 'order',
+      accessorKey: 'rank',
       header: () => <div className="w-full text-center">{'No.'}</div>,
       cell: ({ row, renderValue }) => {
         return <AppTrackTableRank isGlobalRank={false} appTrack={row.original} />;
@@ -48,18 +50,20 @@ export const WatchlistTable = (props: AppTrackTableProps) => {
       invertSorting: true,
     },
     {
-      accessorKey: 'name',
+      accessorKey: 'username',
       header: 'Name',
       cell: ({ row, renderValue }) => {
+        const nameRender = isAppTrackType(row.original) ? row.original.username : row.original.Name;
         return (
-          <Link href={`/apps/${row.original.username.replace('@', '')}`}>
+          <Link href={`/apps/${nameRender.replace('@', '')}`}>
             <div className="flex min-w-[50dvw] items-center gap-2 md:min-w-[20dvw]">
               <img
-                src={''}
+                src={isAppTrackType(row.original) ? '' : row.original?.Logo}
                 className="h-10 w-10 rounded-md bg-gradient-to-r from-[#24C6DCCC] to-[#514A9DCC] p-[1px]"
-                alt={row.original.username}
+                alt={''}
+                loading="lazy"
               />
-              <p className="text-xl font-bold leading-none md:text-2xl">{row.original.username}</p>
+              <p className="text-xl font-bold leading-none md:text-2xl">{nameRender}</p>
               <BadgeIcon width={20} height={20} />
             </div>
           </Link>
@@ -77,9 +81,12 @@ export const WatchlistTable = (props: AppTrackTableProps) => {
         );
       },
       cell: ({ row, renderValue }) => {
+        const mauRender = isAppTrackType(row.original)
+          ? row.original.users
+          : row.original?.Bot?.users;
         return (
           <div>
-            <p className="text-xl font-bold">{formatNumberWithSpacing(row.original.users)}</p>
+            <p className="text-xl font-bold">{formatNumberWithSpacing(mauRender)}</p>
           </div>
         );
       },
@@ -93,17 +100,16 @@ export const WatchlistTable = (props: AppTrackTableProps) => {
           </div>
         );
       },
-      invertSorting: true,
       cell: ({ row, renderValue }) => {
+        const changeRender = isAppTrackType(row.original)
+          ? row.original.change
+          : row.original?.Bot?.change;
         return (
           <p
-            className={cn(
-              'text-xl font-bold text-[#1DC467]',
-              row.original.change < 0 && 'text-[#F84A4A]',
-            )}
+            className={cn('text-xl font-bold text-[#1DC467]', changeRender < 0 && 'text-[#F84A4A]')}
           >
-            {row.original.change > 0 && '+'}
-            {formatNumberWithSpacing(row.original.change)}
+            {changeRender > 0 && '+'}
+            {formatNumberWithSpacing(changeRender)}
           </p>
         );
       },
@@ -112,35 +118,35 @@ export const WatchlistTable = (props: AppTrackTableProps) => {
       accessorKey: 'totalSub',
       header: 'Total Subscribers',
       cell: ({ row, renderValue }) => {
-        return <p className="text-xl font-bold">{formatNumberWithSpacing(row.original.users)}</p>;
+        const totalSubRender = isAppTrackType(row.original)
+          ? row.original.users
+          : row.original?.Channel?.users;
+        return <p className="text-xl font-bold">{formatNumberWithSpacing(totalSubRender)}</p>;
       },
     },
     {
       accessorKey: 'daySub',
       header: 'Today Subs Change',
       cell: ({ row, renderValue }) => {
+        console.log('row.original', row.original);
+        const changeRender = isAppTrackType(row.original)
+          ? row.original.change
+          : row.original?.Channel?.change;
         return (
           <p
-            className={cn(
-              'text-xl font-bold text-[#1DC467]',
-              row.original.change < 0 && 'text-[#F84A4A]',
-            )}
+            className={cn('text-xl font-bold text-[#1DC467]', changeRender < 0 && 'text-[#F84A4A]')}
           >
-            {formatNumberWithSpacing(row.original.change)}
+            {formatNumberWithSpacing(changeRender)}
           </p>
         );
       },
-      invertSorting: true,
     },
     {
       accessorKey: 'fdv',
       header: 'FDV',
       cell: ({ row, renderValue }) => {
-        return (
-          <p className="text-xl font-bold">
-            {row.original.change ? '$ ' + formatNumberWithSpacing(row.original.change) : 'N/A'}
-          </p>
-        );
+        const fdvRender = isAppTrackType(row.original) ? 'N/A' : row.original?.FDV;
+        return <p className="text-xl font-bold">{fdvRender}</p>;
       },
     },
   ];
@@ -210,7 +216,7 @@ export const WatchlistTable = (props: AppTrackTableProps) => {
           <p className="text-xl font-bold">Get started with your Watchlist today!</p>
         </div>
         <CommonTable table={table}>
-          <SortableContext items={appTracks}>
+          <SortableContext items={appTracks as any}>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row, index) => {
                 return <SortableItem key={row.id} row={row} index={index} />;

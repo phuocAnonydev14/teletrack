@@ -4,13 +4,13 @@ import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components
 import { PropsWithChildren } from 'react';
 import { flexRender } from '@tanstack/react-table';
 import { SortBox } from '@/app/components/table/SortBox';
-import { AppTrack } from '@/types/app.type';
+import { AppDetail, AppTrack } from '@/types/app.type';
 import { Table as TableType } from '@tanstack/react-table';
 import { useTheme } from 'next-themes';
 import { cn } from '@/lib/utils';
 
 interface CommonTableProps extends PropsWithChildren {
-  table: TableType<AppTrack>;
+  table: TableType<AppTrack | AppDetail>;
 }
 
 export const CommonTable = (props: CommonTableProps) => {

@@ -1,5 +1,5 @@
 import HttpService from '@/services/http.service';
-import { AppDetail, AppHistory, AppTrack } from '@/types/app.type';
+import { AppDetail, AppHistory } from '@/types/app.type';
 
 interface PaginationParams {
   page: number;
@@ -7,8 +7,8 @@ interface PaginationParams {
 }
 
 class TeleService extends HttpService {
-  async getTop50(params: PaginationParams, endpoint: 'channel' | 'bot' = 'bot') {
-    return await this.get<{ data: { data: AppTrack[]; total: number } }>(`/top/${endpoint}`, {
+  async getTop50<T>(params: PaginationParams, endpoint: 'channel' | 'bot' | 'fdv' = 'fdv') {
+    return await this.get<{ data: { data: T[]; total: number } }>(`/top/${endpoint}`, {
       page: params.page,
       limit: params.limit || 10,
     });
