@@ -25,7 +25,7 @@ export const Header = () => {
   const [openSearchModal, setOpenSearchModal] = useState(false);
   const matches = useMediaQuery('(max-width: 768px)');
   return (
-    <div className="flex items-center justify-between gap-6 py-5">
+    <div className="flex items-center justify-between gap-3 py-5">
       <div className="flex items-center gap-2">
         <div className="block md:hidden">
           <Sheet open={isOpenSheet} onOpenChange={setIsOpenSheet}>

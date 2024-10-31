@@ -17,7 +17,7 @@ export const TopBox = (props: TopBoxProps) => {
   return (
     <div
       className={cn(
-        'bg-analysisBg w-full flex-1 rounded-[8px] p-5 shadow-[100px_96px_39px_0px_rgba(160,213,232,0.00),64px_62px_36px_0px_rgba(160,213,232,0.01),36px_35px_30px_0px_rgba(160,213,232,0.05),16px_15px_22px_0px_rgba(160,213,232,0.09),4px_4px_12px_0px_rgba(160,213,232,0.10)] lg:max-w-[50dvw]',
+        'w-full flex-1 rounded-[8px] bg-analysisBg p-5 shadow-[100px_96px_39px_0px_rgba(160,213,232,0.00),64px_62px_36px_0px_rgba(160,213,232,0.01),36px_35px_30px_0px_rgba(160,213,232,0.05),16px_15px_22px_0px_rgba(160,213,232,0.09),4px_4px_12px_0px_rgba(160,213,232,0.10)] lg:max-w-[50dvw]',
         resolvedTheme == 'light' &&
           'shadow-[34px_97px_29px_0px_rgba(0,0,0,0.00),22px_62px_26px_0px_rgba(0,0,0,0.01),12px_35px_22px_0px_rgba(0,0,0,0.05),5px_15px_16px_0px_rgba(0,0,0,0.09),1px_4px_9px_0px_rgba(0,0,0,0.10)]',
       )}
@@ -27,7 +27,7 @@ export const TopBox = (props: TopBoxProps) => {
         {list.map((appTrack) => (
           <div className="flex items-center justify-between gap-2" key={appTrack.username}>
             <div className="flex items-center gap-2">
-              <div className="text-analysisForeground rounded-[5px] pr-1 text-2xl font-bold">
+              <div className="rounded-[5px] pr-1 text-2xl font-bold text-analysisForeground">
                 #{appTrack.rank}
               </div>
               <img
@@ -36,9 +36,11 @@ export const TopBox = (props: TopBoxProps) => {
                 alt={''}
                 loading="lazy"
               />
-              <p className="text-lg font-bold">{appTrack.username.replace('@', '')}</p>
+              <p className="overflow-ellipsis text-lg font-bold">
+                {appTrack.username.replace('@', '')}
+              </p>
             </div>
-            <p className="text-lg font-extrabold">{appTrack.users}</p>
+            <p className="hidden text-lg font-extrabold sm:block">{appTrack.users}</p>
           </div>
         ))}
       </div>
