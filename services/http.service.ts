@@ -3,7 +3,7 @@ import axios, { AxiosInstance, AxiosResponse, AxiosRequestConfig } from 'axios';
 import { getCookie } from 'cookies-next';
 import axiosRetry from 'axios-retry';
 import { CacheRequestConfig, setupCache } from 'axios-cache-interceptor';
-import { HttpMethodEnum } from '@/common/enums/app.enum';
+import { HttpMethodEnum, TokenEnum } from '@/common/enums/app.enum';
 import { Params } from '@/types/service.type';
 
 class HttpService {
@@ -28,8 +28,8 @@ class HttpService {
 
   // Get authorization token for requests
   private get getAuthorization() {
-    const accessToken = getCookie('access_token') || '';
-    return accessToken ? { Authorization: `Ghost ${accessToken}` } : {};
+    const accessToken = getCookie(TokenEnum.ACCESS) || '';
+    return accessToken ? { Authorization: `Bearer ${accessToken}` } : {};
   }
 
   // Initialize service configuration

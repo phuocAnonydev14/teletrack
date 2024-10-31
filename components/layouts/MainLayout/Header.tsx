@@ -3,27 +3,30 @@
 import { SearchHeader } from '@/components/layouts/MainLayout/SearchHeader';
 import { Button } from '@/components/ui/button';
 import { EnterIcon } from '@/components/icons';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { useState } from 'react';
 import { MenuIcon, SearchIcon } from 'lucide-react';
 import { HomeMenu } from '@/components/layouts/MainLayout/HomeMenu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import Link from 'next/link';
-import { useMediaQuery } from 'usehooks-ts';
 import { ThemeSwitch } from '@/components/common/ThemeSwitch';
 import { Logo } from '@/components/layouts/MainLayout/Logo';
+import { LoginModal } from '@/components/layouts/MainLayout/LoginModal';
+import { useAuthContext } from '@/components/providers/AuthProvider';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { deleteCookie } from 'cookies-next';
+import { TokenEnum } from '@/common/enums/app.enum';
 export const Header = () => {
   const [openLogin, setOpenLogin] = useState(false);
   const [isOpenSheet, setIsOpenSheet] = useState(false);
   const [openSearchModal, setOpenSearchModal] = useState(false);
-  const matches = useMediaQuery('(max-width: 768px)');
+  const { name, id, handleLogout } = useAuthContext();
+
   return (
     <div className="flex items-center justify-between gap-3 py-5">
       <div className="flex items-center gap-2">
@@ -62,37 +65,25 @@ export const Header = () => {
             </DialogContent>
           </Dialog>
         </div>
-        <Button
-          className="flex items-center gap-1 text-lg font-semibold"
-          onClick={() => setOpenLogin(true)}
-        >
-          <EnterIcon height={20} width={20} /> Sign Up
-        </Button>
+        {id ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Button variant="outline">{name}</Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          <Button
+            className="flex items-center gap-1 text-lg font-semibold"
+            onClick={() => setOpenLogin(true)}
+          >
+            <EnterIcon height={20} width={20} /> Sign Up
+          </Button>
+        )}
       </div>
       <LoginModal open={openLogin} onOpenChange={(open) => setOpenLogin(open)} />
     </div>
-  );
-};
-
-const LoginModal = ({
-  onOpenChange,
-  open,
-}: {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-}) => {
-  return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-homeMenuBg">
-        <DialogHeader>
-          <DialogTitle className="mb-2 text-3xl font-bold">LOGIN</DialogTitle>
-          <DialogDescription className="bg-tableRowOdd p-8 font-semibold">
-            <p className="mb-2">You will be sent to a dialog with our @bot.</p>
-            <p>Press the /start button in the dialog with the bot</p>
-            <Button className="mt-8 w-full">Sign In With Telegram</Button>
-          </DialogDescription>
-        </DialogHeader>
-      </DialogContent>
-    </Dialog>
   );
 };

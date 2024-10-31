@@ -17,3 +17,9 @@ export enum PostEnum {
   DEFAULT = 'defaults',
   SOCIAL = 'socials',
 }
+
+export enum TokenEnum {
+  ACCESS = 'access_token',
+  REFRESH = 'refresh_token',
+  USER = 'user',
+}
