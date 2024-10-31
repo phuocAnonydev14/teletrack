@@ -23,7 +23,7 @@ export const Footer = () => {
       <div className="mb-10 mt-2 h-[1px] w-full bg-foreground" />
       <div className="flex justify-center gap-1 text-center">
         <p className="font-bold text-foreground">Our bot:</p>
-        <Link className="text-linear" href={''}>
+        <Link className="text-linear" href={'https://t.me/teletrending_bot'} target="_blank">
           @teletrending_bot
         </Link>
       </div>

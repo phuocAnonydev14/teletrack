@@ -10,19 +10,20 @@ import {
   SortingState,
   useReactTable,
 } from '@tanstack/react-table';
-import { cn, formatNumberWithSpacing, isAppTrackType } from '@/lib/utils';
+import { cn, formatNumber, isOfType } from '@/lib/utils/utils';
 import { TableCell, TableRow } from '@/components/ui/table';
 import { useEffect, useState } from 'react';
-import { AppTrackTableRank } from '@/app/components/table/AppTrackTableRank';
 import { useQueryState } from 'nuqs';
 import { TableCategory } from '@/common/enums/tableCategory';
 import Link from 'next/link';
 import { BadgeIcon } from '@/components/icons';
 import { CommonTable } from '@/components/table';
-import { TagRank } from '@/app/components/table/TagRank';
 import { RadioGroup } from '@/components/ui/radio-group';
 import { DataTablePagination } from '@/components/common/DataPagnation';
 import { teleService } from '@/services/tele.service';
+import { getLogoUrl } from '@/lib/utils/image.util';
+import { AppTrackTableRank } from '@/app/components/AppTrackTable/AppTrackTableRank';
+import { TagRank } from '@/app/components/AppTrackTable/TagRank';
 
 const tagRanks = {
   users: TableCategory.USERS,
@@ -38,8 +39,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
   const { total } = props;
   const [sorting, setSorting] = useState<SortingState>([]);
   const [selectedCate, setSelectedCate] = useQueryState('q');
-  const [appTracks, setAppTracks] = useState<AppTrack[]>([]);
-  const [appGroup, setAppGroup] = useState<AppDetail[]>(props.data);
+  const [appTracks, setAppTracks] = useState<(AppTrack | AppDetail)[]>([]);
   const [, setCurrentPage] = useQueryState('page');
   const [totalState, setTotalState] = useState(total);
 
@@ -52,19 +52,39 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
       cell: ({ row, renderValue }) => {
         return <AppTrackTableRank isGlobalRank={!!selectedCate} appTrack={row.original} />;
       },
+      sortingFn: (rowA, rowB, columnId) => {
+        const appA = rowA.original;
+        const appB = rowB.original;
+        if (isOfType<AppTrack>(appA, ['rank']) && isOfType<AppTrack>(appB, ['rank'])) {
+          return appA.rank > appB.rank ? 1 : -1;
+        }
+        return (('Order' in appA && appA?.Order) || 0) > (('Order' in appB && appB?.Order) || 0)
+          ? 1
+          : -1;
+      },
     },
     {
       accessorKey: 'username',
       header: 'Name',
       cell: ({ row, renderValue }) => {
-        const nameRender = isAppTrackType(row.original) ? row.original.username : row.original.Name;
+        const nameRender = (
+          isOfType<AppTrack>(row.original, ['username']) ? row.original.username : row.original.Name
+        ).replace('@', '');
         return (
           <Link
-            href={`/apps/${(isAppTrackType(row.original) ? nameRender : row.original?.Bot?.username).replace('@', '')}`}
+            href={`/apps/${(isOfType<AppTrack>(row.original, ['username']) ? nameRender : row.original?.Bot?.username).replace('@', '')}`}
           >
             <div className="flex min-w-[50dvw] items-center gap-2 md:min-w-[20dvw]">
               <img
-                src={isAppTrackType(row.original) ? '' : row.original?.Logo}
+                src={getLogoUrl(
+                  (isOfType<AppTrack>(row.original, ['username'])
+                    ? nameRender
+                    : // eslint-disable-next-line no-unsafe-optional-chaining
+                      'Bot' in row.original
+                      ? row.original?.Bot?.username
+                      : ''
+                  ).replace('@', ''),
+                )}
                 className="h-10 w-10 rounded-md bg-gradient-to-r from-[#24C6DCCC] to-[#514A9DCC] p-[1px]"
                 alt={''}
                 loading="lazy"
@@ -75,11 +95,18 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
           </Link>
         );
       },
+      sortingFn: (rowA, rowB, columnId) => {
+        const appA = rowA.original;
+        const appB = rowB.original;
+        if (isOfType<AppTrack>(appA, ['username']) && isOfType<AppTrack>(appB, ['username'])) {
+          return appA.username > appB.username ? 1 : -1;
+        }
+        return 'Name' in appA && 'Name' in appB && appA.Name > appB.Name ? 1 : -1;
+      },
     },
     {
       accessorKey: 'users',
       header: ({ column }) => {
-        const isASC = column.getIsSorted() === 'asc';
         return (
           <div className="flex items-center gap-1">
             <p>MAU</p>
@@ -87,14 +114,24 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
         );
       },
       cell: ({ row, renderValue }) => {
-        const mauRender = isAppTrackType(row.original)
+        const mauRender = isOfType<AppTrack>(row.original, ['users'])
           ? row.original.users
-          : row.original?.Bot?.users;
+          : 'Bot' in row.original
+            ? row.original?.Bot?.users
+            : '';
         return (
           <div>
-            <p className="text-xl font-bold">{formatNumberWithSpacing(mauRender)}</p>
+            <p className="text-xl font-bold">{formatNumber(mauRender, true)}</p>
           </div>
         );
+      },
+      sortingFn: (rowA, rowB, columnId) => {
+        const appA = rowA.original;
+        const appB = rowB.original;
+        if (isOfType<AppTrack>(appA, ['users']) && isOfType<AppTrack>(appB, ['users'])) {
+          return appA.users > appB.users ? 1 : -1;
+        }
+        return 'Bot' in appA && 'Bot' in appB && appA.Bot.users > appB.Bot.users ? 1 : -1;
       },
     },
     {
@@ -107,51 +144,89 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
         );
       },
       cell: ({ row, renderValue }) => {
-        const changeRender = isAppTrackType(row.original)
+        const changeRender = isOfType<AppTrack>(row.original, ['change'])
           ? row.original.change
-          : row.original?.Bot?.change;
+          : 'Bot' in row.original
+            ? row.original?.Bot.change
+            : 0;
         return (
           <p
             className={cn('text-xl font-bold text-[#1DC467]', changeRender < 0 && 'text-[#F84A4A]')}
           >
-            {changeRender > 0 && '+'}
-            {formatNumberWithSpacing(changeRender)}
+            {changeRender >= 0 ? '+' : '-'}
+            {formatNumber(changeRender, true)}
           </p>
         );
+      },
+      sortingFn: (rowA, rowB, columnId) => {
+        const appA = rowA.original;
+        const appB = rowB.original;
+        if (isOfType<AppTrack>(appA, ['change']) && isOfType<AppTrack>(appB, ['change'])) {
+          return appA.change > appB.change ? 1 : -1;
+        }
+        return 'Bot' in appA && 'Bot' in appB && appA.Bot.change > appB.Bot.change ? 1 : -1;
       },
     },
     {
       accessorKey: 'totalSub',
       header: 'Total Subscribers',
       cell: ({ row, renderValue }) => {
-        const totalSubRender = isAppTrackType(row.original)
+        const totalSubRender = isOfType<AppTrack>(row.original, ['users'])
           ? row.original.users
-          : row.original?.Channel?.users;
-        return <p className="text-xl font-bold">{formatNumberWithSpacing(totalSubRender)}</p>;
+          : 'Channel' in row.original
+            ? row.original?.Channel?.users
+            : 0;
+        return <p className="text-xl font-bold">{formatNumber(totalSubRender, true)}</p>;
+      },
+      sortingFn: (rowA, rowB, columnId) => {
+        const appA = rowA.original;
+        const appB = rowB.original;
+        if (isOfType<AppTrack>(appA, ['users']) && isOfType<AppTrack>(appB, ['users'])) {
+          return appA.users > appB.users ? 1 : -1;
+        }
+        return 'Channel' in appA && 'Channel' in appB && appA.Channel.users > appB.Channel.users
+          ? 1
+          : -1;
       },
     },
     {
       accessorKey: 'daySub',
       header: 'Today Subs Change',
       cell: ({ row, renderValue }) => {
-        console.log('row.original', row.original);
-        const changeRender = isAppTrackType(row.original)
+        const changeRender = isOfType<AppTrack>(row.original, ['change'])
           ? row.original.change
-          : row.original?.Channel?.change;
+          : 'Channel' in row.original
+            ? row.original?.Channel?.change
+            : 0;
         return (
           <p
             className={cn('text-xl font-bold text-[#1DC467]', changeRender < 0 && 'text-[#F84A4A]')}
           >
-            {formatNumberWithSpacing(changeRender)}
+            {changeRender >= 0 ? '+' : '-'}
+            {formatNumber(changeRender, true)}
           </p>
         );
+      },
+      sortingFn: (rowA, rowB, columnId) => {
+        const appA = rowA.original;
+        const appB = rowB.original;
+        if (isOfType<AppTrack>(appA, ['change']) && isOfType<AppTrack>(appB, ['change'])) {
+          return appA.change > appB.change ? 1 : -1;
+        }
+        return 'Channel' in appA && 'Channel' in appB && appA.Channel.change > appB.Channel.change
+          ? 1
+          : -1;
       },
     },
     {
       accessorKey: 'fdv',
       header: 'FDV',
       cell: ({ row, renderValue }) => {
-        const fdvRender = isAppTrackType(row.original) ? 'N/A' : row.original?.FDV;
+        const fdvRender = isOfType<AppTrack>(row.original, ['rank'])
+          ? 'N/A'
+          : 'FDV' in row.original
+            ? row.original?.FDV
+            : 0;
         return <p className="text-xl font-bold">{fdvRender}</p>;
       },
     },
@@ -160,7 +235,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
   const [columnFiltered, setColumnFiltered] = useState<ColumnDef<AppTrack | AppDetail>[]>(columns);
 
   const table = useReactTable({
-    data: selectedCate ? appTracks : appGroup,
+    data: appTracks,
     columns: columnFiltered,
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
@@ -175,7 +250,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
     try {
       if (!selectedCate) {
         const res = await teleService.getTop50<AppDetail>({ page, limit: 50 }, 'fdv');
-        setAppGroup(
+        setAppTracks(
           (res.data?.data.map((item, index) => ({ ...item, Order: index + 1 })) as AppDetail[]) ||
             [],
         );

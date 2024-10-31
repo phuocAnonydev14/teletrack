@@ -61,6 +61,8 @@ const config: Config = {
         appInfoBg: 'hsl(var(--app-info-bg))',
         appInfoMetric: 'hsl(var(--app-info-metric))',
         appInfoButton: 'hsl(var(--app-info-button))',
+        analysisBg: 'hsl(var(--analysis-bg))',
+        analysisForeground: 'hsl(var(--analysis-foreground))',
       },
       borderRadius: {
         lg: 'var(--radius)',

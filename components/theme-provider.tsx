@@ -8,7 +8,12 @@ import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   return (
     <NextThemesProvider {...props}>
-      <ProgressBar height="2px" color="#a3ebff" options={{ showSpinner: false }} shallowRouting />
+      <ProgressBar
+        height="3px"
+        color="hsl(var(--nprogress))"
+        options={{ showSpinner: false }}
+        shallowRouting
+      />
       {children}
     </NextThemesProvider>
   );

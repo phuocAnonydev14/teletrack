@@ -50,6 +50,9 @@ body {
     --app-info-bg: 190 12% 91%;
     --app-info-metric: 189 16% 83%;
     --app-info-button: 187 72% 50%;
+    --nprogress: 245 36% 45%;
+    --analysis-bg: 190 12% 91%;
+    --analysis-foreground: 188 100% 32%;
   }
   .dark {
     --background: 0 0% 3.9%;
@@ -87,7 +90,10 @@ body {
     --app-info-bg: 210 16% 17%;
     --app-info-metric: 221 13% 29%;
     --app-info-button: 187 72% 50%;
-  }
+    --nprogress: 193 100% 82%;
+    --analysis-bg: 210 20% 16%;
+    --analysis-foreground: 192 100% 82%;
+   }
 }
 
 @layer base {

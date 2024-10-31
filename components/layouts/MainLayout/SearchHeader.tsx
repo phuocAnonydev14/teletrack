@@ -5,7 +5,7 @@ import { Search } from 'lucide-react';
 import { useDebounceValue } from 'usehooks-ts';
 import { useEffect, useRef, useState } from 'react';
 import { LoadingIcon } from '@/components/icons';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/utils/utils';
 import { SearchHeaderPopover } from '@/components/layouts/MainLayout/SearchHeaderPopover';
 import useClickOutside from '@/hooks/useClickOutside';
 

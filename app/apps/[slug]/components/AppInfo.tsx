@@ -4,7 +4,7 @@ import { BadgeIcon, BookMarkIcon } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import { PlusIcon } from 'lucide-react';
 import { AppDetail } from '@/types/app.type';
-import { formatNumber } from '@/lib/utils';
+import { formatNumber } from '@/lib/utils/utils';
 import Link from 'next/link';
 
 interface AppInfoProps {
@@ -42,9 +42,9 @@ export const AppInfo = (props: AppInfoProps) => {
       <img
         src={appDetail.Logo}
         alt="App Logo"
-        className="hidden max-h-[550px] w-max max-w-full rounded-md bg-gradient-to-r from-[#24C6DCCC] to-[#514A9DCC] object-cover object-center p-[5px] lg:block lg:w-[40%]"
+        className="hidden max-h-[550px] w-max max-w-full rounded-md bg-gradient-to-r from-[#24C6DCCC] to-[#514A9DCC] object-cover object-center p-[5px] lg:block lg:max-w-[40%]"
       />
-      <div className="w-full rounded-[12px] bg-appInfoBg p-[50px] lg:w-[60%]">
+      <div className="w-full rounded-[12px] bg-appInfoBg p-[50px] lg:min-w-[60%]">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="flex flex-col gap-5">
             <p className="flex items-center gap-2 text-3xl font-bold lg:text-[40px]">
@@ -71,7 +71,7 @@ export const AppInfo = (props: AppInfoProps) => {
               </Link>
             </div>
           </div>
-          <div className="text-appInfoButton flex items-center gap-3">
+          <div className="flex items-center gap-3 text-appInfoButton">
             <Button size="sm" className="flex gap-2" variant="outline">
               <BookMarkIcon fill="hsl(var(--app-info-button))" /> 2.2M
             </Button>

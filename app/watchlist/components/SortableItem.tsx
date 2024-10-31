@@ -6,7 +6,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { TableCell, TableRow } from '@/components/ui/table';
 import { flexRender, Row } from '@tanstack/react-table';
 import { AppDetail, AppTrack } from '@/types/app.type';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/utils/utils';
 
 interface Props {
   row: Row<AppTrack | AppDetail>;

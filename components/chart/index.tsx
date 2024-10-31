@@ -9,7 +9,7 @@ import {
   ChartTooltipContent,
 } from '@/components/ui/chart';
 import { Input } from '@/components/ui/input';
-import { formatNumber } from '@/lib/utils';
+import { formatNumber } from '@/lib/utils/utils';
 
 interface CharProps {
   chartData: Record<any, any>[];

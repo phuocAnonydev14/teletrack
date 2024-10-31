@@ -7,7 +7,7 @@ import { useState } from 'react';
 import ArrowUp from '@/components/assets/table/arrow-up.png';
 import ArrowDown from '@/components/assets/table/arrow-down.png';
 import Image from 'next/image';
-import { cn, isAppTrackType } from '@/lib/utils';
+import { cn, isOfType } from '@/lib/utils/utils';
 
 interface AppTrackTableRankProps {
   appTrack: AppTrack | AppDetail;
@@ -17,7 +17,7 @@ interface AppTrackTableRankProps {
 export const AppTrackTableRank = (props: AppTrackTableRankProps) => {
   const { appTrack, isGlobalRank } = props;
   const [isBookmarked, setIsBookmarked] = useState(false);
-  const rankChange = isAppTrackType(appTrack) ? appTrack.rankChange : 0;
+  const rankChange = isOfType<AppTrack>(appTrack, ['rankChange']) ? appTrack.rankChange : 0;
   const ArrowImage = rankChange > 0 ? ArrowUp : ArrowDown;
 
   return (
@@ -38,7 +38,7 @@ export const AppTrackTableRank = (props: AppTrackTableRankProps) => {
         </TooltipProvider>
       </div>
       <div className="rounded-[5px] bg-secondary px-[10px] py-[5px] text-2xl font-bold text-secondary-foreground">
-        # {isAppTrackType(appTrack) ? appTrack.rank : appTrack?.Order}
+        # {isOfType<AppTrack>(appTrack, ['rank']) ? appTrack.rank : appTrack?.Order}
       </div>
 
       {isGlobalRank && rankChange !== 0 && (

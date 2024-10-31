@@ -1,7 +1,7 @@
 'use client';
 
 import { homeMenu } from '@/common/const/homeMenu';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/utils/utils';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
