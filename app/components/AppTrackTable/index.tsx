@@ -58,12 +58,8 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
                 ? appTrack.username
                 : appTrack.Bot?.username || ''
             }
-            rank={isOfType<AppTrack>(appTrack, ['rank']) ? appTrack.rank : 0}
-            rankChange={
-              isOfType<AppTrack>(appTrack, ['rankChange'])
-                ? appTrack.rankChange
-                : appTrack?.Order || 0
-            }
+            rank={isOfType<AppTrack>(appTrack, ['rank']) ? appTrack.rank : appTrack?.Order || 0}
+            rankChange={isOfType<AppTrack>(appTrack, ['rankChange']) ? appTrack.rankChange : 0}
             isGlobalRank={!!selectedCate}
           />
         );
