@@ -3,7 +3,6 @@
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { PropsWithChildren } from 'react';
 import { flexRender } from '@tanstack/react-table';
-import { AppDetail, AppTrack, AppWatch } from '@/types/app.type';
 import { Table as TableType } from '@tanstack/react-table';
 import { useTheme } from 'next-themes';
 import { cn } from '@/lib/utils/utils';
@@ -28,7 +27,7 @@ export const CommonTable = (props: CommonTableProps) => {
                 <TableHead
                   key={header.id}
                   className={cn(
-                    'border-4 border-tableBorder px-8 py-3 text-lg font-bold text-primary-foreground md:text-xl',
+                    'border-4 border-tableBorder px-5 py-3 text-lg font-bold text-primary-foreground md:text-xl',
                     !isDark && 'bg-[#CCD8DA]',
                   )}
                 >

@@ -1,13 +1,12 @@
 'use client';
 
 import { BookMarkIcon } from '@/components/icons';
-import { AppDetail, AppTrack, AppWatch } from '@/types/app.type';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useState } from 'react';
 import ArrowUp from '@/components/assets/table/arrow-up.png';
 import ArrowDown from '@/components/assets/table/arrow-down.png';
 import Image from 'next/image';
-import { cn, isOfType } from '@/lib/utils/utils';
+import { cn } from '@/lib/utils/utils';
 import { teleService } from '@/services/tele.service';
 
 interface AppTrackTableRankProps {
@@ -30,7 +29,7 @@ export const AppTrackTableRank = (props: AppTrackTableRankProps) => {
   return (
     <div className="relative flex items-center justify-center gap-2 overflow-visible">
       <div
-        className="absolute -left-2 top-1/2 -translate-y-1/3 md:-left-4"
+        className="absolute -left-2 top-1/2 -translate-y-1/3 md:-left-3"
         onClick={handleToggleWatchList}
       >
         <TooltipProvider>
@@ -49,7 +48,7 @@ export const AppTrackTableRank = (props: AppTrackTableRankProps) => {
       </div>
 
       {isGlobalRank && rankChange !== 0 && (
-        <div className="absolute -right-4 flex items-center gap-1">
+        <div className="absolute -right-3 flex items-center gap-1">
           {/*<ArrowUpIconFixedColor />*/}
           <Image
             src={ArrowImage.src}
@@ -57,12 +56,6 @@ export const AppTrackTableRank = (props: AppTrackTableRankProps) => {
             width={ArrowImage.width}
             height={ArrowImage.height}
           />
-          {/*<Image*/}
-          {/*  src={ArrowDown.src}*/}
-          {/*  alt="Arrow down"*/}
-          {/*  width={ArrowDown.width}*/}
-          {/*  height={ArrowDown.height}*/}
-          {/*/>*/}
           <p className={cn('text-xl font-bold text-[#1DC467]', rankChange < 0 && 'text-[#F73131]')}>
             {Math.abs(rankChange)}
           </p>

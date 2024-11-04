@@ -8,7 +8,7 @@ import {
   SortingState,
   useReactTable,
 } from '@tanstack/react-table';
-import { cn, formatNumber, isOfType } from '@/lib/utils/utils';
+import { cn, formatNumber } from '@/lib/utils/utils';
 import { TableCell, TableRow } from '@/components/ui/table';
 import React, { useMemo, useState } from 'react';
 import {

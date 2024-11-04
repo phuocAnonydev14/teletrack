@@ -19,8 +19,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { deleteCookie } from 'cookies-next';
-import { TokenEnum } from '@/common/enums/app.enum';
 export const Header = () => {
   const [openLogin, setOpenLogin] = useState(false);
   const [isOpenSheet, setIsOpenSheet] = useState(false);

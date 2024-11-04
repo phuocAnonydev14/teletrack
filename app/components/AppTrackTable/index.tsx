@@ -45,6 +45,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
 
   const columns: ColumnDef<AppTrack | AppDetail>[] = [
     {
+      id: 'rank',
       accessorKey: 'rank',
       header: () => (
         <div className="w-full text-center">{selectedCate ? 'Global Rank' : 'No.'}</div>
@@ -76,6 +77,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
       },
     },
     {
+      id: 'username',
       accessorKey: 'username',
       header: 'Name',
       cell: ({ row, renderValue }) => {
@@ -119,6 +121,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
       },
     },
     {
+      id: 'users',
       accessorKey: 'users',
       header: ({ column }) => {
         return (
@@ -149,6 +152,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
       },
     },
     {
+      id: 'change',
       accessorKey: 'change',
       header: ({ column }) => {
         return (
@@ -263,7 +267,6 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
   const handleFetchPost = async (page: number) => {
     try {
       if (!selectedCate) {
-        console.log('fetch cate');
         const res = await teleService.getTop50<AppDetail>({ page, limit: 50 }, 'fdv');
         setAppTracks(
           (res.data?.data.map((item, index) => ({ ...item, Order: index + 1 })) as AppDetail[]) ||
@@ -272,7 +275,6 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
         setTotalState(res.data?.total || 0);
         return;
       }
-      console.log('fetch query');
       const res = await teleService.getTop50<AppTrack>(
         { page },
         tagRanks[selectedCate as 'users' | 'subscribers'],
@@ -299,7 +301,6 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
           return columns;
       }
     });
-    console.log('start fetch post');
     handleFetchPost(1).then(async () => {
       await setCurrentPage('1');
     });
@@ -340,7 +341,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
               {row.getVisibleCells().map((cell) => (
                 <TableCell
                   key={cell.id}
-                  className="min-w-[200px] border-4 border-tableBorder px-8 py-3"
+                  className="min-w-[200px] border-4 border-tableBorder px-5 py-3"
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </TableCell>
