@@ -1,6 +1,6 @@
 'use client';
 
-import { AppDetail, AppTrack } from '@/types/app.type';
+import { AppTrack, AppWatch } from '@/types/app.type';
 import {
   ColumnDef,
   getCoreRowModel,
@@ -8,7 +8,7 @@ import {
   SortingState,
   useReactTable,
 } from '@tanstack/react-table';
-import { cn, formatNumber, isAppTrackType, isOfType } from '@/lib/utils/utils';
+import { cn, formatNumber, isOfType } from '@/lib/utils/utils';
 import { TableCell, TableRow } from '@/components/ui/table';
 import React, { useMemo, useState } from 'react';
 import {
@@ -31,47 +31,42 @@ import { AppTrackTableRank } from '@/app/components/AppTrackTable/AppTrackTableR
 import { getLogoUrl } from '@/lib/utils/image.util';
 
 interface AppTrackTableProps {
-  data: AppDetail[];
+  data: AppWatch[];
   total: number;
 }
 export const WatchlistTable = (props: AppTrackTableProps) => {
   const { total, data } = props;
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [appTracks, setAppTracks] = useState<AppDetail[]>(
-    data.map((item) => ({ ...item, id: isAppTrackType(item) ? item.username : item.Bot.username })),
+  const [appTracks, setAppTracks] = useState<AppWatch[]>(
+    data.map((item) => ({ ...item, id: item.product_id })),
   );
 
-  const columns: ColumnDef<AppTrack | AppDetail>[] = [
+  const columns: ColumnDef<AppWatch>[] = [
     {
       accessorKey: 'rank',
       header: () => <div className="w-full text-center">{'No.'}</div>,
       cell: ({ row, renderValue }) => {
-        return <AppTrackTableRank isGlobalRank={false} appTrack={row.original} />;
+        return (
+          <AppTrackTableRank
+            username={row.original.username}
+            rankChange={row.original.rank_change}
+            rank={row.original.rank}
+            isGlobalRank={false}
+          />
+        );
       },
       invertSorting: true,
     },
     {
-      accessorKey: 'username',
+      accessorKey: 'name',
       header: 'Name',
       cell: ({ row, renderValue }) => {
-        const nameRender = (
-          isOfType<AppTrack>(row.original, ['username']) ? row.original.username : row.original.Name
-        ).replace('@', '');
+        const nameRender = row.original.name.replace('@', '');
         return (
-          <Link
-            href={`/apps/${(isOfType<AppTrack>(row.original, ['username']) ? nameRender : row.original?.Bot?.username).replace('@', '')}`}
-          >
+          <Link href={`/apps/${row.original.username.replace('@', '')}`}>
             <div className="flex min-w-[50dvw] items-center gap-2 md:min-w-[20dvw]">
               <img
-                src={getLogoUrl(
-                  (isOfType<AppTrack>(row.original, ['username'])
-                    ? nameRender
-                    : // eslint-disable-next-line no-unsafe-optional-chaining
-                      'Bot' in row.original
-                      ? row.original?.Bot?.username
-                      : ''
-                  ).replace('@', ''),
-                )}
+                src={getLogoUrl(row.original.username.replace('@', ''))}
                 className="h-10 w-10 rounded-md bg-gradient-to-r from-[#24C6DCCC] to-[#514A9DCC] p-[1px]"
                 alt={''}
                 loading="lazy"
@@ -81,14 +76,6 @@ export const WatchlistTable = (props: AppTrackTableProps) => {
             </div>
           </Link>
         );
-      },
-      sortingFn: (rowA, rowB, columnId) => {
-        const appA = rowA.original;
-        const appB = rowB.original;
-        if (isOfType<AppTrack>(appA, ['username']) && isOfType<AppTrack>(appB, ['username'])) {
-          return appA.username > appB.username ? 1 : -1;
-        }
-        return 'Name' in appA && 'Name' in appB && appA.Name > appB.Name ? 1 : -1;
       },
     },
     {
@@ -101,24 +88,12 @@ export const WatchlistTable = (props: AppTrackTableProps) => {
         );
       },
       cell: ({ row, renderValue }) => {
-        const mauRender = isOfType<AppTrack>(row.original, ['users'])
-          ? row.original.users
-          : 'Bot' in row.original
-            ? row.original?.Bot?.users
-            : '';
+        const mauRender = row.original.users;
         return (
           <div>
             <p className="text-xl font-bold">{formatNumber(mauRender, true)}</p>
           </div>
         );
-      },
-      sortingFn: (rowA, rowB, columnId) => {
-        const appA = rowA.original;
-        const appB = rowB.original;
-        if (isOfType<AppTrack>(appA, ['users']) && isOfType<AppTrack>(appB, ['users'])) {
-          return appA.users > appB.users ? 1 : -1;
-        }
-        return 'Bot' in appA && 'Bot' in appB && appA.Bot.users > appB.Bot.users ? 1 : -1;
       },
     },
     {
@@ -131,11 +106,7 @@ export const WatchlistTable = (props: AppTrackTableProps) => {
         );
       },
       cell: ({ row, renderValue }) => {
-        const changeRender = isOfType<AppTrack>(row.original, ['change'])
-          ? row.original.change
-          : 'Bot' in row.original
-            ? row.original?.Bot.change
-            : 0;
+        const changeRender = row.original.change;
         return (
           <p
             className={cn('text-xl font-bold text-[#1DC467]', changeRender < 0 && 'text-[#F84A4A]')}
@@ -144,47 +115,21 @@ export const WatchlistTable = (props: AppTrackTableProps) => {
             {formatNumber(changeRender, true)}
           </p>
         );
-      },
-      sortingFn: (rowA, rowB, columnId) => {
-        const appA = rowA.original;
-        const appB = rowB.original;
-        if (isOfType<AppTrack>(appA, ['change']) && isOfType<AppTrack>(appB, ['change'])) {
-          return appA.change > appB.change ? 1 : -1;
-        }
-        return 'Bot' in appA && 'Bot' in appB && appA.Bot.change > appB.Bot.change ? 1 : -1;
       },
     },
     {
       accessorKey: 'totalSub',
       header: 'Total Subscribers',
       cell: ({ row, renderValue }) => {
-        const totalSubRender = isOfType<AppTrack>(row.original, ['users'])
-          ? row.original.users
-          : 'Channel' in row.original
-            ? row.original?.Channel?.users
-            : 0;
+        const totalSubRender = row.original.users;
         return <p className="text-xl font-bold">{formatNumber(totalSubRender, true)}</p>;
-      },
-      sortingFn: (rowA, rowB, columnId) => {
-        const appA = rowA.original;
-        const appB = rowB.original;
-        if (isOfType<AppTrack>(appA, ['users']) && isOfType<AppTrack>(appB, ['users'])) {
-          return appA.users > appB.users ? 1 : -1;
-        }
-        return 'Channel' in appA && 'Channel' in appB && appA.Channel.users > appB.Channel.users
-          ? 1
-          : -1;
       },
     },
     {
       accessorKey: 'daySub',
       header: 'Today Subs Change',
       cell: ({ row, renderValue }) => {
-        const changeRender = isOfType<AppTrack>(row.original, ['change'])
-          ? row.original.change
-          : 'Channel' in row.original
-            ? row.original?.Channel?.change
-            : 0;
+        const changeRender = row.original.change;
         return (
           <p
             className={cn('text-xl font-bold text-[#1DC467]', changeRender < 0 && 'text-[#F84A4A]')}
@@ -194,26 +139,12 @@ export const WatchlistTable = (props: AppTrackTableProps) => {
           </p>
         );
       },
-      sortingFn: (rowA, rowB, columnId) => {
-        const appA = rowA.original;
-        const appB = rowB.original;
-        if (isOfType<AppTrack>(appA, ['change']) && isOfType<AppTrack>(appB, ['change'])) {
-          return appA.change > appB.change ? 1 : -1;
-        }
-        return 'Channel' in appA && 'Channel' in appB && appA.Channel.change > appB.Channel.change
-          ? 1
-          : -1;
-      },
     },
     {
       accessorKey: 'fdv',
       header: 'FDV',
       cell: ({ row, renderValue }) => {
-        const fdvRender = isOfType<AppTrack>(row.original, ['rank'])
-          ? 'N/A'
-          : 'FDV' in row.original
-            ? row.original?.FDV
-            : 0;
+        const fdvRender = '';
         return <p className="text-xl font-bold">{fdvRender}</p>;
       },
     },
@@ -248,6 +179,7 @@ export const WatchlistTable = (props: AppTrackTableProps) => {
   function handleDragEnd(event: any) {
     const { active, over } = event;
     if (active.id !== over.id) {
+      if (!items) return;
       setAppTracks((data) => {
         const oldIndex = items.indexOf(active.id);
         const newIndex = items.indexOf(over.id);

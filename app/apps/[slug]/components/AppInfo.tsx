@@ -6,6 +6,7 @@ import { PlusIcon } from 'lucide-react';
 import { AppDetail } from '@/types/app.type';
 import { formatNumber } from '@/lib/utils/utils';
 import Link from 'next/link';
+import { getLogoUrl } from '@/lib/utils/image.util';
 
 interface AppInfoProps {
   appDetail: AppDetail;
@@ -40,7 +41,7 @@ export const AppInfo = (props: AppInfoProps) => {
   return (
     <div className="flex flex-col items-start justify-between gap-6 lg:flex-row">
       <img
-        src={appDetail.Logo}
+        src={getLogoUrl(appDetail.Bot.username.replace('@', ''))}
         alt="App Logo"
         className="hidden max-h-[550px] w-max max-w-full rounded-md bg-gradient-to-r from-[#24C6DCCC] to-[#514A9DCC] object-cover object-center p-[5px] lg:block lg:max-w-[40%]"
       />

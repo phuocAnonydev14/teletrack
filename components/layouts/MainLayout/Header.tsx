@@ -68,7 +68,7 @@ export const Header = () => {
         {id ? (
           <DropdownMenu>
             <DropdownMenuTrigger>
-              <Button variant="outline">{name}</Button>
+              <Button variant="ghost">{name}</Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
@@ -79,7 +79,7 @@ export const Header = () => {
             className="flex items-center gap-1 text-lg font-semibold"
             onClick={() => setOpenLogin(true)}
           >
-            <EnterIcon height={20} width={20} /> Sign Up
+            <EnterIcon height={20} width={20} /> <p className="hidden md:block">Sign Up</p>
           </Button>
         )}
       </div>

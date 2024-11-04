@@ -39,7 +39,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
   const { total } = props;
   const [sorting, setSorting] = useState<SortingState>([]);
   const [selectedCate, setSelectedCate] = useQueryState('q');
-  const [appTracks, setAppTracks] = useState<(AppTrack | AppDetail)[]>([]);
+  const [appTracks, setAppTracks] = useState<(AppTrack | AppDetail)[]>(props.data);
   const [, setCurrentPage] = useQueryState('page');
   const [totalState, setTotalState] = useState(total);
 
@@ -50,7 +50,23 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
         <div className="w-full text-center">{selectedCate ? 'Global Rank' : 'No.'}</div>
       ),
       cell: ({ row, renderValue }) => {
-        return <AppTrackTableRank isGlobalRank={!!selectedCate} appTrack={row.original} />;
+        const appTrack = row.original;
+        return (
+          <AppTrackTableRank
+            username={
+              isOfType<AppTrack>(appTrack, ['rank'])
+                ? appTrack.username
+                : appTrack.Bot?.username || ''
+            }
+            rank={isOfType<AppTrack>(appTrack, ['rank']) ? appTrack.rank : 0}
+            rankChange={
+              isOfType<AppTrack>(appTrack, ['rankChange'])
+                ? appTrack.rankChange
+                : appTrack?.Order || 0
+            }
+            isGlobalRank={!!selectedCate}
+          />
+        );
       },
       sortingFn: (rowA, rowB, columnId) => {
         const appA = rowA.original;
@@ -74,7 +90,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
           <Link
             href={`/apps/${(isOfType<AppTrack>(row.original, ['username']) ? nameRender : row.original?.Bot?.username).replace('@', '')}`}
           >
-            <div className="flex min-w-[50dvw] items-center gap-2 md:min-w-[20dvw]">
+            <div className="flex min-w-max items-center gap-2">
               <img
                 src={getLogoUrl(
                   (isOfType<AppTrack>(row.original, ['username'])
@@ -89,8 +105,10 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
                 alt={''}
                 loading="lazy"
               />
-              <p className="text-xl font-bold leading-none md:text-2xl">{nameRender}</p>
-              <BadgeIcon width={20} height={20} />
+              <p className="text-xl font-bold leading-none lg:text-2xl">{nameRender}</p>
+              <div className="min-w-[40px]">
+                <BadgeIcon width={20} height={20} />
+              </div>
             </div>
           </Link>
         );
@@ -249,6 +267,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
   const handleFetchPost = async (page: number) => {
     try {
       if (!selectedCate) {
+        console.log('fetch cate');
         const res = await teleService.getTop50<AppDetail>({ page, limit: 50 }, 'fdv');
         setAppTracks(
           (res.data?.data.map((item, index) => ({ ...item, Order: index + 1 })) as AppDetail[]) ||
@@ -257,6 +276,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
         setTotalState(res.data?.total || 0);
         return;
       }
+      console.log('fetch query');
       const res = await teleService.getTop50<AppTrack>(
         { page },
         tagRanks[selectedCate as 'users' | 'subscribers'],
@@ -283,6 +303,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
           return columns;
       }
     });
+    console.log('start fetch post');
     handleFetchPost(1).then(async () => {
       await setCurrentPage('1');
     });

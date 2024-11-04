@@ -29,6 +29,20 @@ export interface AppDetail {
   FDV: number;
 }
 
+export interface AppWatch {
+  id: string;
+  product_id: string;
+  name: string;
+  username: string;
+  date: string;
+  users: number;
+  change: number;
+  rank: number;
+  rank_change: number;
+  type: 'bot' | 'channel';
+  updated: boolean;
+}
+
 export interface AppHistory {
   Bot: Record<string, number>;
   Channel: Record<string, number>;

@@ -1,30 +1,37 @@
 'use client';
 
 import { BookMarkIcon } from '@/components/icons';
-import { AppDetail, AppTrack } from '@/types/app.type';
+import { AppDetail, AppTrack, AppWatch } from '@/types/app.type';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useState } from 'react';
 import ArrowUp from '@/components/assets/table/arrow-up.png';
 import ArrowDown from '@/components/assets/table/arrow-down.png';
 import Image from 'next/image';
 import { cn, isOfType } from '@/lib/utils/utils';
+import { teleService } from '@/services/tele.service';
 
 interface AppTrackTableRankProps {
-  appTrack: AppTrack | AppDetail;
   isGlobalRank: boolean;
+  rankChange: number;
+  rank: number;
+  username: string;
 }
 
 export const AppTrackTableRank = (props: AppTrackTableRankProps) => {
-  const { appTrack, isGlobalRank } = props;
+  const { isGlobalRank, username, rank, rankChange } = props;
   const [isBookmarked, setIsBookmarked] = useState(false);
-  const rankChange = isOfType<AppTrack>(appTrack, ['rankChange']) ? appTrack.rankChange : 0;
   const ArrowImage = rankChange > 0 ? ArrowUp : ArrowDown;
+
+  const handleToggleWatchList = async () => {
+    await teleService.addWatchList(username);
+    setIsBookmarked(!isBookmarked);
+  };
 
   return (
     <div className="relative flex items-center justify-center gap-2 overflow-visible">
       <div
         className="absolute -left-2 top-1/2 -translate-y-1/3 md:-left-4"
-        onClick={() => setIsBookmarked(!isBookmarked)}
+        onClick={handleToggleWatchList}
       >
         <TooltipProvider>
           <Tooltip>
@@ -38,7 +45,7 @@ export const AppTrackTableRank = (props: AppTrackTableRankProps) => {
         </TooltipProvider>
       </div>
       <div className="rounded-[5px] bg-secondary px-[10px] py-[5px] text-2xl font-bold text-secondary-foreground">
-        # {isOfType<AppTrack>(appTrack, ['rank']) ? appTrack.rank : appTrack?.Order}
+        # {rank}
       </div>
 
       {isGlobalRank && rankChange !== 0 && (

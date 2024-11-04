@@ -28,7 +28,6 @@ export const AuthProvider = (props: PropsWithChildren) => {
     try {
       const res = await authService.login(authId);
       const decoded = jwtDecode<{ name: string; sub: string }>(res.data.data);
-      console.log(decoded.name);
       setCookie(TokenEnum.ACCESS, res.data.data);
       const userData = { name: decoded.name, id: decoded.sub };
       setUser(userData);

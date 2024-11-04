@@ -1,6 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosRequestConfig } from 'axios';
-
-import { getCookie } from 'cookies-next';
+import { getCookie, getCookies } from 'cookies-next';
 import axiosRetry from 'axios-retry';
 import { CacheRequestConfig, setupCache } from 'axios-cache-interceptor';
 import { HttpMethodEnum, TokenEnum } from '@/common/enums/app.enum';
@@ -15,20 +14,25 @@ class HttpService {
       axios.create({
         baseURL: customBaseUrl || this.baseURL,
         withCredentials: false,
-        headers: this.setupHeaders(),
         timeout: 5000,
       }),
       {
-        ttl: 1000 * 3, // 3s cache
+        // ttl: 1000 * 3, // 3s cache
       },
     );
 
     this.injectInterceptors();
   }
 
-  // Get authorization token for requests
-  private get getAuthorization() {
-    const accessToken = getCookie(TokenEnum.ACCESS) || '';
+  private async getAuthorization() {
+    let accessToken = getCookie(TokenEnum.ACCESS) || '';
+    console.log('accessToken', accessToken);
+    // case get token on server side
+    if (!accessToken && typeof window === 'undefined') {
+      const cookieStore = await import('next/headers').then((res) => res.cookies());
+      console.log('accessToken', accessToken);
+      accessToken = cookieStore.get(TokenEnum.ACCESS)?.value || '';
+    }
     return accessToken ? { Authorization: `Bearer ${accessToken}` } : {};
   }
 
@@ -40,14 +44,17 @@ class HttpService {
   }
 
   // Set up request headers
-  private setupHeaders(hasAttachment = false, isPublicApi = false): AxiosRequestConfig['headers'] {
+  private async setupHeaders(
+    hasAttachment = false,
+    isPublicApi = false,
+  ): Promise<AxiosRequestConfig['headers']> {
     const headers: AxiosRequestConfig['headers'] = {
       'Content-Type': hasAttachment ? 'multipart/form-data' : 'application/json',
       withCredentials: true,
     };
 
     if (!isPublicApi) {
-      Object.assign(headers, this.getAuthorization);
+      Object.assign(headers, await this.getAuthorization());
     }
 
     return headers;
@@ -65,14 +72,14 @@ class HttpService {
       url,
       ...options,
     });
-    return response?.data;
+    return response.data;
   }
 
   // Perform GET request
   public async get<T>(url: string, params?: Params, isPublicApi = false): Promise<T> {
     return this.request<T>(HttpMethodEnum.GET, url, {
       params,
-      headers: this.setupHeaders(false, isPublicApi),
+      headers: await this.setupHeaders(false, isPublicApi),
       cache: {
         ttl: 1000 * 5,
         staleIfError: true, // use cache if there's an error
@@ -90,7 +97,7 @@ class HttpService {
     return this.request<T>(HttpMethodEnum.POST, url, {
       params,
       data: payload,
-      headers: this.setupHeaders(payload instanceof FormData, isPublicApi),
+      headers: await this.setupHeaders(payload instanceof FormData, isPublicApi),
     });
   }
 
@@ -104,7 +111,7 @@ class HttpService {
     return this.request<T>(HttpMethodEnum.PUT, url, {
       params,
       data: payload,
-      headers: this.setupHeaders(payload instanceof FormData, isPublicApi),
+      headers: await this.setupHeaders(payload instanceof FormData, isPublicApi),
     });
   }
 
@@ -112,7 +119,7 @@ class HttpService {
   public async remove<T>(url: string, params?: Params, isPublicApi = false): Promise<T> {
     return this.request<T>(HttpMethodEnum.DELETE, url, {
       params,
-      headers: this.setupHeaders(false, isPublicApi),
+      headers: await this.setupHeaders(false, isPublicApi),
     });
   }
 

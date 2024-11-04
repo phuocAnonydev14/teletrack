@@ -3,13 +3,10 @@ import { teleService } from '@/services/tele.service';
 import { AppDetail } from '@/types/app.type';
 const fetchTop50 = async () => {
   try {
-    const res = await teleService.getTop50<AppDetail>({
-      page: 1,
-      limit: 10,
-    });
+    const res = await teleService.getWatchList();
     return {
       data: res.data.data.map((item, index) => ({ ...item, Order: index + 1 })),
-      total: res.data.total,
+      total: 0,
     };
   } catch (e) {
     return { data: [], total: 0 };

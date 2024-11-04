@@ -9,7 +9,7 @@ import { AppDetail, AppTrack } from '@/types/app.type';
 import { cn } from '@/lib/utils/utils';
 
 interface Props {
-  row: Row<AppTrack | AppDetail>;
+  row: Row<AppTrack | AppDetail | any>;
   index: number;
 }
 
