@@ -2,6 +2,7 @@
 
 import { AppDetail, AppTrack } from '@/types/app.type';
 import {
+  Column,
   ColumnDef,
   flexRender,
   getCoreRowModel,
@@ -12,18 +13,17 @@ import {
 } from '@tanstack/react-table';
 import { cn, formatNumber, isOfType } from '@/lib/utils/utils';
 import { TableCell, TableRow } from '@/components/ui/table';
-import { useEffect, useState } from 'react';
+import { CSSProperties, useEffect, useState } from 'react';
 import { useQueryState } from 'nuqs';
 import { TableCategory } from '@/common/enums/tableCategory';
 import Link from 'next/link';
 import { BadgeIcon } from '@/components/icons';
 import { CommonTable } from '@/components/table';
-import { RadioGroup } from '@/components/ui/radio-group';
 import { DataTablePagination } from '@/components/common/DataPagnation';
 import { teleService } from '@/services/tele.service';
 import { getLogoUrl } from '@/lib/utils/image.util';
 import { AppTrackTableRank } from '@/app/components/AppTrackTable/AppTrackTableRank';
-import { TagRank } from '@/app/components/AppTrackTable/TagRank';
+import { useMediaQuery } from 'usehooks-ts';
 
 const tagRanks = {
   users: TableCategory.USERS,
@@ -35,6 +35,32 @@ interface AppTrackTableProps {
   total: number;
 }
 
+export const getCommonPinningStyles = (column: Column<any>, status?: boolean): CSSProperties => {
+  const isPinned = column.getIsPinned() || status;
+  const isLastLeftPinnedColumn = status || (isPinned === 'left' && column.getIsLastColumn('left'));
+  const isFirstRightPinnedColumn = isPinned === 'right' && column.getIsFirstColumn('right');
+
+  const res = {
+    boxShadow: isLastLeftPinnedColumn
+      ? '-4px 0 4px -4px gray inset'
+      : isFirstRightPinnedColumn
+        ? '4px 0 4px -4px gray inset'
+        : undefined,
+    left: isPinned === 'left' ? `-2px` : undefined,
+    position: isPinned ? 'sticky' : 'relative',
+    width: column.getSize(),
+    zIndex: isPinned ? 3 : 0,
+  };
+
+  if (status) {
+    Object.assign(res, {
+      backgroundColor: 'hsl(var(--table-header))',
+    });
+  }
+
+  return res as CSSProperties;
+};
+
 export const AppTrackTable = (props: AppTrackTableProps) => {
   const { total } = props;
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -42,6 +68,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
   const [appTracks, setAppTracks] = useState<(AppTrack | AppDetail)[]>(props.data);
   const [, setCurrentPage] = useQueryState('page');
   const [totalState, setTotalState] = useState(total);
+  const matches = useMediaQuery(`(max-width: 728px)`);
 
   const columns: ColumnDef<AppTrack | AppDetail>[] = [
     {
@@ -103,8 +130,10 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
                 alt={''}
                 loading="lazy"
               />
-              <p className="text-xl font-bold leading-none lg:text-2xl">{nameRender}</p>
-              <div className="min-w-[40px]">
+              <p className="max-w-[90px] overflow-ellipsis text-base font-bold leading-none sm:w-full">
+                {nameRender}
+              </p>
+              <div className="hidden min-w-[40px] md:block">
                 <BadgeIcon width={20} height={20} />
               </div>
             </div>
@@ -125,7 +154,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
       accessorKey: 'users',
       header: ({ column }) => {
         return (
-          <div className="flex items-center gap-1">
+          <div className="w-full text-left">
             <p>MAU</p>
           </div>
         );
@@ -138,7 +167,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
             : '';
         return (
           <div>
-            <p className="text-xl font-bold">{formatNumber(mauRender, true)}</p>
+            <p className="text-base font-bold">{formatNumber(mauRender, true)}</p>
           </div>
         );
       },
@@ -169,7 +198,10 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
             : 0;
         return (
           <p
-            className={cn('text-xl font-bold text-[#1DC467]', changeRender < 0 && 'text-[#F84A4A]')}
+            className={cn(
+              'text-base font-bold text-[#1DC467]',
+              changeRender < 0 && 'text-[#F84A4A]',
+            )}
           >
             {changeRender >= 0 ? '+' : '-'}
             {formatNumber(changeRender, true)}
@@ -186,6 +218,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
       },
     },
     {
+      id: 'totalSub',
       accessorKey: 'totalSub',
       header: 'Total Subscribers',
       cell: ({ row, renderValue }) => {
@@ -194,7 +227,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
           : 'Channel' in row.original
             ? row.original?.Channel?.users
             : 0;
-        return <p className="text-xl font-bold">{formatNumber(totalSubRender, true)}</p>;
+        return <p className="text-base font-bold">{formatNumber(totalSubRender, true)}</p>;
       },
       sortingFn: (rowA, rowB, columnId) => {
         const appA = rowA.original;
@@ -208,6 +241,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
       },
     },
     {
+      id: 'daySub',
       accessorKey: 'daySub',
       header: 'Today Subs Change',
       cell: ({ row, renderValue }) => {
@@ -218,7 +252,10 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
             : 0;
         return (
           <p
-            className={cn('text-xl font-bold text-[#1DC467]', changeRender < 0 && 'text-[#F84A4A]')}
+            className={cn(
+              'text-base font-bold text-[#1DC467]',
+              changeRender < 0 && 'text-[#F84A4A]',
+            )}
           >
             {changeRender >= 0 ? '+' : '-'}
             {formatNumber(changeRender, true)}
@@ -237,6 +274,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
       },
     },
     {
+      id: 'fdv',
       accessorKey: 'fdv',
       header: 'FDV',
       cell: ({ row, renderValue }) => {
@@ -245,7 +283,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
           : 'FDV' in row.original
             ? row.original?.FDV
             : 0;
-        return <p className="text-xl font-bold">{fdvRender}</p>;
+        return <p className="text-base font-bold">{fdvRender}</p>;
       },
     },
   ];
@@ -287,7 +325,15 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
   };
 
   useEffect(() => {
+    if (matches) {
+      table.getColumn('username')?.pin('left');
+    } else table.getColumn('rank')?.pin('left');
     setColumnFiltered(() => {
+      if (matches) {
+        return columns.filter((column: any) => {
+          return !['rank'].includes(column.accessorKey);
+        });
+      }
       switch (selectedCate) {
         case 'users':
           return columns.filter((column: any) => {
@@ -304,35 +350,35 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
     handleFetchPost(1).then(async () => {
       await setCurrentPage('1');
     });
-  }, [selectedCate]);
+  }, [selectedCate, matches]);
 
   return (
     <div>
-      <div className="flex items-center justify-center gap-3 border-4 border-tableBorder bg-tableBg px-8 py-3 text-primary-foreground">
-        <p className="text-xl font-bold">Ranked By:</p>
-        <RadioGroup>
-          <div className="flex items-center gap-5 rounded-xl bg-rankTagBg px-5 py-2">
-            {Object.keys(tagRanks).map((rank) => {
-              return (
-                <TagRank
-                  selectedCate={selectedCate || ''}
-                  key={rank}
-                  name={rank}
-                  action={() => {
-                    setSelectedCate((state) => (state === rank ? '' : rank));
-                  }}
-                />
-              );
-            })}
-          </div>
-        </RadioGroup>
-      </div>
+      {/*<div className="flex items-center justify-center gap-3 border-4 border-tableBorder bg-tableBg px-8 py-3 text-primary-foreground">*/}
+      {/*  <p className="text-xl font-bold">Ranked By:</p>*/}
+      {/*  <RadioGroup>*/}
+      {/*    <div className="flex items-center gap-5 rounded-xl bg-rankTagBg px-5 py-2">*/}
+      {/*      {Object.keys(tagRanks).map((rank) => {*/}
+      {/*        return (*/}
+      {/*          <TagRank*/}
+      {/*            selectedCate={selectedCate || ''}*/}
+      {/*            key={rank}*/}
+      {/*            name={rank}*/}
+      {/*            action={() => {*/}
+      {/*              setSelectedCate((state) => (state === rank ? '' : rank));*/}
+      {/*            }}*/}
+      {/*          />*/}
+      {/*        );*/}
+      {/*      })}*/}
+      {/*    </div>*/}
+      {/*  </RadioGroup>*/}
+      {/*</div>*/}
       <CommonTable table={table}>
         {table.getRowModel().rows?.length ? (
           table.getRowModel().rows.map((row, index) => (
             <TableRow
               className={cn(
-                'border-tableBorder',
+                'max-w-[100px] border-tableBorder',
                 index % 2 === 0 ? 'bg-tableRowEven' : 'bg-tableRowOdd',
               )}
               key={row.id}
@@ -341,7 +387,11 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
               {row.getVisibleCells().map((cell) => (
                 <TableCell
                   key={cell.id}
-                  className="min-w-[200px] border-4 border-tableBorder px-5 py-3"
+                  className={cn(
+                    'border-4 border-tableBorder px-3 py-3',
+                    index % 2 === 0 ? 'bg-tableRowEven' : 'bg-tableRowOdd',
+                  )}
+                  style={matches ? { ...getCommonPinningStyles(cell.column) } : {}}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </TableCell>

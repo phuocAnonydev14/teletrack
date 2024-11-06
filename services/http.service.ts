@@ -26,11 +26,9 @@ class HttpService {
 
   private async getAuthorization() {
     let accessToken = getCookie(TokenEnum.ACCESS) || '';
-    console.log('accessToken', accessToken);
     // case get token on server side
     if (!accessToken && typeof window === 'undefined') {
       const cookieStore = await import('next/headers').then((res) => res.cookies());
-      console.log('accessToken', accessToken);
       accessToken = cookieStore.get(TokenEnum.ACCESS)?.value || '';
     }
     return accessToken ? { Authorization: `Bearer ${accessToken}` } : {};

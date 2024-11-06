@@ -43,6 +43,7 @@ body {
     --home-menu-bg: 190 12% 91%;
     --rank-tag-bg: 0 0% 100%;
     --table-bg: 189 16% 83%;
+    --table-header: 189 16% 83%;
     --table-border: 0 0% 100%;
     --table-row-even: 190 12% 91%;
     --table-row-odd: 190 8% 86%;
@@ -83,6 +84,7 @@ body {
     --home-menu-bg: 300 4% 16%;
     --rank-tag-bg: 0 0% 20%;
     --table-bg: 210 20% 16%;
+    --table-header: 210 19% 28%;
     --table-border: 0 0% 6%;
     --table-row-even: 210 20% 16%;
     --table-row-odd: 210 20% 16%;

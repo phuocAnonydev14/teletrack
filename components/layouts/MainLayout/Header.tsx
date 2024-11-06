@@ -74,10 +74,10 @@ export const Header = () => {
           </DropdownMenu>
         ) : (
           <Button
-            className="flex items-center gap-1 text-lg font-semibold"
+            className="flex items-center gap-1 font-semibold"
             onClick={() => setOpenLogin(true)}
           >
-            <EnterIcon height={20} width={20} /> <p className="hidden md:block">Sign Up</p>
+            <EnterIcon height={18} width={18} /> <p className="hidden md:block">Sign Up</p>
           </Button>
         )}
       </div>

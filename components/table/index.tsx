@@ -7,6 +7,8 @@ import { Table as TableType } from '@tanstack/react-table';
 import { useTheme } from 'next-themes';
 import { cn } from '@/lib/utils/utils';
 import { SortBox } from '@/app/components/AppTrackTable/SortBox';
+import { getCommonPinningStyles } from '@/app/components/AppTrackTable';
+import { useMediaQuery } from 'usehooks-ts';
 
 interface CommonTableProps extends PropsWithChildren {
   table: TableType<any>;
@@ -16,20 +18,35 @@ export const CommonTable = (props: CommonTableProps) => {
   const { table, children } = props;
   const { theme } = useTheme();
   const isDark = theme === 'dark';
+  const matches = useMediaQuery(`(max-width: 728px)`);
 
   return (
-    <Table className="border-collapse">
+    <Table className="border-collapse bg-[#3A485680]">
       <TableHeader>
-        {table.getHeaderGroups().map((headerGroup) => (
-          <TableRow className="border-tableBorder bg-[#3A485680]" key={headerGroup.id}>
+        {table.getHeaderGroups().map((headerGroup, index) => (
+          <TableRow
+            style={{ backgroundColor: '#3A485680' }}
+            className="border-tableBorder"
+            key={headerGroup.id}
+          >
             {headerGroup.headers.map((header) => {
               return (
                 <TableHead
                   key={header.id}
                   className={cn(
-                    'border-4 border-tableBorder px-5 py-3 text-lg font-bold text-primary-foreground md:text-xl',
+                    'min-w-[120px] border-4 border-tableBorder bg-[#3A485680] px-3 py-3 text-base font-bold text-primary-foreground',
                     !isDark && 'bg-[#CCD8DA]',
                   )}
+                  style={
+                    matches
+                      ? {
+                          ...getCommonPinningStyles(
+                            table.getColumn(header.column.id) as any,
+                            header.column.id === 'username',
+                          ),
+                        }
+                      : {}
+                  }
                 >
                   <div
                     className="relative flex cursor-pointer select-none items-center gap-2"

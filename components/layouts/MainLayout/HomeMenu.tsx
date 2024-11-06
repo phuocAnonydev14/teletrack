@@ -29,7 +29,7 @@ export const HomeMenu = (props: HomeMenuProps) => {
           <Link key={key} href={`/${menu.href}`} onClick={() => actionClose && actionClose()}>
             <div className="flex cursor-pointer items-center gap-2">
               {menu.icon && <img src={menu.icon} alt={menu.title} />}
-              <p className={cn('text-xl font-semibold', isActive && 'text-linear')}>{menu.title}</p>
+              <p className={cn('text-lg font-semibold', isActive && 'text-linear')}>{menu.title}</p>
             </div>
           </Link>
         );

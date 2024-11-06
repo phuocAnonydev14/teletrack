@@ -8,7 +8,7 @@ export const SortBox = ({ column }: { column: any }) => {
 
   return (
     <div>
-      <div className="absolute top-1/2 flex -translate-y-1/2 flex-col gap-1">
+      <div className="flex flex-col gap-1">
         <ArrowUpIcon key={'arrow-up'} id="arrow-up" color={!isASC ? 'gray' : ''} />
         <ArrowDownIcon color={isASC ? 'gray' : ''} key={'arrow-down'} id="arrow-down" />
       </div>

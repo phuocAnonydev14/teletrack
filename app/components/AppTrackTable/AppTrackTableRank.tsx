@@ -27,9 +27,9 @@ export const AppTrackTableRank = (props: AppTrackTableRankProps) => {
   };
 
   return (
-    <div className="relative flex items-center justify-center gap-2 overflow-visible">
+    <div className="relative flex min-w-[100px] items-center justify-center gap-2 overflow-visible">
       <div
-        className="absolute -left-2 top-1/2 -translate-y-1/3 md:-left-3"
+        className="absolute left-2 top-1/2 -translate-y-1/3 md:left-3"
         onClick={handleToggleWatchList}
       >
         <TooltipProvider>
@@ -43,7 +43,7 @@ export const AppTrackTableRank = (props: AppTrackTableRankProps) => {
           </Tooltip>
         </TooltipProvider>
       </div>
-      <div className="rounded-[5px] bg-secondary px-[10px] py-[5px] text-2xl font-bold text-secondary-foreground">
+      <div className="rounded-[5px] bg-secondary px-[10px] py-[5px] text-base font-bold text-secondary-foreground">
         # {rank}
       </div>
 
@@ -56,7 +56,9 @@ export const AppTrackTableRank = (props: AppTrackTableRankProps) => {
             width={ArrowImage.width}
             height={ArrowImage.height}
           />
-          <p className={cn('text-xl font-bold text-[#1DC467]', rankChange < 0 && 'text-[#F73131]')}>
+          <p
+            className={cn('text-base font-bold text-[#1DC467]', rankChange < 0 && 'text-[#F73131]')}
+          >
             {Math.abs(rankChange)}
           </p>
         </div>

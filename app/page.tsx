@@ -1,6 +1,5 @@
 import { teleService } from '@/services/tele.service';
 import { AppDetail } from '@/types/app.type';
-import { TopSection } from '@/app/components/TopSection';
 import { AppTrackTable } from '@/app/components/AppTrackTable';
 
 const fetchTop50 = async () => {
@@ -24,7 +23,7 @@ export default async function Home() {
   if (!data) return;
   return (
     <div className="mt-[50px] flex flex-col lg:gap-[50px]">
-      <TopSection />
+      {/*<TopSection />*/}
       <AppTrackTable data={data} total={total} />
     </div>
   );

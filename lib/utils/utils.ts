@@ -15,16 +15,25 @@ export function formatNumberWithSpacing(number: number) {
     .replace(/,/g, ' ');
 }
 
-export const formatNumber = (num: number | string, isNotPlus = false) => {
-  const numRender = Math.abs(+num);
+export const formatNumber = (num: number | string, isNotPlus = false): string => {
+  const parsedNum = Number(num);
+  if (isNaN(parsedNum)) return '0';
+
+  const numRender = Math.abs(parsedNum);
+  const suffix = isNotPlus ? '' : '+';
+  let formatted: string;
+
   if (numRender >= 1_000_000_000) {
-    return `${(numRender / 1_000_000_000).toFixed(2).replace('.', ',')}B${isNotPlus ? '' : '+'}`;
+    formatted = `${(numRender / 1_000_000_000).toFixed(numRender % 1_000_000_000 !== 0 ? 2 : 0)}B`;
   } else if (numRender >= 1_000_000) {
-    return `${(numRender / 1_000_000).toFixed(2).replace('.', ',')}M${isNotPlus ? '' : '+'}`;
+    formatted = `${(numRender / 1_000_000).toFixed(numRender % 1_000_000 !== 0 ? 2 : 0)}M`;
   } else if (numRender >= 1_000) {
-    return `${(numRender / 1_000).toFixed(2).replace('.', ',')}K${isNotPlus ? '' : '+'}`;
+    formatted = `${(numRender / 1_000).toFixed(numRender % 1_000 !== 0 ? 2 : 0)}K`;
+  } else {
+    formatted = numRender.toString();
   }
-  return numRender.toString();
+
+  return `${formatted}${suffix}`;
 };
 
 export const isAppTrackType = (item: AppTrack | AppDetail): item is AppTrack => {
