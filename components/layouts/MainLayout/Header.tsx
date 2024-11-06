@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { EnterIcon } from '@/components/icons';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { useState } from 'react';
-import { MenuIcon, SearchIcon } from 'lucide-react';
+import { MenuIcon, SearchIcon, User } from 'lucide-react';
 import { HomeMenu } from '@/components/layouts/MainLayout/HomeMenu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import Link from 'next/link';
@@ -66,7 +66,12 @@ export const Header = () => {
         {id ? (
           <DropdownMenu>
             <DropdownMenuTrigger>
-              <Button variant="ghost">{name}</Button>
+              <Button variant="ghost">
+                <p className="hidden md:block">{name}</p>
+                <div className="block md:hidden">
+                  <User />
+                </div>
+              </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>

@@ -131,11 +131,11 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
                       : ''
                   ).replace('@', ''),
                 )}
-                className="h-10 w-10 rounded-md bg-gradient-to-r from-[#24C6DCCC] to-[#514A9DCC] p-[1px]"
+                className="h-7 w-7 rounded-md bg-gradient-to-r from-[#24C6DCCC] to-[#514A9DCC] p-[1px] md:h-10 md:w-10"
                 alt={''}
                 loading="lazy"
               />
-              <p className="max-w-[90px] overflow-hidden overflow-ellipsis text-base font-semibold leading-none sm:max-w-full">
+              <p className="min-w-[100px] max-w-[100px] overflow-hidden overflow-ellipsis text-base font-semibold leading-none sm:max-w-full">
                 {nameRender}
               </p>
               <div className="hidden min-w-[40px] md:block">
