@@ -34,9 +34,9 @@ export const SearchHeaderPopover = ({ onClose }: SearchHeaderPopoverProps) => {
         <div className="flex flex-col gap-3">
           <TitleBox name="Recent search" />
           <div className="flex gap-3">
-            {['SEED', 'CATIA'].map((item) => (
-              <SelectedBtn key={item} name={item} />
-            ))}
+            {/*{['SEED', 'CATIA'].map((item) => (*/}
+            {/*  <SelectedBtn key={item} name={item} />*/}
+            {/*))}*/}
           </div>
         </div>
       </div>

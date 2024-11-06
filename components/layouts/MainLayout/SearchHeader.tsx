@@ -17,7 +17,7 @@ export const SearchHeader = ({ onClose }: SearchHeaderProps) => {
   const [debouncedValue, setValue] = useDebounceValue('', 500);
   const [loading, setLoading] = useState<boolean>(false);
   const [isFocus, setIsFocus] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement | null>(null);
 
   useClickOutside(ref, () => setIsFocus(false));
 

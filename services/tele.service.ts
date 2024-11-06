@@ -35,6 +35,10 @@ class TeleService extends HttpService {
       false,
     );
   }
+
+  async searchAppTrack(keyword: string) {
+    return await this.get<ResponseData<{ data: string[] }>>(`/app/search?value=${keyword}`);
+  }
 }
 
 export const teleService = new TeleService();

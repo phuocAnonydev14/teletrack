@@ -17,10 +17,11 @@ interface CharProps {
   chartConfig: ChartConfig;
   title: string;
   amount?: number;
+  isCompare?: boolean;
 }
 
 export function Chart(props: CharProps) {
-  const { chartData, chartConfig, title, amount } = props;
+  const { chartData, chartConfig, title, amount, isCompare } = props;
   const matches = useMediaQuery('(max-width: 728px)');
 
   const todayChange =
@@ -41,7 +42,7 @@ export function Chart(props: CharProps) {
       {/*</div>*/}
       <CardContent className="h-full overflow-hidden px-0 py-0">
         <div className="flex w-full justify-between px-6">
-          <div className="flex flex-col gap-2 md:hidden">
+          <div className={cn('flex flex-col gap-2 md:hidden', isCompare && 'hidden')}>
             <div className="flex justify-between gap-3">
               <p
                 className={cn('font-semibold', todayChange < 0 ? 'text-red-500' : 'text-green-500')}
@@ -64,7 +65,10 @@ export function Chart(props: CharProps) {
               <p className="font-medium text-gray-500">week</p>
             </div>
           </div>
-          <ChartContainer config={chartConfig} className="h-[120px] w-[70%] md:w-full lg:h-[300px]">
+          <ChartContainer
+            config={chartConfig}
+            className={cn('h-[120px] w-[70%] md:w-full lg:h-[300px]', isCompare && 'w-full')}
+          >
             <AreaChart
               accessibilityLayer
               data={chartData}
@@ -74,7 +78,7 @@ export function Chart(props: CharProps) {
               }}
               className="h-[300px] overflow-hidden"
             >
-              {!matches && (
+              {(!matches || isCompare) && (
                 <>
                   <CartesianGrid vertical={false} stroke="#B6B6B6" strokeDasharray={3} />
                   <XAxis
@@ -84,13 +88,14 @@ export function Chart(props: CharProps) {
                     tickMargin={8}
                     tickFormatter={(value) => value}
                   />
-                  <YAxis
-                    tickLine={false}
-                    axisLine={false}
-                    tickMargin={8}
-                    tickCount={3}
-                    tickFormatter={(val) => formatNumber(val)}
-                  />
+                  {!matches && (
+                    <YAxis
+                      tickLine={false}
+                      axisLine={false}
+                      tickCount={3}
+                      tickFormatter={(val) => formatNumber(val)}
+                    />
+                  )}
                 </>
               )}
               <ChartTooltip cursor={false} content={<ChartTooltipContent indicator={'dot'} />} />
