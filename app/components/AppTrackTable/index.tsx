@@ -41,14 +41,9 @@ interface AppTrackTableProps {
 export const getCommonPinningStyles = (column: Column<any>, status?: boolean): CSSProperties => {
   const isPinned = column.getIsPinned() || status;
   const isLastLeftPinnedColumn = status || (isPinned === 'left' && column.getIsLastColumn('left'));
-  const isFirstRightPinnedColumn = isPinned === 'right' && column.getIsFirstColumn('right');
 
   const res = {
-    boxShadow: isLastLeftPinnedColumn
-      ? '-4px 0 4px -4px gray inset'
-      : isFirstRightPinnedColumn
-        ? '4px 0 4px -4px gray inset'
-        : undefined,
+    boxShadow: isLastLeftPinnedColumn ? '-4px 0 4px -4px gray inset' : undefined,
     left: isPinned === 'left' ? `-2px` : undefined,
     position: isPinned ? 'sticky' : 'relative',
     width: column.getSize(),
@@ -111,9 +106,13 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
       accessorKey: 'username',
       header: 'Name',
       cell: ({ row, renderValue }) => {
+        const appTrack = row.original;
         const nameRender = (
-          isOfType<AppTrack>(row.original, ['username']) ? row.original.username : row.original.Name
+          isOfType<AppTrack>(appTrack, ['username']) ? appTrack.username : appTrack.Name
         ).replace('@', '');
+        const rankRender = isOfType<AppTrack>(appTrack, ['rank'])
+          ? appTrack.rank
+          : appTrack?.Order || 0;
         return (
           <div className="flex min-w-max items-center gap-2">
             {matches && <BookmarkTooltip isBookmarked={false} />}
@@ -121,20 +120,27 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
               href={`/apps/${(isOfType<AppTrack>(row.original, ['username']) ? nameRender : row.original?.Bot?.username).replace('@', '')}`}
               className="flex min-w-max items-center gap-2"
             >
-              <img
-                src={getLogoUrl(
-                  (isOfType<AppTrack>(row.original, ['username'])
-                    ? nameRender
-                    : // eslint-disable-next-line no-unsafe-optional-chaining
-                      'Bot' in row.original
-                      ? row.original?.Bot?.username
-                      : ''
-                  ).replace('@', ''),
+              <div className="relative">
+                <img
+                  src={getLogoUrl(
+                    (isOfType<AppTrack>(row.original, ['username'])
+                      ? nameRender
+                      : // eslint-disable-next-line no-unsafe-optional-chaining
+                        'Bot' in row.original
+                        ? row.original?.Bot?.username
+                        : ''
+                    ).replace('@', ''),
+                  )}
+                  className="h-7 w-7 rounded-md bg-gradient-to-r from-[#24C6DCCC] to-[#514A9DCC] p-[1px] md:h-10 md:w-10"
+                  alt={''}
+                  loading="lazy"
+                />
+                {matches && (
+                  <div className="absolute -top-2 left-1/3 z-40 -translate-x-1/2 rounded-[5px] bg-secondary px-1 text-[12px] font-medium text-secondary-foreground opacity-90 backdrop-blur-[26px]">
+                    {rankRender}
+                  </div>
                 )}
-                className="h-7 w-7 rounded-md bg-gradient-to-r from-[#24C6DCCC] to-[#514A9DCC] p-[1px] md:h-10 md:w-10"
-                alt={''}
-                loading="lazy"
-              />
+              </div>
               <p className="min-w-[100px] max-w-[100px] overflow-hidden overflow-ellipsis text-base font-semibold leading-none sm:min-w-fit sm:max-w-full">
                 {nameRender}
               </p>

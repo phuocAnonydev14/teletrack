@@ -31,7 +31,7 @@ export const SearchHeaderPopover = ({ onClose }: SearchHeaderPopoverProps) => {
           </div>
         </div>
         <div className="flex flex-col gap-3">
-          <TitleBox name="Recent search" />
+          {/*<TitleBox name="Recent search" />*/}
           <div className="flex gap-3">
             {/*{['SEED', 'CATIA'].map((item) => (*/}
             {/*  <SelectedBtn key={item} name={item} />*/}
@@ -46,7 +46,7 @@ export const SearchHeaderPopover = ({ onClose }: SearchHeaderPopoverProps) => {
 const TitleBox = ({ name }: { name: string }) => {
   return (
     <div className="w-max rounded-xl bg-[#BEFCFF] px-3 py-2">
-      <p className="text-linear my-0 text-lg font-extrabold md:text-xl">{name}</p>
+      <p className="text-linear my-0 text-lg font-extrabold">{name}</p>
     </div>
   );
 };
@@ -63,13 +63,13 @@ const AppSearchBox = ({ onClose }: Pick<SearchHeaderPopoverProps, 'onClose'>) =>
               alt="logo"
             />
           </div>
-          <p className="text-lg font-bold md:text-xl">Hamster Kombat</p>
-          <p className="font-semibold md:text-[15px]">HMSTR</p>
-          <p className="font-semibold md:text-[15px]">#161</p>
+          <p className="text-lg font-bold">Hamster Kombat</p>
+          <p className="font-semibold">HMSTR</p>
+          <p className="font-semibold">#161</p>
         </div>
         <div className="hidden items-center gap-4 lg:flex">
-          <p className="text-lg font-semibold md:text-xl">$0.0045678</p>
-          <p className="flex items-center gap-1 text-lg font-semibold text-[#1DC467] md:text-xl">
+          <p className="text-lg font-semibold">$0.0045678</p>
+          <p className="flex items-center gap-1 text-lg font-semibold text-[#1DC467]">
             <ArrowUpIcon color="#1DC467" />
             5.52%
           </p>

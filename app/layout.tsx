@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${catamaranFont.className}`}>
+      <body className={`${catamaranFont.className} scrollbar`}>
         <Suspense>
           <AppProviders>
             <MainLayout>{children}</MainLayout>
