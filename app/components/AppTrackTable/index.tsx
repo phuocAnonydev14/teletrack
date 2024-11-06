@@ -159,7 +159,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
       accessorKey: 'users',
       header: ({ column }) => {
         return (
-          <div className="w-full text-left">
+          <div className="w-full text-end">
             <p>MAU</p>
           </div>
         );
@@ -171,9 +171,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
             ? row.original?.Bot?.users
             : '';
         return (
-          <div>
-            <p className="text-base font-medium">{formatNumber(mauRender, true)}</p>
-          </div>
+          <p className="w-full text-end text-base font-medium">{formatNumber(mauRender, true)}</p>
         );
       },
       sortingFn: (rowA, rowB, columnId) => {
@@ -190,7 +188,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
       accessorKey: 'change',
       header: ({ column }) => {
         return (
-          <div className="flex items-center gap-1">
+          <div className="flex w-full items-center justify-end gap-1">
             <p>MAU 24h</p>
           </div>
         );
@@ -204,7 +202,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
         return (
           <p
             className={cn(
-              'text-base font-medium text-[#1DC467]',
+              'w-full text-end text-base font-medium text-[#1DC467]',
               changeRender < 0 && 'text-[#F84A4A]',
             )}
           >
@@ -225,14 +223,16 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
     {
       id: 'totalSub',
       accessorKey: 'totalSub',
-      header: 'Channel Subscribers',
+      header: () => <p className="w-full text-end">Channel Subscribers</p>,
       cell: ({ row, renderValue }) => {
         const totalSubRender = isOfType<AppTrack>(row.original, ['users'])
           ? row.original.users
           : 'Channel' in row.original
             ? row.original?.Channel?.users
             : 0;
-        return <p className="text-base font-medium">{formatNumber(totalSubRender, true)}</p>;
+        return (
+          <p className="text-end text-base font-medium">{formatNumber(totalSubRender, true)}</p>
+        );
       },
       sortingFn: (rowA, rowB, columnId) => {
         const appA = rowA.original;
@@ -248,7 +248,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
     {
       id: 'daySub',
       accessorKey: 'daySub',
-      header: 'Channel Today',
+      header: () => <p className="w-full text-end">Channel Today</p>,
       cell: ({ row, renderValue }) => {
         const changeRender = isOfType<AppTrack>(row.original, ['change'])
           ? row.original.change
@@ -258,7 +258,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
         return (
           <p
             className={cn(
-              'text-base font-medium text-[#1DC467]',
+              'w-full text-end text-base font-medium text-[#1DC467]',
               changeRender < 0 && 'text-[#F84A4A]',
             )}
           >
@@ -281,14 +281,14 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
     {
       id: 'fdv',
       accessorKey: 'fdv',
-      header: 'FDV',
+      header: () => <p className="w-full text-end">FDV</p>,
       cell: ({ row, renderValue }) => {
         const fdvRender = isOfType<AppTrack>(row.original, ['rank'])
           ? 'N/A'
           : 'FDV' in row.original
             ? formatNumber(row.original?.FDV, true)
             : 0;
-        return <p className="text-base font-medium">${fdvRender}</p>;
+        return <p className="w-full text-end text-base font-medium">${fdvRender}</p>;
       },
     },
   ];
