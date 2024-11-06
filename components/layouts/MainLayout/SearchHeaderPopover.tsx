@@ -4,7 +4,6 @@ import { PropsWithChildren } from 'react';
 import { Card } from '@/components/ui/card';
 import { ArrowUpIcon } from '@/components/icons';
 import Link from 'next/link';
-import { SelectedBtn } from '@/app/compare/components/SelectApp';
 
 interface SearchHeaderPopoverProps extends PropsWithChildren {
   val: string;

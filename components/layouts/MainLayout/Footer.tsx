@@ -10,13 +10,13 @@ export const Footer = () => {
         </Link>
         <div className="flex flex-col justify-start gap-x-10 gap-y-2 md:flex-row md:items-center">
           <Link href={'/compare'}>
-            <p className="text-xl font-semibold">Compare</p>
+            <p className="text-lg font-semibold">Compare</p>
           </Link>
           <Link href={'/watchlist'}>
-            <p className="text-xl font-semibold">Watchlist</p>
+            <p className="text-lg font-semibold">Watchlist</p>
           </Link>
           <Link href={'/submit-app'}>
-            <p className="text-xl font-semibold">Submit App</p>
+            <p className="text-lg font-semibold">Submit App</p>
           </Link>
         </div>
       </div>

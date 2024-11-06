@@ -44,7 +44,7 @@ export const SelectApp = (props: SelectAppProps) => {
   }, [debouncedValue]);
 
   return (
-    <div className="flex flex-col gap-6 rounded-xl bg-homeMenuBg px-[50px] py-10">
+    <div className="flex flex-col gap-6 rounded-xl bg-homeMenuBg px-5 py-10 md:px-[50px]">
       <div className="relative" ref={ref}>
         <div className="absolute left-3 top-1/2 -translate-y-1/2 text-[#0F0F0F]">
           {loading ? <LoadingIcon /> : <Search size={20} />}
@@ -70,6 +70,7 @@ export const SelectApp = (props: SelectAppProps) => {
         )}
         {isFocus && debouncedValue && (
           <SearchPopover
+            onClose={() => setIsFocus(false)}
             results={results}
             searchData={searchData}
             val={debouncedValue}

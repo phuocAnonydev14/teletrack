@@ -3,18 +3,20 @@
 import { PropsWithChildren } from 'react';
 import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils/utils';
+import { toast } from 'sonner';
 
 interface SearchPopoverProps extends PropsWithChildren {
   val: string;
   searchData: string[];
   results: string[];
   setResults: (val: string[]) => void;
+  onClose: () => void;
 }
 
 export const SearchPopover = (props: SearchPopoverProps) => {
-  const { searchData, val, setResults, results } = props;
+  const { searchData, val, setResults, results, onClose } = props;
   return (
-    <Card className="absolute left-0 top-[50px] z-40 max-h-[70dvh] min-h-20 w-full overflow-auto rounded-lg p-4">
+    <Card className="absolute left-0 top-[50px] z-40 max-h-[50dvh] min-h-20 w-full overflow-auto rounded-lg p-4">
       {searchData.length === 0 && (
         <>
           <p className="text-center font-semibold">No app found</p>
@@ -32,11 +34,13 @@ export const SearchPopover = (props: SearchPopoverProps) => {
                   isSelected && 'bg-gray-300',
                 )}
                 onClick={() => {
-                  if (isSelected) {
-                    setResults(results.filter((r) => r !== app));
+                  if (results.length >= 5) {
+                    toast.error("You can't select more than 5 apps");
                     return;
                   }
-                  setResults([...results, app]);
+                  if (isSelected) setResults(results.filter((r) => r !== app));
+                  else setResults([...results, app]);
+                  onClose();
                 }}
               >
                 <p>{app.replace('@', '')}</p>
