@@ -36,6 +36,7 @@ export const CommonTable = (props: CommonTableProps) => {
                   className={cn(
                     'min-w-[120px] border-2 border-tableBorder bg-[#3A485680] px-3 py-3 text-base font-semibold text-primary-foreground',
                     !isDark && 'bg-[#CCD8DA]',
+                    header.column.getIsSorted() && 'min-w-[130px]',
                   )}
                   style={
                     matches

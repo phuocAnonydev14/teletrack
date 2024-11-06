@@ -159,7 +159,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
       accessorKey: 'users',
       header: ({ column }) => {
         return (
-          <div className="w-full text-end">
+          <div className="w-full text-center">
             <p>MAU</p>
           </div>
         );
@@ -188,7 +188,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
       accessorKey: 'change',
       header: ({ column }) => {
         return (
-          <div className="flex w-full items-center justify-end gap-1">
+          <div className="w-full gap-1 text-center">
             <p>MAU 24h</p>
           </div>
         );
@@ -223,7 +223,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
     {
       id: 'totalSub',
       accessorKey: 'totalSub',
-      header: () => <p className="w-full text-end">Channel Subscribers</p>,
+      header: () => <p className="w-full text-center">Channel Subscribers</p>,
       cell: ({ row, renderValue }) => {
         const totalSubRender = isOfType<AppTrack>(row.original, ['users'])
           ? row.original.users
@@ -248,7 +248,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
     {
       id: 'daySub',
       accessorKey: 'daySub',
-      header: () => <p className="w-full text-end">Channel Today</p>,
+      header: () => <p className="w-full text-center">Channel Today</p>,
       cell: ({ row, renderValue }) => {
         const changeRender = isOfType<AppTrack>(row.original, ['change'])
           ? row.original.change
@@ -281,7 +281,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
     {
       id: 'fdv',
       accessorKey: 'fdv',
-      header: () => <p className="w-full text-end">FDV</p>,
+      header: () => <p className="w-full text-center">FDV</p>,
       cell: ({ row, renderValue }) => {
         const fdvRender = isOfType<AppTrack>(row.original, ['rank'])
           ? 'N/A'

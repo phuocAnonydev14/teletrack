@@ -8,7 +8,7 @@ export const SortBox = ({ column }: { column: any }) => {
 
   return (
     <div>
-      <div className="flex flex-col items-center justify-center">
+      <div className="absolute right-1 top-1/2 flex -translate-y-1/2 flex-col items-center justify-center">
         <ArrowUpIcon
           key={'arrow-up'}
           id="arrow-up"
