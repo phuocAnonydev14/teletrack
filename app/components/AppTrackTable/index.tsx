@@ -135,7 +135,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
                 alt={''}
                 loading="lazy"
               />
-              <p className="min-w-[100px] max-w-[100px] overflow-hidden overflow-ellipsis text-base font-semibold leading-none sm:max-w-full">
+              <p className="min-w-[100px] max-w-[100px] overflow-hidden overflow-ellipsis text-base font-semibold leading-none sm:min-w-fit sm:max-w-full">
                 {nameRender}
               </p>
               <div className="hidden min-w-[40px] md:block">
