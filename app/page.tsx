@@ -22,7 +22,7 @@ export default async function Home() {
 
   if (!data) return;
   return (
-    <div className="mt-[50px] flex flex-col lg:gap-[50px]">
+    <div className="flex flex-col lg:gap-[50px]">
       {/*<TopSection />*/}
       <AppTrackTable data={data} total={total} />
     </div>

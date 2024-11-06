@@ -18,7 +18,7 @@ export const CommonTable = (props: CommonTableProps) => {
   const { table, children } = props;
   const { theme } = useTheme();
   const isDark = theme === 'dark';
-  const matches = useMediaQuery(`(max-width: 728px)`);
+  const matches = useMediaQuery(`(max-width: 1024px)`);
 
   return (
     <Table className="border-collapse bg-[#3A485680]">
@@ -34,7 +34,7 @@ export const CommonTable = (props: CommonTableProps) => {
                 <TableHead
                   key={header.id}
                   className={cn(
-                    'min-w-[120px] border-4 border-tableBorder bg-[#3A485680] px-3 py-3 text-base font-bold text-primary-foreground',
+                    'min-w-[120px] border-2 border-tableBorder bg-[#3A485680] px-3 py-3 text-base font-semibold text-primary-foreground',
                     !isDark && 'bg-[#CCD8DA]',
                   )}
                   style={

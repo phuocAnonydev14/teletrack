@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`antialiased ${catamaranFont.className}`}>
+      <body className={`${catamaranFont.className}`}>
         <Suspense>
           <AppProviders>
             <MainLayout>{children}</MainLayout>

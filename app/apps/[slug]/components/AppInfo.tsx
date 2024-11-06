@@ -76,15 +76,15 @@ export const AppInfo = (props: AppInfoProps) => {
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-3">
-            <div className="flex items-center gap-[5px] rounded-xl bg-[#CCD8DA] px-3 py-[5px]">
-              <BookMarkIcon fill="hsl(var(--app-info-button))" /> 2.2M
+            <div className="flex items-center gap-[5px] rounded-xl bg-[#CCD8DA] px-3 py-1">
+              <BookMarkIcon fill="hsl(var(--app-info-button))" width={18} height={18} /> 2.2M
             </div>
             <Button
               size="sm"
               className="flex gap-1 font-semibold text-appInfoButton"
               variant="outline"
             >
-              <PlusIcon fill="hsl(var(--app-info-button))" /> Add To Watchlist
+              <PlusIcon fill="hsl(var(--app-info-button))" size={18} /> Add To Watchlist
             </Button>
           </div>
         </div>

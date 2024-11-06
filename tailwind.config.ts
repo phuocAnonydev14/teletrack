@@ -63,6 +63,7 @@ const config: Config = {
         appInfoButton: 'hsl(var(--app-info-button))',
         analysisBg: 'hsl(var(--analysis-bg))',
         analysisForeground: 'hsl(var(--analysis-foreground))',
+        tooltipBg: 'hsla(var(--tooltip-bg))',
       },
       borderRadius: {
         lg: 'var(--radius)',

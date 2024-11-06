@@ -8,6 +8,7 @@ import ArrowDown from '@/components/assets/table/arrow-down.png';
 import Image from 'next/image';
 import { cn } from '@/lib/utils/utils';
 import { teleService } from '@/services/tele.service';
+import { useTheme } from 'next-themes';
 
 interface AppTrackTableRankProps {
   isGlobalRank: boolean;
@@ -29,23 +30,12 @@ export const AppTrackTableRank = (props: AppTrackTableRankProps) => {
   return (
     <div className="relative flex min-w-[100px] items-center justify-center gap-2 overflow-visible">
       <div
-        className="absolute left-2 top-1/2 -translate-y-1/3 md:left-3"
+        className="absolute left-1 top-1/2 -translate-y-1/3 md:left-1"
         onClick={handleToggleWatchList}
       >
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <BookMarkIcon isBookmarked={isBookmarked} />
-            </TooltipTrigger>
-            <TooltipContent className="bg-[#BEFCFF4D] font-medium text-[#BEFCFF] backdrop-blur-3xl">
-              <p>Add to watchlist</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <BookmarkTooltip isBookmarked={isBookmarked} />
       </div>
-      <div className="rounded-[5px] bg-secondary px-[10px] py-[5px] text-base font-bold text-secondary-foreground">
-        # {rank}
-      </div>
+      <div className="px-[5px] py-[5px] text-base font-bold">{rank}</div>
 
       {isGlobalRank && rankChange !== 0 && (
         <div className="absolute -right-3 flex items-center gap-1">
@@ -64,5 +54,28 @@ export const AppTrackTableRank = (props: AppTrackTableRankProps) => {
         </div>
       )}
     </div>
+  );
+};
+
+export const BookmarkTooltip = ({ isBookmarked }: { isBookmarked: boolean }) => {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
+
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger>
+          <BookMarkIcon isBookmarked={isBookmarked} />
+        </TooltipTrigger>
+        <TooltipContent
+          className={cn(
+            'bg-[#BEFCFF4D] font-medium text-[#BEFCFF] backdrop-blur-3xl',
+            !isDark && 'bg-[#befcffb3] text-[#27ACD2]',
+          )}
+        >
+          <p>Add to watchlist</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };
