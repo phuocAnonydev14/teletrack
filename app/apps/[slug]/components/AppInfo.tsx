@@ -60,7 +60,7 @@ export const AppInfo = (props: AppInfoProps) => {
               {appDetail.Name} {matches ? <BadgeIcon width="20" height="20" /> : <BadgeIcon />}
             </p>
             {/*<p>{appDetail.}</p>*/}
-            <div className="flex flex-wrap gap-5">
+            <div className="flex flex-wrap gap-3">
               <Link
                 href={`https://t.me/${appDetail.Bot.username.replace('@', '')}`}
                 target="_blank"
@@ -76,7 +76,7 @@ export const AppInfo = (props: AppInfoProps) => {
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-3">
-            <div className="flex items-center gap-[5px] rounded-xl bg-[#CCD8DA] px-3 py-1">
+            <div className="flex items-center gap-[5px] rounded-xl bg-[#CCD8DA] px-3 py-1 text-black">
               <BookMarkIcon fill="hsl(var(--app-info-button))" width={18} height={18} /> 2.2M
             </div>
             <Button

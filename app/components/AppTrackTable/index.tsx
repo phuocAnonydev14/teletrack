@@ -136,7 +136,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
                   loading="lazy"
                 />
                 {matches && (
-                  <div className="absolute -top-2 left-1/2 z-40 -translate-x-1/2 rounded-[5px] bg-secondary px-1 text-[12px] font-medium text-secondary-foreground opacity-90 backdrop-blur-[26px]">
+                  <div className="absolute -top-2 left-1/2 z-40 -translate-x-1/2 rounded-[5px] bg-secondary px-1 text-[12px] font-medium text-secondary-foreground opacity-80 backdrop-blur-[26px]">
                     {rankRender}
                   </div>
                 )}

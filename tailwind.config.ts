@@ -65,6 +65,10 @@ const config: Config = {
         analysisForeground: 'hsl(var(--analysis-foreground))',
         tooltipBg: 'hsla(var(--tooltip-bg))',
       },
+      backgroundImage: {
+        btnPrimary: 'var(--btn-primary)',
+        btnPrimaryHover: 'var(--btn-primary-hover)',
+      },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',

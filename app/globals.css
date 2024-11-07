@@ -52,6 +52,8 @@
     --analysis-bg: 190 12% 91%;
     --analysis-foreground: 188 100% 32%;
     --tooltip-bg: 183 100% 87% 0.7;
+    --btn-primary:  linear-gradient(95.22deg, #24C6DC -27.75%, #24C6DC 124.99%);
+    --btn-primary-hover:  linear-gradient(95.22deg, #3ad3e5 -27.75%, #36cadc 124.99%);
   }
   .dark {
     --background: 0 0% 3.9%;
@@ -94,6 +96,8 @@
     --analysis-bg: 210 20% 16%;
     --analysis-foreground: 192 100% 82%;
     --tooltip-bg: 183 100% 87% 0.3;
+    --btn-primary: linear-gradient(95.22deg, #24C6DC -27.75%, #005C85 124.99%);
+    --btn-primary-hover:  linear-gradient(95.22deg, #13b6c7 -27.75%, #14a4b5 124.99%);
    }
 }
 

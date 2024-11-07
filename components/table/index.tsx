@@ -16,8 +16,8 @@ interface CommonTableProps extends PropsWithChildren {
 
 export const CommonTable = (props: CommonTableProps) => {
   const { table, children } = props;
-  const { theme } = useTheme();
-  const isDark = theme === 'dark';
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
   const matches = useMediaQuery(`(max-width: 1024px)`);
 
   return (
