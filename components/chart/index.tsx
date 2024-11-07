@@ -36,13 +36,9 @@ export function Chart(props: CharProps) {
         </div>
         <p className="text-lg font-bold lg:text-2xl">{amount && formatNumberWithSpacing(amount)}</p>
       </div>
-      {/*<div className="flex items-center gap-1">*/}
-      {/*  <Input type="radio" checked />*/}
-      {/*  Daily*/}
-      {/*</div>*/}
       <CardContent className="h-full overflow-hidden px-0 py-0">
         <div className="flex w-full justify-between px-6">
-          <div className={cn('flex flex-col gap-2 md:hidden', isCompare && 'hidden')}>
+          <div className={cn('flex flex-col gap-2 md:hidden', isCompare ? 'hidden' : '')}>
             <div className="flex justify-between gap-3">
               <p
                 className={cn('font-semibold', todayChange < 0 ? 'text-red-500' : 'text-green-500')}
@@ -67,7 +63,7 @@ export function Chart(props: CharProps) {
           </div>
           <ChartContainer
             config={chartConfig}
-            className={cn('h-[120px] w-[70%] md:w-full lg:h-[300px]', isCompare && 'w-full')}
+            className={cn('h-[120px] w-[70%] md:w-full lg:h-[300px]', isCompare ? 'w-full' : '')}
           >
             <AreaChart
               accessibilityLayer
@@ -126,7 +122,7 @@ export function Chart(props: CharProps) {
                     fill={`url(#${key})`}
                     fillOpacity={0.4}
                     stroke={`hsl(var(--chart-${index + 1}))`}
-                    stackId="a"
+                    stackId={key}
                   />
                 );
               })}

@@ -42,7 +42,7 @@ function transformData(
 function getFormattedKeys(keys: string[]): LabelObject {
   const result: LabelObject = {};
   keys.forEach((key) => {
-    result[key] = { label: key }; // Chuyển key thành chữ in hoa
+    result[key] = { label: key };
   });
   return result;
 }
@@ -51,6 +51,7 @@ export default function ComparePage() {
   const [results, setResults] = useState<string[]>([]);
   const [appList, setAppList] = useState<(AppHistory & { username: string })[]>([]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleFetchChartData = async () => {
     try {
       let overflowResult = '';
@@ -74,18 +75,37 @@ export default function ComparePage() {
   };
 
   useEffect(() => {
-    handleFetchChartData();
-  }, [results]);
+    handleFetchChartData().finally();
+  }, [handleFetchChartData, results]);
 
-  useEffect(() => {}, [appList]);
-
+  const chartConfig = useMemo(
+    () => getFormattedKeys([...appList.map((app) => app.username.replace('@', ''))]),
+    [appList],
+  );
   const botMetrics = useMemo(() => transformData(appList, 'Bot'), [appList]);
   const channelMetrics = useMemo(() => transformData(appList, 'Channel'), [appList]);
-  const chartConfig = getFormattedKeys([...appList.map((app) => app.username.replace('@', ''))]);
 
   return (
     <div className="flex flex-col gap-5">
       <SelectApp setResults={(val) => setResults(val)} results={results} />
+      <div className="flex items-center gap-3">
+        {...appList
+          .map((app) => app.username.replace('@', ''))
+          .map((app, index) => {
+            const indexColor = index + 1;
+
+            return (
+              <div key={app} className="flex items-center gap-1">
+                <div
+                  className={`h-6 w-6 rounded-sm border-2 border-black`}
+                  style={{ backgroundColor: `hsl(var(--chart-${indexColor}))` }}
+                />
+                <p>{app}</p>
+              </div>
+            );
+          })}
+      </div>
+
       {results.length > 0 && (
         <div className="flex flex-col gap-5">
           <Chart isCompare chartConfig={chartConfig} chartData={botMetrics} title="USERS" />

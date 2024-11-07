@@ -17,7 +17,7 @@ export function formatNumberWithSpacing(number: number) {
 
 export const formatNumber = (num: number | string, isNotPlus = false): string => {
   const parsedNum = Number(num);
-  if (isNaN(parsedNum)) return '0';
+  if (isNaN(parsedNum) || !parsedNum) return '0';
 
   const numRender = Math.abs(parsedNum);
   const suffix = isNotPlus ? '' : '+';
