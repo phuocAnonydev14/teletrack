@@ -88,12 +88,11 @@ export default function ComparePage() {
   return (
     <div className="flex flex-col gap-5">
       <SelectApp setResults={(val) => setResults(val)} results={results} />
-      <div className="flex items-center gap-3">
+      <div className="flex flex-wrap items-center gap-3">
         {...appList
           .map((app) => app.username.replace('@', ''))
           .map((app, index) => {
             const indexColor = index + 1;
-
             return (
               <div key={app} className="flex items-center gap-1">
                 <div

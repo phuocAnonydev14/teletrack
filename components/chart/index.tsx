@@ -26,7 +26,10 @@ export function Chart(props: CharProps) {
 
   const todayChange =
     chartData[chartData.length - 1]?.amount - chartData[chartData.length - 2]?.amount;
-  const { difference } = calculateWeekDifference(chartData);
+  const { difference, previousWeekSum, lastWeekSum } = calculateWeekDifference(chartData);
+  if (title === 'USERS') {
+    console.log(previousWeekSum, lastWeekSum);
+  }
 
   return (
     <Card className="flex flex-col gap-5 rounded-xl bg-appInfoBg py-6 lg:gap-10">
