@@ -114,7 +114,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
           ? appTrack.rank
           : appTrack?.Order || 0;
         return (
-          <div className="relative flex min-w-max items-center gap-2 pr-2">
+          <div className="flex min-w-max items-center gap-2 overflow-hidden pr-5">
             {matches && (
               <BookmarkTooltip
                 username={
@@ -143,12 +143,12 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
                 alt={''}
                 loading="lazy"
               />
-              {matches && (
-                <div className="absolute -right-[7px] -top-2 z-40 rounded-[3px] bg-rankTagBg px-3 text-[12px] font-medium text-secondary-foreground opacity-80 backdrop-blur-[26px]">
-                  {rankRender}
-                </div>
-              )}
-              <p className="min-w-[100px] max-w-[100px] overflow-hidden overflow-ellipsis text-base font-semibold leading-none sm:min-w-fit sm:max-w-full">
+              {/*{matches && (*/}
+              {/*  <div className="absolute right-1 top-1 z-40 rounded-[3px] bg-rankTagBg px-[10px] text-[12px] font-medium text-secondary-foreground opacity-80 backdrop-blur-[26px]">*/}
+              {/*    {rankRender}*/}
+              {/*  </div>*/}
+              {/*)}*/}
+              <p className="min-w-[100px] max-w-[100px] overflow-hidden truncate overflow-ellipsis whitespace-nowrap text-base font-semibold leading-none sm:min-w-fit sm:max-w-full">
                 {nameRender}
               </p>
               <div className="hidden min-w-[40px] md:block">
@@ -184,7 +184,9 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
             ? row.original?.Bot?.users
             : '';
         return (
-          <p className="w-full text-end text-base font-medium">{formatNumber(mauRender, true)}</p>
+          <p className="w-full text-end text-base font-medium xl:text-center">
+            {formatNumber(mauRender, true)}
+          </p>
         );
       },
       sortingFn: (rowA, rowB, columnId) => {
@@ -215,7 +217,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
         return (
           <p
             className={cn(
-              'w-full text-end text-base font-medium text-[#1DC467]',
+              'w-full text-end text-base font-medium text-[#1DC467] xl:text-center',
               changeRender < 0 && 'text-[#F84A4A]',
             )}
           >
@@ -244,7 +246,9 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
             ? row.original?.Channel?.users
             : 0;
         return (
-          <p className="text-end text-base font-medium">{formatNumber(totalSubRender, true)}</p>
+          <p className="text-end text-base font-medium xl:text-center">
+            {formatNumber(totalSubRender, true)}
+          </p>
         );
       },
       sortingFn: (rowA, rowB, columnId) => {
@@ -271,7 +275,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
         return (
           <p
             className={cn(
-              'w-full text-end text-base font-medium text-[#1DC467]',
+              'w-full text-end text-base font-medium text-[#1DC467] xl:text-center',
               changeRender < 0 && 'text-[#F84A4A]',
             )}
           >
@@ -301,7 +305,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
           : 'FDV' in row.original
             ? formatNumber(row.original?.FDV, true)
             : 0;
-        return <p className="w-full text-end text-base font-medium">${fdvRender}</p>;
+        return <p className="w-full text-end text-base font-medium xl:text-center">${fdvRender}</p>;
       },
     },
   ];
@@ -410,7 +414,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
                 <TableCell
                   key={cell.id}
                   className={cn(
-                    'border-2 border-tableBorder px-3 py-3',
+                    'relative overflow-hidden border-2 border-tableBorder px-3 py-3',
                     index % 2 === 0 ? 'bg-tableRowEven' : 'bg-tableRowOdd',
                   )}
                   style={matches ? { ...getCommonPinningStyles(cell.column) } : {}}
