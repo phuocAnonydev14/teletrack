@@ -23,7 +23,7 @@ interface CharProps {
 export function Chart(props: CharProps) {
   const { chartData, chartConfig, title, amount, isCompare } = props;
   const matches = useMediaQuery('(max-width: 728px)');
-  const matchExtraSmall = useMediaQuery('(max-width: 345px)');
+  const matchExtraSmall = useMediaQuery('(max-width: 400px)');
   const todayChange =
     chartData[chartData.length - 1]?.amount - chartData[chartData.length - 2]?.amount;
   const { difference } = calculateWeekDifference(chartData);
@@ -41,6 +41,7 @@ export function Chart(props: CharProps) {
           className={cn(
             'flex w-full justify-between gap-y-2 pl-6 pr-2',
             matchExtraSmall ? 'flex-col' : '',
+            isCompare ? 'pl-0' : '',
           )}
         >
           <div className={cn('flex w-[15%] flex-col gap-2', isCompare ? 'hidden' : '')}>
@@ -96,7 +97,6 @@ export function Chart(props: CharProps) {
                     <YAxis
                       tickLine={false}
                       axisLine={false}
-                      tickCount={3}
                       tickFormatter={(val) => formatNumber(val)}
                     />
                   )}

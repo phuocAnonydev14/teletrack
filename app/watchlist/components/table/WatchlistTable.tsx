@@ -1,6 +1,6 @@
 'use client';
 
-import { AppTrack, AppWatch } from '@/types/app.type';
+import { AppWatch } from '@/types/app.type';
 import {
   ColumnDef,
   getCoreRowModel,
@@ -44,7 +44,7 @@ export const WatchlistTable = (props: AppTrackTableProps) => {
   const columns: ColumnDef<AppWatch>[] = [
     {
       accessorKey: 'rank',
-      header: () => <div className="w-full text-center">{'No.'}</div>,
+      header: () => <div className="w-full text-center">{'Rank'}</div>,
       cell: ({ row, renderValue }) => {
         return (
           <AppTrackTableRank

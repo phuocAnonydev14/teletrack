@@ -73,7 +73,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
       id: 'rank',
       accessorKey: 'rank',
       header: () => (
-        <div className="w-full text-center">{selectedCate ? 'Global Rank' : 'No.'}</div>
+        <div className="w-full text-center">{selectedCate ? 'Global Rank' : 'Rank'}</div>
       ),
       cell: ({ row, renderValue }) => {
         const appTrack = row.original;

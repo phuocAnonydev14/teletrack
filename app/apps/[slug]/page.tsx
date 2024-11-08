@@ -1,6 +1,10 @@
+'use client';
+
 import { AppInfo } from '@/app/apps/[slug]/components/AppInfo';
 import { AppDetailChart } from '@/app/apps/[slug]/components/AppDetailChart';
 import { teleService } from '@/services/tele.service';
+import { useEffect, useState } from 'react';
+import { AppDetail } from '@/types/app.type';
 
 const fetchAppDetail = async (username: string) => {
   try {
@@ -10,9 +14,18 @@ const fetchAppDetail = async (username: string) => {
   }
 };
 
-export default async function AppDetailPage({ params }: { params: { slug: string } }) {
+export default function AppDetailPage({ params }: { params: { slug: string } }) {
   const { slug } = params;
-  const { data } = await fetchAppDetail(slug);
+  const [data, setData] = useState<AppDetail | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await fetchAppDetail(slug);
+      setData(data);
+    })();
+  }, []);
+
+  console.log('dâata', data);
 
   if (!data) return;
   return (
