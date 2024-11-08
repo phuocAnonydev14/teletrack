@@ -11,7 +11,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import Link from 'next/link';
 import { ThemeSwitch } from '@/components/common/ThemeSwitch';
 import { Logo } from '@/components/layouts/MainLayout/Logo';
-import { LoginModal } from '@/components/layouts/MainLayout/LoginModal';
+import { LoginModal } from '@/components/auth/LoginModal';
 import { useAuthContext } from '@/components/providers/AuthProvider';
 import {
   DropdownMenu,

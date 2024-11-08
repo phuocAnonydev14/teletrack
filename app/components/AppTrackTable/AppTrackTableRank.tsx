@@ -9,6 +9,7 @@ import Image from 'next/image';
 import { cn } from '@/lib/utils/utils';
 import { teleService } from '@/services/tele.service';
 import { useTheme } from 'next-themes';
+import { useAuthContext } from '@/components/providers/AuthProvider';
 
 interface AppTrackTableRankProps {
   isGlobalRank: boolean;
@@ -33,7 +34,7 @@ export const AppTrackTableRank = (props: AppTrackTableRankProps) => {
         className="absolute left-1 top-1/2 -translate-y-1/3 md:left-1"
         onClick={handleToggleWatchList}
       >
-        <BookmarkTooltip isBookmarked={isBookmarked} />
+        <BookmarkTooltip username={username} isBookmarked={isBookmarked} />
       </div>
       <div className="px-[5px] py-[5px] text-base font-bold">{rank}</div>
 
@@ -57,15 +58,27 @@ export const AppTrackTableRank = (props: AppTrackTableRankProps) => {
   );
 };
 
-export const BookmarkTooltip = ({ isBookmarked }: { isBookmarked: boolean }) => {
+export const BookmarkTooltip = ({
+  isBookmarked,
+  username,
+}: {
+  isBookmarked: boolean;
+  username: string;
+}) => {
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === 'dark';
-
+  const { withAuth } = useAuthContext();
+  const handleToggleWatchList = async () => {
+    await teleService.addWatchList(username.replace('@', ''));
+  };
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger>
-          <BookMarkIcon isBookmarked={isBookmarked} />
+          <BookMarkIcon
+            isBookmarked={isBookmarked}
+            onClick={() => withAuth(handleToggleWatchList)}
+          />
         </TooltipTrigger>
         <TooltipContent
           className={cn(

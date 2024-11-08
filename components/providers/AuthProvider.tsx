@@ -7,11 +7,13 @@ import { TokenEnum } from '@/common/enums/app.enum';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from 'react';
 import { toast } from 'sonner';
+import { LoginModal } from '@/components/auth/LoginModal';
 
 interface AuthContextType {
   name: string;
   id: string;
   handleLogout: () => void;
+  withAuth: (callback: () => any) => void;
 }
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
@@ -23,6 +25,7 @@ export const AuthProvider = (props: PropsWithChildren) => {
   const [user, setUser] = useState<{ name: string; id: string }>({ name: '', id: '' });
   const pathname = usePathname();
   const router = useRouter();
+  const [openLogin, setOpenLogin] = useState(false);
 
   const handleLogin = async (authId: string) => {
     try {
@@ -53,6 +56,13 @@ export const AuthProvider = (props: PropsWithChildren) => {
     router.push('/', { scroll: true });
   };
 
+  const withAuth = async (callback: () => any) => {
+    if (user.name) {
+      return callback();
+    }
+    setOpenLogin(true);
+  };
+
   useEffect(() => {
     if (authId) {
       handleLogin(authId).finally();
@@ -63,7 +73,12 @@ export const AuthProvider = (props: PropsWithChildren) => {
     handleGetCurrentUser();
   }, []);
 
-  return <AuthContext.Provider value={{ ...user, handleLogout }}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ ...user, handleLogout, withAuth }}>
+      {children}
+      <LoginModal open={openLogin} onOpenChange={(open) => setOpenLogin(open)} />
+    </AuthContext.Provider>
+  );
 };
 
 export const useAuthContext = () => {

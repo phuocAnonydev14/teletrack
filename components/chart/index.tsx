@@ -23,24 +23,26 @@ interface CharProps {
 export function Chart(props: CharProps) {
   const { chartData, chartConfig, title, amount, isCompare } = props;
   const matches = useMediaQuery('(max-width: 728px)');
-
+  const matchExtraSmall = useMediaQuery('(max-width: 345px)');
   const todayChange =
     chartData[chartData.length - 1]?.amount - chartData[chartData.length - 2]?.amount;
-  const { difference, previousWeekSum, lastWeekSum } = calculateWeekDifference(chartData);
-  if (title === 'USERS') {
-    console.log(previousWeekSum, lastWeekSum);
-  }
+  const { difference } = calculateWeekDifference(chartData);
 
   return (
     <Card className="flex flex-col gap-5 rounded-xl bg-appInfoBg py-6 lg:gap-10">
       <div className="flex flex-row-reverse items-center justify-between gap-3 px-5 lg:flex-row lg:justify-start lg:px-6">
-        <div className="w-max rounded-[5px] bg-secondary px-[10px] py-[5px] text-lg font-bold text-secondary-foreground lg:text-xl">
+        <div className="w-max rounded-[5px] bg-secondary px-2 py-1 text-base font-semibold text-secondary-foreground lg:px-[10px] lg:py-[5px] lg:text-xl">
           {title}
         </div>
         <p className="text-lg font-bold lg:text-2xl">{amount && formatNumberWithSpacing(amount)}</p>
       </div>
       <CardContent className="h-full overflow-hidden px-0 py-0">
-        <div className="flex w-full justify-between px-6">
+        <div
+          className={cn(
+            'flex w-full justify-between gap-y-2 px-6',
+            matchExtraSmall ? 'flex-col' : '',
+          )}
+        >
           <div className={cn('flex flex-col gap-2 md:hidden', isCompare ? 'hidden' : '')}>
             <div className="flex justify-between gap-3">
               <p
@@ -66,7 +68,10 @@ export function Chart(props: CharProps) {
           </div>
           <ChartContainer
             config={chartConfig}
-            className={cn('h-[120px] w-[70%] md:w-full lg:h-[300px]', isCompare ? 'w-full' : '')}
+            className={cn(
+              'h-[120px] w-[70%] md:w-full lg:h-[300px]',
+              isCompare || matchExtraSmall ? 'w-full' : '',
+            )}
           >
             <AreaChart
               accessibilityLayer

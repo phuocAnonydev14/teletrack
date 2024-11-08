@@ -50,7 +50,7 @@ const config: Config = {
           '4': 'hsl(var(--chart-4))',
           '5': 'hsl(var(--chart-5))',
         },
-        rankTagBg: 'hsl(var(--rank-tag-bg))',
+        rankTagBg: 'var(--rank-tag-bg)',
         textContrast: 'hsl(var(--text-contrast))',
         homeMenuBg: 'hsl(var(--home-menu-bg))',
         tableBg: 'hsl(var(--table-bg))',

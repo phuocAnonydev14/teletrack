@@ -114,33 +114,40 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
           ? appTrack.rank
           : appTrack?.Order || 0;
         return (
-          <div className="flex min-w-max items-center gap-2">
-            {matches && <BookmarkTooltip isBookmarked={false} />}
+          <div className="relative flex min-w-max items-center gap-2 pr-2">
+            {matches && (
+              <BookmarkTooltip
+                username={
+                  isOfType<AppTrack>(appTrack, ['rank'])
+                    ? appTrack.username
+                    : appTrack.Bot?.username || ''
+                }
+                isBookmarked={false}
+              />
+            )}
             <Link
               href={`/apps/${(isOfType<AppTrack>(row.original, ['username']) ? nameRender : row.original?.Bot?.username).replace('@', '')}`}
               className="flex min-w-max items-center gap-2"
             >
-              <div className="relative">
-                <img
-                  src={getLogoUrl(
-                    (isOfType<AppTrack>(row.original, ['username'])
-                      ? nameRender
-                      : // eslint-disable-next-line no-unsafe-optional-chaining
-                        'Bot' in row.original
-                        ? row.original?.Bot?.username
-                        : ''
-                    ).replace('@', ''),
-                  )}
-                  className="h-7 w-7 rounded-md bg-gradient-to-r from-[#24C6DCCC] to-[#514A9DCC] p-[1px] md:h-10 md:w-10"
-                  alt={''}
-                  loading="lazy"
-                />
-                {matches && (
-                  <div className="absolute -top-2 left-1/2 z-40 -translate-x-1/2 rounded-[5px] bg-secondary px-1 text-[12px] font-medium text-secondary-foreground opacity-80 backdrop-blur-[26px]">
-                    {rankRender}
-                  </div>
+              <img
+                src={getLogoUrl(
+                  (isOfType<AppTrack>(row.original, ['username'])
+                    ? nameRender
+                    : // eslint-disable-next-line no-unsafe-optional-chaining
+                      'Bot' in row.original
+                      ? row.original?.Bot?.username
+                      : ''
+                  ).replace('@', ''),
                 )}
-              </div>
+                className="h-7 w-7 rounded-md bg-gradient-to-r from-[#24C6DCCC] to-[#514A9DCC] p-[1px] md:h-10 md:w-10"
+                alt={''}
+                loading="lazy"
+              />
+              {matches && (
+                <div className="absolute -right-[7px] -top-2 z-40 rounded-[3px] bg-rankTagBg px-3 text-[12px] font-medium text-secondary-foreground opacity-80 backdrop-blur-[26px]">
+                  {rankRender}
+                </div>
+              )}
               <p className="min-w-[100px] max-w-[100px] overflow-hidden overflow-ellipsis text-base font-semibold leading-none sm:min-w-fit sm:max-w-full">
                 {nameRender}
               </p>
