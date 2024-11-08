@@ -3,7 +3,7 @@ import { Logo } from '@/components/layouts/MainLayout/Logo';
 
 export const Footer = () => {
   return (
-    <div className="bg-homeMenuBg p-10">
+    <div className="mt-10 bg-homeMenuBg p-10">
       <div className="flex flex-wrap items-center justify-between gap-5">
         <Link href={'/'}>
           <Logo />

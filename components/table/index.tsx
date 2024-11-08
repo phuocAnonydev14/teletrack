@@ -51,7 +51,7 @@ export const CommonTable = (props: CommonTableProps) => {
                 >
                   <div
                     className="relative flex cursor-pointer select-none items-center gap-2"
-                    onClick={header.column.getToggleSortingHandler()}
+                    onClick={() => header.column.toggleSorting()}
                     title={
                       header.column.getCanSort()
                         ? header.column.getNextSortingOrder() === 'asc'

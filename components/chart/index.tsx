@@ -39,11 +39,11 @@ export function Chart(props: CharProps) {
       <CardContent className="h-full overflow-hidden px-0 py-0">
         <div
           className={cn(
-            'flex w-full justify-between gap-y-2 px-6',
+            'flex w-full justify-between gap-y-2 pl-6 pr-2',
             matchExtraSmall ? 'flex-col' : '',
           )}
         >
-          <div className={cn('flex flex-col gap-2 md:hidden', isCompare ? 'hidden' : '')}>
+          <div className={cn('flex w-[15%] flex-col gap-2', isCompare ? 'hidden' : '')}>
             <div className="flex justify-between gap-3">
               <p
                 className={cn('font-semibold', todayChange < 0 ? 'text-red-500' : 'text-green-500')}

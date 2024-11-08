@@ -148,7 +148,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
               {/*    {rankRender}*/}
               {/*  </div>*/}
               {/*)}*/}
-              <p className="min-w-[100px] max-w-[100px] overflow-hidden truncate overflow-ellipsis whitespace-nowrap text-base font-semibold leading-none sm:min-w-fit sm:max-w-full">
+              <p className="min-w-[90px] max-w-[90px] overflow-hidden truncate overflow-ellipsis whitespace-nowrap text-base font-semibold leading-none sm:min-w-fit sm:max-w-full">
                 {nameRender}
               </p>
               <div className="hidden min-w-[40px] md:block">
@@ -321,6 +321,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
     state: {
       sorting,
     },
+    enableSortingRemoval: false,
     getPaginationRowModel: getPaginationRowModel(),
   });
 

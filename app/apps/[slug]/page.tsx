@@ -16,7 +16,7 @@ export default async function AppDetailPage({ params }: { params: { slug: string
 
   if (!data) return;
   return (
-    <div className="flex flex-col gap-10">
+    <div className="flex flex-col gap-5 lg:gap-10">
       <AppInfo appDetail={data} />
       <AppDetailChart appDetail={data} />
     </div>

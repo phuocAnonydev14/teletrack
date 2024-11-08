@@ -86,7 +86,7 @@ export default function ComparePage() {
   const channelMetrics = useMemo(() => transformData(appList, 'Channel'), [appList]);
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-3 lg:gap-5">
       <SelectApp setResults={(val) => setResults(val)} results={results} />
       <div className="flex flex-wrap items-center gap-3">
         {...appList

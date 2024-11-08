@@ -41,7 +41,7 @@ export const AppDetailChart = (props: AppDetailChartProps) => {
   if (!history) return;
 
   return (
-    <div className="flex flex-col gap-10">
+    <div className="flex flex-col gap-5 lg:gap-10">
       <Chart
         chartConfig={chartConfig}
         chartData={Object.entries(history.Bot).map(([date, amount]) => ({ date, amount }))}
