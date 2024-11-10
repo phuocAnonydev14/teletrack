@@ -360,9 +360,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
       }
       setColumnFiltered(() => {
         if (matches) {
-          return columns.filter((column: any) => {
-            return ![].includes(column.accessorKey);
-          });
+          return columns;
         }
         switch (selectedCate) {
           case 'users':

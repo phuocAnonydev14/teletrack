@@ -52,7 +52,12 @@ class TeleService extends HttpService {
   }
 
   async submitApp(params: SubmitAppParams) {
-    return await this.post<ResponseData<any>>('/user/app/submit', params, {}, false);
+    return await this.post<ResponseData<any>, SubmitAppParams>(
+      '/user/app/submit',
+      params,
+      {},
+      false,
+    );
   }
 }
 
