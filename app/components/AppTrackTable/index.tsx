@@ -328,7 +328,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
 
   const handleFetchPost = async (page: number) => {
     try {
-      if (appTracks.length > 0) return;
+      // if (appTracks.length > 0) return;
       if (!selectedCate) {
         const res = await teleService.getTop50<AppDetail>({ page, limit: 50 }, 'fdv');
         setAppTracks(
