@@ -11,7 +11,7 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
       <div className="hidden md:block">
         <HomeMenu />
       </div>
-      <div className="my-10">{children}</div>
+      <div className="my-5 lg:my-10">{children}</div>
       <Footer />
     </Container>
   );

@@ -42,10 +42,9 @@ export const getCommonPinningStyles = (column: Column<any>, status?: boolean): C
   const isLastLeftPinnedColumn = status || (isPinned === 'left' && column.getIsLastColumn('left'));
 
   const res = {
-    boxShadow: isLastLeftPinnedColumn ? '-4px 0 4px -4px gray inset' : undefined,
-    left: isPinned === 'left' ? `-2px` : undefined,
+    boxShadow: isLastLeftPinnedColumn ? '-3px 0 3px -3px gray inset' : undefined,
+    left: isPinned === 'left' ? `${column.id === 'username' ? '72' : '-2'}px` : undefined,
     position: isPinned ? 'sticky' : 'relative',
-    width: column.getSize(),
     zIndex: isPinned ? 3 : 0,
   };
 
@@ -71,9 +70,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
     {
       id: 'rank',
       accessorKey: 'rank',
-      header: () => (
-        <div className="w-full text-center">{selectedCate ? 'Global Rank' : 'Rank'}</div>
-      ),
+      header: () => <div className="w-full text-center">{matches ? '#' : 'Rank'}</div>,
       cell: ({ row, renderValue }) => {
         const appTrack = row.original;
         return (
@@ -113,17 +110,20 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
           ? appTrack.rank
           : appTrack?.Order || 0;
         return (
-          <div className="flex min-w-fit items-center gap-2 overflow-hidden">
-            {matches && (
-              <BookmarkTooltip
-                username={
-                  isOfType<AppTrack>(appTrack, ['rank'])
-                    ? appTrack.username
-                    : appTrack.Bot?.username || ''
-                }
-                isBookmarked={false}
-              />
-            )}
+          <div className="flex min-w-fit items-center gap-2 overflow-hidden pr-2">
+            {/*{matches && (*/}
+            {/*  <>*/}
+            {/*    <BookmarkTooltip*/}
+            {/*      username={*/}
+            {/*        isOfType<AppTrack>(appTrack, ['rank'])*/}
+            {/*          ? appTrack.username*/}
+            {/*          : appTrack.Bot?.username || ''*/}
+            {/*      }*/}
+            {/*      isBookmarked={false}*/}
+            {/*    />*/}
+            {/*    <span className="text-base font-semibold">{rankRender}</span>*/}
+            {/*  </>*/}
+            {/*)}*/}
             <Link
               href={`/apps/${(isOfType<AppTrack>(row.original, ['username']) ? nameRender : row.original?.Bot?.username).replace('@', '')}`}
               className="inline-flex w-fit items-center gap-2"
@@ -147,7 +147,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
               {/*    {rankRender}*/}
               {/*  </div>*/}
               {/*)}*/}
-              <span className="inline min-w-[90px] max-w-[90px] overflow-hidden truncate overflow-ellipsis whitespace-nowrap text-base font-semibold leading-none sm:min-w-[20px] sm:max-w-[150px] lg:max-w-[20dvw]">
+              <span className="inline max-w-[80px] overflow-hidden truncate overflow-ellipsis whitespace-nowrap text-base font-semibold leading-none sm:min-w-[20px] sm:max-w-[150px] lg:max-w-[20dvw]">
                 {nameRender}
               </span>
               <div className="hidden min-w-[20px] lg:block">
@@ -330,7 +330,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
     try {
       // if (appTracks.length > 0) return;
       if (!selectedCate) {
-        const res = await teleService.getTop50<AppDetail>({ page, limit: 50 }, 'fdv');
+        const res = await teleService.getTop50<AppDetail>({ page, limit: 100 }, 'fdv');
         setAppTracks(
           (res.data?.data.map((item, index) => ({ ...item, Order: index + 1 })) as AppDetail[]) ||
             [],
@@ -349,19 +349,19 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
     }
   };
 
-  console.log('appTracks', appTracks);
-
   useEffect(() => {
     (async () => {
       if (matches) {
+        table.getColumn('rank')?.pin('left');
         table.getColumn('username')?.pin('left');
       } else {
+        table.getColumn('rank')?.pin('left');
         table.getColumn('username')?.pin(false);
       }
       setColumnFiltered(() => {
         if (matches) {
           return columns.filter((column: any) => {
-            return !['rank'].includes(column.accessorKey);
+            return ![].includes(column.accessorKey);
           });
         }
         switch (selectedCate) {

@@ -7,6 +7,13 @@ interface PaginationParams {
   limit?: number;
 }
 
+interface SubmitAppParams {
+  bot: string;
+  channel: string;
+  contact: string;
+  description: string;
+}
+
 class TeleService extends HttpService {
   async getTop50<T>(params: PaginationParams, endpoint: 'channel' | 'bot' | 'fdv' = 'fdv') {
     return await this.get<ResponseData<{ data: T[]; total: number }>>(`/top/${endpoint}`, {
@@ -42,6 +49,10 @@ class TeleService extends HttpService {
       { value: keyword, type: type },
       false,
     );
+  }
+
+  async submitApp(params: SubmitAppParams) {
+    return await this.post<ResponseData<any>>('/user/app/submit', params, {}, false);
   }
 }
 

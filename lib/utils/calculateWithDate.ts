@@ -34,3 +34,8 @@ export function calculateWeekDifference(data: DataEntry[]) {
     difference,
   };
 }
+
+export function showDateChart(initDate: string) {
+  const [, month, date] = initDate.split('-');
+  return `${month}/${date}`;
+}

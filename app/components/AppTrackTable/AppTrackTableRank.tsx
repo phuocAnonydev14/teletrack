@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils/utils';
 import { teleService } from '@/services/tele.service';
 import { useTheme } from 'next-themes';
 import { useAuthContext } from '@/components/providers/AuthProvider';
+import { useMediaQuery } from 'usehooks-ts';
 
 interface AppTrackTableRankProps {
   isGlobalRank: boolean;
@@ -22,6 +23,7 @@ export const AppTrackTableRank = (props: AppTrackTableRankProps) => {
   const { isGlobalRank, username, rank, rankChange } = props;
   const [isBookmarked, setIsBookmarked] = useState(false);
   const ArrowImage = rankChange > 0 ? ArrowUp : ArrowDown;
+  const matches = useMediaQuery(`(max-width: 1024px)`);
 
   const handleToggleWatchList = async () => {
     await teleService.addWatchList(username);
@@ -29,14 +31,24 @@ export const AppTrackTableRank = (props: AppTrackTableRankProps) => {
   };
 
   return (
-    <div className="relative flex min-w-[100px] items-center justify-center gap-2 overflow-visible">
+    <div
+      className={cn(
+        'relative flex min-w-[100px] items-center justify-center gap-2 overflow-visible',
+        matches && 'w-[50px] min-w-[20px] justify-start',
+      )}
+    >
       <div
-        className="absolute left-1 top-1/2 -translate-y-1/3 md:left-1"
+        className={cn(
+          'absolute left-1 top-1/2 -translate-y-1/3 md:left-1',
+          matches && 'relative left-0 translate-y-1',
+        )}
         onClick={handleToggleWatchList}
       >
         <BookmarkTooltip username={username} isBookmarked={isBookmarked} />
       </div>
-      <div className="px-[5px] py-[5px] text-base font-bold">{rank}</div>
+      <div className="text-base font-bold">
+        <span>{rank}</span>
+      </div>
 
       {isGlobalRank && rankChange !== 0 && (
         <div className="absolute -right-3 flex items-center gap-1">
@@ -76,6 +88,8 @@ export const BookmarkTooltip = ({
       <Tooltip>
         <TooltipTrigger>
           <BookMarkIcon
+            width="18"
+            height="18"
             isBookmarked={isBookmarked}
             onClick={() => withAuth(handleToggleWatchList)}
           />

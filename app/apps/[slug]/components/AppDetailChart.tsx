@@ -6,7 +6,7 @@ import { AppDetail, AppHistory } from '@/types/app.type';
 import { useParams } from 'next/navigation';
 import { teleService } from '@/services/tele.service';
 import { useEffect, useState } from 'react';
-import { CompareNavigate } from '@/components/chart/CompareNavigate';
+import { showDateChart } from '@/lib/utils/calculateWithDate';
 
 const chartConfig = {
   date: {
@@ -46,14 +46,20 @@ export const AppDetailChart = (props: AppDetailChartProps) => {
     <div className="flex flex-col gap-5 lg:gap-10">
       <Chart
         chartConfig={chartConfig}
-        chartData={Object.entries(history.Bot).map(([date, amount]) => ({ date, amount }))}
+        chartData={Object.entries(history.Bot).map(([date, amount]) => ({
+          date: showDateChart(date),
+          amount,
+        }))}
         title="USERS"
         amount={appDetail.Bot.users}
         username={username}
       />
       <Chart
         chartConfig={chartConfig}
-        chartData={Object.entries(history.Channel).map(([date, amount]) => ({ date, amount }))}
+        chartData={Object.entries(history.Channel).map(([date, amount]) => ({
+          date: showDateChart(date),
+          amount,
+        }))}
         title="SUBSCRIBERS"
         amount={appDetail.Channel.users}
         username={username}

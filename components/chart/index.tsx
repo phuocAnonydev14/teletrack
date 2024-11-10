@@ -46,9 +46,9 @@ export function Chart(props: CharProps) {
       <CardContent className="h-full overflow-hidden px-0 py-0">
         <div
           className={cn(
-            'flex w-full justify-between gap-3 gap-y-2 pl-6 pr-2',
+            'flex w-full justify-between gap-4 pl-6 pr-2',
             matchExtraSmall ? 'flex-col' : '',
-            isCompare ? 'pl-0' : '',
+            isCompare ? 'px-4 lg:px-6' : '',
           )}
         >
           <div className={cn('flex w-[30%] flex-col gap-2 md:w-[15%]', isCompare ? 'hidden' : '')}>
@@ -77,28 +77,27 @@ export function Chart(props: CharProps) {
           <ChartContainer
             config={chartConfig}
             className={cn(
-              'h-[120px] w-[70%] md:w-full lg:h-[300px]',
+              'h-[150px] w-[70%] md:w-full lg:h-[300px]',
               isCompare || matchExtraSmall ? 'w-full' : '',
             )}
           >
             <AreaChart accessibilityLayer data={chartData} className="h-[300px] overflow-hidden">
-              {(!matches || isCompare) && (
-                <>
-                  <CartesianGrid vertical={false} stroke="#B6B6B6" strokeDasharray={3} />
-                  <XAxis
-                    dataKey="date"
-                    tickLine={false}
-                    axisLine={false}
-                    tickMargin={8}
-                    tickFormatter={(value) => value}
-                  />
-                  <YAxis
-                    tickLine={false}
-                    axisLine={false}
-                    tickFormatter={(val) => formatNumber(val)}
-                  />
-                </>
-              )}
+              <>
+                <CartesianGrid vertical={false} stroke="#B6B6B6" strokeDasharray={3} />
+                <XAxis
+                  dataKey="date"
+                  tickLine={false}
+                  axisLine={false}
+                  tickMargin={8}
+                  tickFormatter={(value) => value}
+                />
+                <YAxis
+                  tickLine={false}
+                  axisLine={false}
+                  tickFormatter={(val) => formatNumber(val, true).replace('0', '')}
+                  width={35}
+                />
+              </>
               <ChartTooltip cursor={false} content={<ChartTooltipContent indicator={'dot'} />} />
               <defs>
                 {Object.keys(chartConfig).map((key, index) => {
