@@ -36,7 +36,7 @@ export const AppDetailChart = (props: AppDetailChartProps) => {
   };
 
   useEffect(() => {
-    handleFetchChartData();
+    handleFetchChartData().finally();
   }, [slug]);
 
   if (!history) return;
@@ -44,9 +44,6 @@ export const AppDetailChart = (props: AppDetailChartProps) => {
 
   return (
     <div className="flex flex-col gap-5 lg:gap-10">
-      {/*<div className="flex justify-end">*/}
-      {/*  <CompareNavigate username={username} />*/}
-      {/*</div>*/}
       <Chart
         chartConfig={chartConfig}
         chartData={Object.entries(history.Bot).map(([date, amount]) => ({ date, amount }))}
@@ -54,9 +51,6 @@ export const AppDetailChart = (props: AppDetailChartProps) => {
         amount={appDetail.Bot.users}
         username={username}
       />
-      {/*<div className="flex justify-end">*/}
-      {/*  <CompareNavigate username={username} />*/}
-      {/*</div>*/}
       <Chart
         chartConfig={chartConfig}
         chartData={Object.entries(history.Channel).map(([date, amount]) => ({ date, amount }))}

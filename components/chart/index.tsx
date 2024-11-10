@@ -32,13 +32,13 @@ export function Chart(props: CharProps) {
 
   return (
     <Card className="flex flex-col gap-5 rounded-xl bg-appInfoBg py-6 lg:gap-10">
-      <div className="flex flex-wrap-reverse justify-between gap-3 px-5 lg:px-6">
-        <div className="flex w-full flex-row-reverse items-center justify-between gap-3 md:w-auto md:flex-row lg:justify-start">
-          <div className="w-max rounded-[5px] bg-secondary px-2 py-1 text-base font-semibold text-secondary-foreground lg:px-[10px] lg:py-[5px] lg:text-xl">
+      <div className="flex justify-between gap-3 px-5 lg:px-6">
+        <div className="flex items-center justify-start gap-3 md:w-auto md:flex-row">
+          <div className="w-max rounded-[5px] bg-secondary px-2 py-[3px] text-base font-semibold text-secondary-foreground lg:px-[10px] lg:py-[5px] lg:text-xl">
             <span>{title}</span>
           </div>
           <p className="text-lg font-bold lg:text-2xl">
-            {amount && formatNumberWithSpacing(amount)}
+            {amount && (matches ? formatNumber(amount) : formatNumberWithSpacing(amount))}
           </p>
         </div>
         {username && <CompareNavigate username={username} />}
@@ -46,7 +46,7 @@ export function Chart(props: CharProps) {
       <CardContent className="h-full overflow-hidden px-0 py-0">
         <div
           className={cn(
-            'flex w-full justify-between gap-y-2 pl-6 pr-2',
+            'flex w-full justify-between gap-3 gap-y-2 pl-6 pr-2',
             matchExtraSmall ? 'flex-col' : '',
             isCompare ? 'pl-0' : '',
           )}
@@ -81,15 +81,7 @@ export function Chart(props: CharProps) {
               isCompare || matchExtraSmall ? 'w-full' : '',
             )}
           >
-            <AreaChart
-              accessibilityLayer
-              data={chartData}
-              margin={{
-                left: 12,
-                right: 12,
-              }}
-              className="h-[300px] overflow-hidden"
-            >
+            <AreaChart accessibilityLayer data={chartData} className="h-[300px] overflow-hidden">
               {(!matches || isCompare) && (
                 <>
                   <CartesianGrid vertical={false} stroke="#B6B6B6" strokeDasharray={3} />
@@ -100,13 +92,11 @@ export function Chart(props: CharProps) {
                     tickMargin={8}
                     tickFormatter={(value) => value}
                   />
-                  {!matches && (
-                    <YAxis
-                      tickLine={false}
-                      axisLine={false}
-                      tickFormatter={(val) => formatNumber(val)}
-                    />
-                  )}
+                  <YAxis
+                    tickLine={false}
+                    axisLine={false}
+                    tickFormatter={(val) => formatNumber(val)}
+                  />
                 </>
               )}
               <ChartTooltip cursor={false} content={<ChartTooltipContent indicator={'dot'} />} />
