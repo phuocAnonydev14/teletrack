@@ -36,8 +36,12 @@ class TeleService extends HttpService {
     );
   }
 
-  async searchAppTrack(keyword: string) {
-    return await this.get<ResponseData<{ data: string[] }>>(`/app/search?value=${keyword}`);
+  async searchAppTrack(keyword: string, type: 'bot' | '' = '') {
+    return await this.get<ResponseData<{ data: string[] }>>(
+      `/app/search`,
+      { value: keyword, type: type },
+      false,
+    );
   }
 }
 

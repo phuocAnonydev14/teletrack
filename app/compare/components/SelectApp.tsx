@@ -9,6 +9,8 @@ import useClickOutside from '@/hooks/useClickOutside';
 import { SearchPopover } from '@/app/compare/components/SearchPopover';
 import { LoadingIcon } from '@/components/icons';
 import { teleService } from '@/services/tele.service';
+import { getLogoUrl } from '@/lib/utils/image.util';
+import { useSearchParams } from 'next/navigation';
 
 interface SelectAppProps {
   setResults: (val: string[]) => void;
@@ -23,13 +25,29 @@ export const SelectApp = (props: SelectAppProps) => {
   const [isFocus, setIsFocus] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
   const [searchData, setSearchData] = useState<string[]>([]);
+  const searchParams = useSearchParams();
+  const initApp = searchParams.get('app');
 
   useClickOutside(ref, () => setIsFocus(false));
+
+  const handleCheckInitApp = async () => {
+    try {
+      if (typeof initApp !== 'string') return;
+      await teleService.getAppDetail(initApp);
+      setResults([initApp]);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    handleCheckInitApp().finally();
+  }, [initApp]);
 
   const handleSearch = async () => {
     try {
       if (!debouncedValue) return;
-      const res = await teleService.searchAppTrack(debouncedValue);
+      const res = await teleService.searchAppTrack(debouncedValue, 'bot');
       setSearchData(res.data.data);
     } catch (e) {
       console.log(e);
@@ -50,14 +68,16 @@ export const SelectApp = (props: SelectAppProps) => {
           {loading ? <LoadingIcon /> : <Search size={20} />}
         </div>
         <Input
-          placeholder="Enter apps you want to compare here..."
+          placeholder="Enter bot you want to compare here..."
           className="bg-white pl-10 pr-4"
           onFocus={() => {
             setIsFocus(true);
           }}
           value={val}
           onChange={(e) => {
-            setLoading(true);
+            if (e.target.value.length >= 2) {
+              setLoading(true);
+            }
             setValue(e.target.value);
           }}
         />
@@ -73,8 +93,9 @@ export const SelectApp = (props: SelectAppProps) => {
             onClose={() => setIsFocus(false)}
             results={results}
             searchData={searchData}
-            val={debouncedValue}
+            val={val}
             setResults={setResults}
+            loading={loading}
           />
         )}
       </div>
@@ -100,8 +121,9 @@ export const SelectedBtn = ({ name, onCancel }: { name: string; onCancel: () => 
       variant="secondary"
       className="flex items-center gap-2 bg-[#BEFCFF] font-bold text-[#0F0F0F] hover:bg-[#9ff7fb]"
     >
+      <img src={getLogoUrl(name)} className="h-6 w-6 rounded-full" alt="logo" />
       {name}
-      <X size={18} onClick={onCancel} />
+      <X size={16} onClick={onCancel} />
     </Button>
   );
 };

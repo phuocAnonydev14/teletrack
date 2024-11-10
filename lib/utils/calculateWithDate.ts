@@ -19,7 +19,6 @@ export function calculateWeekDifference(data: DataEntry[]) {
   // console.log('lastWeekSum', lastWeekSum, previousWeekSum);
 
   data.map((entry, index) => {
-    console.log('index', index, entry.amount);
     if (index <= 6) {
       lastWeekSum += entry.amount;
     } else if (index <= 13) {

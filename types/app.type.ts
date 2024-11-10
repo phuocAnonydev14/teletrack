@@ -27,6 +27,7 @@ export interface AppDetail {
   Bot: AppTrack;
   Channel: AppTrack;
   FDV: number;
+  Price: number;
 }
 
 export interface AppWatch {

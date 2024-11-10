@@ -11,6 +11,7 @@ import {
 import { cn, formatNumber, formatNumberWithSpacing } from '@/lib/utils/utils';
 import { useMediaQuery } from 'usehooks-ts';
 import { calculateWeekDifference } from '@/lib/utils/calculateWithDate';
+import { CompareNavigate } from '@/components/chart/CompareNavigate';
 
 interface CharProps {
   chartData: Record<any, any>[];
@@ -18,10 +19,11 @@ interface CharProps {
   title: string;
   amount?: number;
   isCompare?: boolean;
+  username?: string;
 }
 
 export function Chart(props: CharProps) {
-  const { chartData, chartConfig, title, amount, isCompare } = props;
+  const { chartData, chartConfig, title, amount, isCompare, username } = props;
   const matches = useMediaQuery('(max-width: 728px)');
   const matchExtraSmall = useMediaQuery('(max-width: 400px)');
   const todayChange =
@@ -30,11 +32,16 @@ export function Chart(props: CharProps) {
 
   return (
     <Card className="flex flex-col gap-5 rounded-xl bg-appInfoBg py-6 lg:gap-10">
-      <div className="flex flex-row-reverse items-center justify-between gap-3 px-5 lg:flex-row lg:justify-start lg:px-6">
-        <div className="w-max rounded-[5px] bg-secondary px-2 py-1 text-base font-semibold text-secondary-foreground lg:px-[10px] lg:py-[5px] lg:text-xl">
-          {title}
+      <div className="flex flex-wrap-reverse justify-between gap-3 px-5 lg:px-6">
+        <div className="flex w-full flex-row-reverse items-center justify-between gap-3 md:w-auto md:flex-row lg:justify-start">
+          <div className="w-max rounded-[5px] bg-secondary px-2 py-1 text-base font-semibold text-secondary-foreground lg:px-[10px] lg:py-[5px] lg:text-xl">
+            <span>{title}</span>
+          </div>
+          <p className="text-lg font-bold lg:text-2xl">
+            {amount && formatNumberWithSpacing(amount)}
+          </p>
         </div>
-        <p className="text-lg font-bold lg:text-2xl">{amount && formatNumberWithSpacing(amount)}</p>
+        {username && <CompareNavigate username={username} />}
       </div>
       <CardContent className="h-full overflow-hidden px-0 py-0">
         <div
@@ -44,7 +51,7 @@ export function Chart(props: CharProps) {
             isCompare ? 'pl-0' : '',
           )}
         >
-          <div className={cn('flex w-[15%] flex-col gap-2', isCompare ? 'hidden' : '')}>
+          <div className={cn('flex w-[30%] flex-col gap-2 md:w-[15%]', isCompare ? 'hidden' : '')}>
             <div className="flex justify-between gap-3">
               <p
                 className={cn('font-semibold', todayChange < 0 ? 'text-red-500' : 'text-green-500')}

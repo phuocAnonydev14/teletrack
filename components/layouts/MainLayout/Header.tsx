@@ -26,7 +26,7 @@ export const Header = () => {
   const { name, id, handleLogout } = useAuthContext();
 
   return (
-    <div className="flex items-center justify-between gap-3 py-5">
+    <div className="flex items-center justify-between gap-3 py-4">
       <div className="flex items-center gap-2">
         <div className="block md:hidden">
           <Sheet open={isOpenSheet} onOpenChange={setIsOpenSheet}>

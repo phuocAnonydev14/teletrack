@@ -17,6 +17,7 @@ interface AppInfoProps {
 export const AppInfo = (props: AppInfoProps) => {
   const { appDetail } = props;
   const matches = useMediaQuery(`(max-width: 728px)`);
+  console.log('appDetail', appDetail);
 
   const metricList = [
     {
@@ -32,12 +33,12 @@ export const AppInfo = (props: AppInfoProps) => {
       amount: formatNumber(appDetail.Channel.users),
     },
     {
-      name: appDetail.Name,
-      amount: 'N/A',
+      name: 'Token Price',
+      amount: appDetail.Price ? '$' + formatNumber(appDetail.Price, true) : 'N/A',
     },
     {
       name: 'FDV',
-      amount: 'N/A',
+      amount: appDetail.FDV ? '$' + formatNumber(appDetail.FDV, true) : 'N/A',
     },
   ];
 
@@ -48,16 +49,21 @@ export const AppInfo = (props: AppInfoProps) => {
         alt="App Logo"
         className="hidden max-h-[550px] w-max max-w-full rounded-md bg-gradient-to-r from-[#24C6DCCC] to-[#514A9DCC] object-cover object-center p-[5px] lg:block lg:max-w-[40%]"
       />
-      <div className="w-full rounded-[12px] bg-appInfoBg p-5 lg:min-w-[60%] lg:p-[50px]">
+      <div className="w-full rounded-[12px] bg-appInfoBg p-5 lg:min-w-[60%] lg:p-8">
         <div className="flex flex-wrap items-start justify-between gap-5">
           <div className="flex flex-col gap-4">
-            <p className="flex items-center gap-2 text-xl font-bold lg:text-[40px]">
+            <p className="flex items-center gap-2 text-xl font-bold lg:text-3xl">
               <img
                 src={getLogoUrl(appDetail.Bot.username.replace('@', ''))}
                 alt="App Logo"
                 className="block h-auto w-[40px] rounded-md bg-gradient-to-r from-[#24C6DCCC] to-[#514A9DCC] p-[2px] lg:hidden"
               />{' '}
-              {appDetail.Name} {matches ? <BadgeIcon width="20" height="20" /> : <BadgeIcon />}
+              {appDetail.Name}{' '}
+              {matches ? (
+                <BadgeIcon width="18" height="18" />
+              ) : (
+                <BadgeIcon width="22" height="22" />
+              )}
             </p>
             {/*<p>{appDetail.}</p>*/}
             <div className="flex flex-wrap gap-3">

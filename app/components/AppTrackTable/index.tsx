@@ -6,7 +6,6 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
   SortingState,
   useReactTable,
@@ -114,7 +113,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
           ? appTrack.rank
           : appTrack?.Order || 0;
         return (
-          <div className="flex min-w-max items-center gap-2 overflow-hidden pr-5">
+          <div className="flex min-w-fit items-center gap-2 overflow-hidden">
             {matches && (
               <BookmarkTooltip
                 username={
@@ -127,7 +126,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
             )}
             <Link
               href={`/apps/${(isOfType<AppTrack>(row.original, ['username']) ? nameRender : row.original?.Bot?.username).replace('@', '')}`}
-              className="flex min-w-max items-center gap-2"
+              className="inline-flex w-fit items-center gap-2"
             >
               <img
                 src={getLogoUrl(
@@ -148,10 +147,10 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
               {/*    {rankRender}*/}
               {/*  </div>*/}
               {/*)}*/}
-              <p className="min-w-[90px] max-w-[90px] overflow-hidden truncate overflow-ellipsis whitespace-nowrap text-base font-semibold leading-none sm:min-w-fit sm:max-w-full">
+              <span className="inline min-w-[90px] max-w-[90px] overflow-hidden truncate overflow-ellipsis whitespace-nowrap text-base font-semibold leading-none sm:min-w-[20px] sm:max-w-[150px] lg:max-w-[20dvw]">
                 {nameRender}
-              </p>
-              <div className="hidden min-w-[40px] md:block">
+              </span>
+              <div className="hidden min-w-[20px] lg:block">
                 <BadgeIcon width={20} height={20} />
               </div>
             </Link>
@@ -303,9 +302,11 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
         const fdvRender = isOfType<AppTrack>(row.original, ['rank'])
           ? 'N/A'
           : 'FDV' in row.original
-            ? formatNumber(row.original?.FDV, true)
-            : 0;
-        return <p className="w-full text-end text-base font-medium xl:text-center">${fdvRender}</p>;
+            ? row.original?.FDV
+              ? '$' + formatNumber(row.original?.FDV, true)
+              : 'N/A'
+            : 'N/A';
+        return <p className="w-full text-end text-base font-medium xl:text-center">{fdvRender}</p>;
       },
     },
   ];
@@ -322,11 +323,12 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
       sorting,
     },
     enableSortingRemoval: false,
-    getPaginationRowModel: getPaginationRowModel(),
+    // getPaginationRowModel: getPaginationRowModel(),
   });
 
   const handleFetchPost = async (page: number) => {
     try {
+      if (appTracks.length > 0) return;
       if (!selectedCate) {
         const res = await teleService.getTop50<AppDetail>({ page, limit: 50 }, 'fdv');
         setAppTracks(
@@ -346,6 +348,8 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
       console.log(e);
     }
   };
+
+  console.log('appTracks', appTracks);
 
   useEffect(() => {
     (async () => {
