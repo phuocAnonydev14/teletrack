@@ -44,7 +44,12 @@ function transformData(
     result.push(entry);
   });
 
-  return result;
+  return result.sort((a, b) => {
+    const [monthA, dayA] = a.date.split('/').map(Number);
+    const [monthB, dayB] = b.date.split('/').map(Number);
+
+    return monthA - monthB || dayA - dayB;
+  });
 }
 
 function getFormattedKeys(keys: string[]): LabelObject {
