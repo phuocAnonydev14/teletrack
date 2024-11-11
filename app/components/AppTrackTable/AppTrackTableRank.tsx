@@ -52,7 +52,7 @@ export const AppTrackTableRank = (props: AppTrackTableRankProps) => {
           <span>{rank}</span>
         </div>
       )}
-      {(rankChange !== 0 || !matches) && (
+      {rankChange !== 0 && (
         <div className={cn('absolute right-0 flex items-center gap-1', matches && 'hidden')}>
           {/*<ArrowUpIconFixedColor />*/}
           <Image
