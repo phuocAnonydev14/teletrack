@@ -123,7 +123,8 @@ export default function ComparePage() {
         results={results}
       />
       <div className="flex flex-wrap items-center gap-3">
-        {...appList
+        {appList
+          .filter((item, index) => appList.indexOf(item) === index)
           .map((app) => app.username.replace('@', ''))
           .map((app, index) => {
             const indexColor = index + 1;

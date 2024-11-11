@@ -61,7 +61,7 @@ export const AppTrackTableRank = (props: AppTrackTableRankProps) => {
         )}
         onClick={handleToggleWatchList}
       >
-        <BookmarkTooltip username={username} isBookmarked={isBookmarked} />
+        <BookmarkTooltip username={username} isBookmarked={!!isBookmarked} />
       </div>
 
       {!matches && (
