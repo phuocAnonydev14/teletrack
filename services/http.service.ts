@@ -4,10 +4,11 @@ import axiosRetry from 'axios-retry';
 import { CacheRequestConfig, setupCache } from 'axios-cache-interceptor';
 import { HttpMethodEnum, TokenEnum } from '@/common/enums/app.enum';
 import { Params } from '@/types/service.type';
+import { API_URL } from '@/common/const/envKeys';
 
 class HttpService {
   private readonly http: AxiosInstance;
-  private baseURL = 'https://tgecko.catia.co/api/v1';
+  private baseURL = API_URL;
 
   constructor(customBaseUrl?: string) {
     this.http = setupCache(

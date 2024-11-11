@@ -340,13 +340,11 @@ export const WatchlistTable = (props: AppTrackTableProps) => {
   useEffect(() => {
     withAuth(() => {});
     if (matches) {
-      table.getColumn('rank')?.pin('left');
       table.getColumn('username')?.pin('left');
     } else {
-      table.getColumn('rank')?.pin('left');
       table.getColumn('username')?.pin(false);
     }
-  }, []);
+  }, [matches, table, withAuth]);
 
   return (
     <div>
