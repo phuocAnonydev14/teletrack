@@ -13,6 +13,7 @@ import { getLogoUrl } from '@/lib/utils/image.util';
 import { useSearchParams } from 'next/navigation';
 import { cn } from '@/lib/utils/utils';
 import { RecentSearch } from '@/components/common/RecentSearch';
+import { useTheme } from 'next-themes';
 
 interface SelectAppProps {
   setResults: (val: string[]) => void;
@@ -32,19 +33,19 @@ export const SelectApp = (props: SelectAppProps) => {
 
   useClickOutside(ref, () => setIsFocus(false));
 
-  const handleCheckInitApp = async () => {
-    try {
-      if (typeof initApp !== 'string') return;
-      await teleService.getAppDetail(initApp);
-      setResults([initApp]);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  // const handleCheckInitApp = async () => {
+  //   try {
+  //     if (typeof initApp !== 'string') return;
+  //     await teleService.getAppDetail(initApp);
+  //     setResults([initApp]);
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
 
-  useEffect(() => {
-    handleCheckInitApp().finally();
-  }, [initApp]);
+  // useEffect(() => {
+  //   handleCheckInitApp().finally();
+  // }, [initApp]);
 
   const handleSearch = async () => {
     try {
@@ -129,12 +130,15 @@ export const SelectedBtn = ({
   isRecent?: boolean;
   onChoose?: () => void;
 }) => {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
   return (
     <Button
       variant="secondary"
       className={cn(
-        'flex items-center gap-2 bg-[#BEFCFF] font-bold text-[#0F0F0F] hover:bg-[#9ff7fb]',
-        isRecent && 'bg-tableBg',
+        'flex items-center gap-2 bg-[#BEFCFF] font-bold text-[#0F0F0F] hover:bg-[#9ff7fb] hover:text-[#0F0F0F]',
+        isRecent &&
+          `${isDark ? 'bg-[#394551]' : 'bg-tableBg'} ${isDark ? 'text-white' : 'text-black'}`,
       )}
       onClick={onChoose}
     >

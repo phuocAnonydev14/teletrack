@@ -30,8 +30,6 @@ export function Chart(props: CharProps) {
     chartData[chartData.length - 1]?.amount - chartData[chartData.length - 2]?.amount;
   const { difference } = calculateWeekDifference(chartData);
 
-  console.log('chartData', chartData);
-
   return (
     <Card className="flex flex-col gap-5 rounded-xl bg-appInfoBg py-6 lg:gap-10">
       <div className="flex justify-between gap-3 px-5 lg:px-6">
@@ -97,7 +95,7 @@ export function Chart(props: CharProps) {
                   tickLine={false}
                   axisLine={false}
                   tickFormatter={(val) => formatNumber(val, true)}
-                  width={35}
+                  width={37}
                 />
               </>
               <ChartTooltip cursor={false} content={<ChartTooltipContent indicator={'dot'} />} />

@@ -344,7 +344,7 @@ export const WatchlistTable = (props: AppTrackTableProps) => {
     } else {
       table.getColumn('username')?.pin(false);
     }
-  }, [matches, table, withAuth]);
+  }, []);
 
   return (
     <div>

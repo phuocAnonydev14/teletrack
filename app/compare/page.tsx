@@ -104,7 +104,7 @@ export default function ComparePage() {
 
   useEffect(() => {
     handleFetchChartData().finally();
-  }, [handleFetchChartData, results]);
+  }, [results]);
 
   const chartConfig = useMemo(
     () => getFormattedKeys([...appList.map((app) => app.username.replace('@', ''))]),
@@ -118,26 +118,22 @@ export default function ComparePage() {
       <SelectApp
         setResults={(val) => {
           setAppQuery(JSON.stringify(val)).finally();
-          setResults(val);
         }}
         results={results}
       />
       <div className="flex flex-wrap items-center gap-3">
-        {appList
-          .filter((item, index) => appList.indexOf(item) === index)
-          .map((app) => app.username.replace('@', ''))
-          .map((app, index) => {
-            const indexColor = index + 1;
-            return (
-              <div key={app} className="flex items-center gap-1">
-                <div
-                  className={`h-6 w-6 rounded-sm border-2 border-black`}
-                  style={{ backgroundColor: `hsl(var(--chart-${indexColor}))` }}
-                />
-                <p>{app}</p>
-              </div>
-            );
-          })}
+        {results.map((app, index) => {
+          const indexColor = index + 1;
+          return (
+            <div key={app} className="flex items-center gap-1">
+              <div
+                className={`h-6 w-6 rounded-sm border-2 border-black`}
+                style={{ backgroundColor: `hsl(var(--chart-${indexColor}))` }}
+              />
+              <p>{app}</p>
+            </div>
+          );
+        })}
       </div>
 
       {results.length > 0 && (

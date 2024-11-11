@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { addKeyLocal, getKeyLocal, removeKeyLocal } from '@/lib/utils/manageKeyLocal';
 import { EKeyLocal } from '@/common/enums/keysLocal';
 import { useQueryState } from 'nuqs';
+import { useTheme } from 'next-themes';
 
 export interface RecentSearchProps {
   isCompare: boolean;
@@ -56,9 +57,17 @@ export const RecentSearch = ({ isCompare }: RecentSearchProps) => {
 };
 
 const TitleBox = ({ name, isCompare }: { name: string } & RecentSearchProps) => {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
   return (
-    <div className={cn('w-max rounded-lg bg-[#BEFCFF] px-3 py-1', isCompare && 'bg-tableBg')}>
-      <p className={cn('my-0 text-base font-semibold text-black')}>{name}</p>
+    <div
+      className={cn(
+        'w-max rounded-lg bg-[#BEFCFF] px-3 py-1 text-black',
+        isCompare &&
+          `${isDark ? 'bg-[#394551]' : 'bg-tableBg'} ${isDark ? 'text-white' : 'text-black'}`,
+      )}
+    >
+      <p className={cn('my-0 text-base font-semibold')}>{name}</p>
     </div>
   );
 };

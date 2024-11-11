@@ -116,7 +116,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
         return (
           <div className="flex min-w-fit items-center gap-2 overflow-hidden pr-2">
             {matches && (
-              <>
+              <div className="w-[17px]">
                 {/*<BookmarkTooltip*/}
                 {/*  username={*/}
                 {/*    isOfType<AppTrack>(appTrack, ['rank'])*/}
@@ -125,8 +125,8 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
                 {/*  }*/}
                 {/*  isBookmarked={false}*/}
                 {/*/>*/}
-                <span className="text-base font-semibold">{rankRender}</span>
-              </>
+                <p className="w-[20px] text-base font-semibold">{rankRender}</p>
+              </div>
             )}
             <Link
               href={`/apps/${(isOfType<AppTrack>(row.original, ['username']) ? nameRender : row.original?.Bot?.username).replace('@', '')}`}

@@ -9,9 +9,13 @@ export const addKeyLocal = (key: EKeyLocal, addVal: string) => {
   if (keyLocalParsed.length >= 5) {
     keyLocalParsed.shift();
   }
-  keyLocalParsed.filter((item) => item !== addVal);
-  keyLocalParsed.push(addVal);
-  localStorage.setItem(key, JSON.stringify(keyLocalParsed));
+  const newKeyVal: string[] = [];
+  keyLocalParsed.filter((item) => {
+    if (item !== addVal) newKeyVal.push(item);
+    return item !== addVal;
+  });
+  newKeyVal.push(addVal);
+  localStorage.setItem(key, JSON.stringify(newKeyVal));
 };
 
 export const getKeyLocal = (key: EKeyLocal) => {
