@@ -32,16 +32,13 @@ export interface AppDetail {
 
 export interface AppWatch {
   id: string;
-  product_id: string;
-  name: string;
-  username: string;
-  date: string;
-  users: number;
-  change: number;
-  rank: number;
-  rank_change: number;
-  type: 'bot' | 'channel';
-  updated: boolean;
+  Bot: AppTrack;
+  Channel: AppTrack;
+  FDV: number;
+  Price: number;
+  Order: number;
+  Logo: string;
+  Name: string;
 }
 
 export interface AppHistory {

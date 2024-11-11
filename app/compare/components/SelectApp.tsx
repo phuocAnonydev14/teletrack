@@ -11,6 +11,8 @@ import { LoadingIcon } from '@/components/icons';
 import { teleService } from '@/services/tele.service';
 import { getLogoUrl } from '@/lib/utils/image.util';
 import { useSearchParams } from 'next/navigation';
+import { cn } from '@/lib/utils/utils';
+import { RecentSearch } from '@/components/common/RecentSearch';
 
 interface SelectAppProps {
   setResults: (val: string[]) => void;
@@ -111,19 +113,41 @@ export const SelectApp = (props: SelectAppProps) => {
           );
         })}
       </div>
+      <RecentSearch isCompare />
     </div>
   );
 };
 
-export const SelectedBtn = ({ name, onCancel }: { name: string; onCancel: () => void }) => {
+export const SelectedBtn = ({
+  name,
+  onCancel,
+  isRecent,
+  onChoose,
+}: {
+  name: string;
+  onCancel: () => void;
+  isRecent?: boolean;
+  onChoose?: () => void;
+}) => {
   return (
     <Button
       variant="secondary"
-      className="flex items-center gap-2 bg-[#BEFCFF] font-bold text-[#0F0F0F] hover:bg-[#9ff7fb]"
+      className={cn(
+        'flex items-center gap-2 bg-[#BEFCFF] font-bold text-[#0F0F0F] hover:bg-[#9ff7fb]',
+        isRecent && 'bg-tableBg',
+      )}
+      onClick={onChoose}
     >
       <img src={getLogoUrl(name)} className="h-6 w-6 rounded-full" alt="logo" />
       {name}
-      <X size={16} onClick={onCancel} />
+      <X
+        size={16}
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          onCancel();
+        }}
+      />
     </Button>
   );
 };

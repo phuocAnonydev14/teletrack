@@ -22,6 +22,7 @@ import { DataTablePagination } from '@/components/common/DataPagnation';
 import { getLogoUrl } from '@/lib/utils/image.util';
 import { AppTrackTableRank } from '@/app/components/AppTrackTable/AppTrackTableRank';
 import { useMediaQuery } from 'usehooks-ts';
+import { teleService } from '@/services/tele.service';
 
 const tagRanks = {
   users: TableCategory.USERS,
@@ -39,7 +40,8 @@ export const getCommonPinningStyles = (column: Column<any>, status?: boolean): C
 
   const res = {
     boxShadow: isLastLeftPinnedColumn ? '-3px 0 3px -3px gray inset' : undefined,
-    left: isPinned === 'left' ? `${column.id === 'username' ? '72' : '-2'}px` : undefined,
+    // left: isPinned === 'left' ? `${column.id === 'username' ? '72' : '-2'}px` : undefined,
+    left: isPinned === 'left' ? `-2px` : undefined,
     position: isPinned ? 'sticky' : 'relative',
     zIndex: isPinned ? 3 : 0,
   };
@@ -68,7 +70,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
     {
       id: 'rank',
       accessorKey: 'rank',
-      header: () => <div className="w-full text-center">{matches ? '#' : 'Rank'}</div>,
+      header: () => <div className="w-full text-center">{matches ? '' : 'Rank'}</div>,
       cell: ({ row, renderValue }) => {
         const appTrack = row.original;
         return (
@@ -79,8 +81,12 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
                 : appTrack.Bot?.username || ''
             }
             rank={isOfType<AppTrack>(appTrack, ['rank']) ? appTrack.rank : appTrack?.Order || 0}
-            rankChange={isOfType<AppTrack>(appTrack, ['rankChange']) ? appTrack.rankChange : 0}
-            isGlobalRank={!!selectedCate}
+            rankChange={
+              isOfType<AppTrack>(appTrack, ['rankChange'])
+                ? appTrack.rankChange
+                : appTrack.Bot.rankChange || 0
+            }
+            isGlobalRank={true}
           />
         );
       },
@@ -306,6 +312,13 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
             : 'N/A';
         return <p className="w-full text-end text-base font-medium xl:text-center">{fdvRender}</p>;
       },
+      sortingFn: (rowA: any, rowB: any, columnId) => {
+        const appA = rowA.original;
+        const appB = rowB.original;
+        // if (isOfType<AppDetail>(appA, ['FDV']) && isOfType<AppDetail>(appB, ['FDV'])) {
+        return appA.FDV > appB.FDV ? 1 : -1;
+        // }
+      },
     },
   ];
 
@@ -327,21 +340,21 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
   const handleFetchPost = async (page: number) => {
     try {
       if (appTracks.length > 0) return;
-      // if (!selectedCate) {
-      //   const res = await teleService.getTop50<AppDetail>({ page, limit: 100 }, 'fdv');
-      //   setAppTracks(
-      //     (res.data?.data.map((item, index) => ({ ...item, Order: index + 1 })) as AppDetail[]) ||
-      //       [],
-      //   );
-      //   setTotalState(res.data?.total || 0);
-      //   return;
-      // }
-      // const res = await teleService.getTop50<AppTrack>(
-      //   { page },
-      //   tagRanks[selectedCate as 'users' | 'subscribers'],
-      // );
-      // setTotalState(res.data?.total || 0);
-      // setAppTracks(res.data?.data || []);
+      if (!selectedCate) {
+        const res = await teleService.getTop50<AppDetail>({ page, limit: 100 }, 'fdv');
+        setAppTracks(
+          (res.data?.data.map((item, index) => ({ ...item, Order: index + 1 })) as AppDetail[]) ||
+            [],
+        );
+        setTotalState(res.data?.total || 0);
+        return;
+      }
+      const res = await teleService.getTop50<AppTrack>(
+        { page },
+        tagRanks[selectedCate as 'users' | 'subscribers'],
+      );
+      setTotalState(res.data?.total || 0);
+      setAppTracks(res.data?.data || []);
     } catch (e) {
       console.log(e);
     }
@@ -353,7 +366,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
         table.getColumn('rank')?.pin('left');
         table.getColumn('username')?.pin('left');
       } else {
-        table.getColumn('rank')?.pin('left');
+        // table.getColumn('rank')?.pin('left');
         table.getColumn('username')?.pin(false);
       }
       setColumnFiltered(() => {
@@ -402,29 +415,33 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
       {/*</div>*/}
       <CommonTable table={table}>
         {table.getRowModel().rows?.length ? (
-          table.getRowModel().rows.map((row, index) => (
-            <TableRow
-              className={cn(
-                'max-w-[100px] border-tableBorder',
-                index % 2 === 0 ? 'bg-tableRowEven' : 'bg-tableRowOdd',
-              )}
-              key={row.id}
-              data-state={row.getIsSelected() && 'selected'}
-            >
-              {row.getVisibleCells().map((cell) => (
-                <TableCell
-                  key={cell.id}
-                  className={cn(
-                    'relative overflow-hidden border-2 border-tableBorder px-3 py-3',
-                    index % 2 === 0 ? 'bg-tableRowEven' : 'bg-tableRowOdd',
-                  )}
-                  style={matches ? { ...getCommonPinningStyles(cell.column) } : {}}
-                >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))
+          table.getRowModel().rows.map((row, index) => {
+            return (
+              <TableRow
+                className={cn(
+                  'max-w-[100px] border-tableBorder',
+                  index % 2 === 0 ? 'bg-tableRowEven' : 'bg-tableRowOdd',
+                )}
+                key={row.id}
+                data-state={row.getIsSelected() && 'selected'}
+              >
+                {row.getVisibleCells().map((cell) => {
+                  return (
+                    <TableCell
+                      key={cell.id}
+                      className={cn(
+                        'relative w-max overflow-hidden border-2 border-tableBorder px-3 py-3',
+                        index % 2 === 0 ? 'bg-tableRowEven' : 'bg-tableRowOdd',
+                      )}
+                      style={matches ? { ...getCommonPinningStyles(cell.column) } : {}}
+                    >
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            );
+          })
         ) : (
           <TableRow>
             <TableCell colSpan={columns.length} className="h-24 text-center">

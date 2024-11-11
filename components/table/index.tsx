@@ -21,7 +21,7 @@ export const CommonTable = (props: CommonTableProps) => {
   const matches = useMediaQuery(`(max-width: 1024px)`);
 
   return (
-    <Table className="border-collapse bg-[#3A485680]">
+    <Table className="bg-[#3A485680]">
       <TableHeader>
         {table.getHeaderGroups().map((headerGroup, index) => (
           <TableRow
@@ -34,10 +34,11 @@ export const CommonTable = (props: CommonTableProps) => {
                 <TableHead
                   key={header.id}
                   className={cn(
-                    'min-w-[120px] border-2 border-tableBorder bg-[#3A485680] px-3 py-3 text-base font-semibold text-primary-foreground',
+                    'min-w-[80px] border-2 border-tableBorder bg-[#3A485680] px-3 py-3 text-base font-semibold text-primary-foreground',
                     !isDark && 'bg-[#CCD8DA]',
                     header.column.getIsSorted() && 'min-w-[130px]',
-                    header.column.id === 'rank' && matches && 'min-w-[50px]',
+                    header.column.id === 'rank' && matches && 'min-w-[5px]',
+                    header.column.id === 'username' && matches && 'min-w-[140px]',
                   )}
                   style={
                     matches

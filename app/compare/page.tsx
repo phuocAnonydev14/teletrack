@@ -5,6 +5,7 @@ import { Chart } from '@/components/chart';
 import { useEffect, useMemo, useState } from 'react';
 import { AppHistory } from '@/types/app.type';
 import { teleService } from '@/services/tele.service';
+import { useQueryState } from 'nuqs';
 
 type DataOutput = {
   date: string;
@@ -17,6 +18,11 @@ type LabelObject = {
   };
 };
 
+function formatDate(date: string): string {
+  const [year, month, day] = date.split('-');
+  return `${month}/${day}`;
+}
+
 function transformData(
   data: (AppHistory & { username: string })[],
   attr: 'Bot' | 'Channel',
@@ -25,11 +31,13 @@ function transformData(
   const dates = new Set<string>();
 
   data.forEach((item) => {
-    Object.keys(item[attr]).forEach((date) => dates.add(date));
+    Object.keys(item[attr]).forEach((date) => {
+      dates.add(date);
+    });
   });
 
   dates.forEach((date) => {
-    const entry: DataOutput = { date };
+    const entry: DataOutput = { date: formatDate(date) };
     data.forEach((item) => {
       entry[item.username.replace('@', '')] = item[attr][date] ?? 0;
     });
@@ -49,6 +57,7 @@ function getFormattedKeys(keys: string[]): LabelObject {
 
 export default function ComparePage() {
   const [results, setResults] = useState<string[]>([]);
+  const [appQuery, setAppQuery] = useQueryState('app');
   const [appList, setAppList] = useState<(AppHistory & { username: string })[]>([]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -74,6 +83,20 @@ export default function ComparePage() {
     }
   };
 
+  const handleGetAppQuery = () => {
+    try {
+      if (!appQuery) return;
+      const res = JSON.parse(appQuery);
+      setResults(res || []);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    handleGetAppQuery();
+  }, [appQuery]);
+
   useEffect(() => {
     handleFetchChartData().finally();
   }, [handleFetchChartData, results]);
@@ -87,7 +110,13 @@ export default function ComparePage() {
 
   return (
     <div className="flex flex-col gap-5">
-      <SelectApp setResults={(val) => setResults(val)} results={results} />
+      <SelectApp
+        setResults={(val) => {
+          setAppQuery(JSON.stringify(val)).finally();
+          setResults(val);
+        }}
+        results={results}
+      />
       <div className="flex flex-wrap items-center gap-3">
         {...appList
           .map((app) => app.username.replace('@', ''))

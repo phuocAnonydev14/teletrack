@@ -4,6 +4,7 @@ import { PropsWithChildren } from 'react';
 import { Card } from '@/components/ui/card';
 import Link from 'next/link';
 import { getLogoUrl } from '@/lib/utils/image.util';
+import { RecentSearch } from '@/components/common/RecentSearch';
 
 interface SearchHeaderPopoverProps extends PropsWithChildren {
   val: string;
@@ -30,32 +31,11 @@ export const SearchHeaderPopover = ({ onClose, searchData, val }: SearchHeaderPo
             })}
           </div>
         </div>
-        {/*<div className="flex flex-col gap-3">*/}
-        {/*  <TitleBox name="New Apps" />*/}
-        {/*  <div className="flex flex-col gap-5">*/}
-        {/*    <AppSearchBox onClose={onClose} />*/}
-        {/*    <AppSearchBox onClose={onClose} />*/}
-        {/*    <AppSearchBox onClose={onClose} />*/}
-        {/*  </div>*/}
-        {/*</div>*/}
         <div className="flex flex-col gap-3">
-          {/*<TitleBox name="Recent search" />*/}
-          <div className="flex gap-3">
-            {/*{['SEED', 'CATIA'].map((item) => (*/}
-            {/*  <SelectedBtn key={item} name={item} />*/}
-            {/*))}*/}
-          </div>
+          <RecentSearch isCompare={false} />
         </div>
       </div>
     </Card>
-  );
-};
-
-const TitleBox = ({ name }: { name: string }) => {
-  return (
-    <div className="w-max rounded-xl bg-[#BEFCFF] px-3 py-2">
-      <p className="text-linear my-0 text-lg font-extrabold">{name}</p>
-    </div>
   );
 };
 

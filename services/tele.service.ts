@@ -31,7 +31,7 @@ class TeleService extends HttpService {
   }
 
   async getWatchList() {
-    return await this.get<ResponseData<{ data: AppWatch[] }>>(`/user/watchlist`, {}, false);
+    return await this.get<ResponseData<AppWatch[]>>(`/user/watchlist`, {}, false);
   }
 
   async addWatchList(username: string) {

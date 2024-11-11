@@ -1,5 +1,14 @@
 import { PropsWithChildren } from 'react';
+import { cn } from '@/lib/utils/utils';
 
-export const Container = ({ children }: PropsWithChildren) => {
-  return <div className="px-4 md:px-10 lg:px-14 xl:px-20">{children}</div>;
+interface ContainerProps extends PropsWithChildren {
+  isMobileDisablePx?: boolean;
+}
+
+export const Container = ({ children, isMobileDisablePx }: ContainerProps) => {
+  return (
+    <div className={cn('px-4 md:px-10 lg:px-14 xl:px-20', isMobileDisablePx && 'px-0')}>
+      {children}
+    </div>
+  );
 };

@@ -6,13 +6,17 @@ import { HomeMenu } from '@/components/layouts/MainLayout/HomeMenu';
 
 export const MainLayout = ({ children }: PropsWithChildren) => {
   return (
-    <Container>
-      <Header />
-      <div className="hidden md:block">
-        <HomeMenu />
+    <>
+      <div className="px-4 md:px-10 lg:px-14 xl:px-20">
+        <Header />
+        <div className="hidden md:block">
+          <HomeMenu />
+        </div>
       </div>
       <div className="my-5 lg:my-10">{children}</div>
-      <Footer />
-    </Container>
+      <div className="px-0 md:px-10 lg:px-14 xl:px-20">
+        <Footer />
+      </div>
+    </>
   );
 };

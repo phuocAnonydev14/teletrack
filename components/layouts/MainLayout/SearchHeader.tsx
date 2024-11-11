@@ -64,7 +64,7 @@ export const SearchHeader = ({ onClose }: SearchHeaderProps) => {
           setValue(e.target.value);
         }}
       />
-      {isFocus && debouncedValue && (
+      {isFocus && (
         <SearchHeaderPopover
           searchData={searchData}
           onClose={() => {

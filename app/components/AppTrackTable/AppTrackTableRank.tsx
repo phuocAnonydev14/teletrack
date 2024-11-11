@@ -34,7 +34,7 @@ export const AppTrackTableRank = (props: AppTrackTableRankProps) => {
     <div
       className={cn(
         'relative flex min-w-[100px] items-center justify-center gap-2 overflow-visible',
-        matches && 'w-[50px] min-w-[20px] justify-start',
+        matches && 'min-w-[5px] max-w-[50px] justify-start',
       )}
     >
       <div
@@ -46,12 +46,14 @@ export const AppTrackTableRank = (props: AppTrackTableRankProps) => {
       >
         <BookmarkTooltip username={username} isBookmarked={isBookmarked} />
       </div>
-      <div className="text-base font-bold">
-        <span>{rank}</span>
-      </div>
 
-      {isGlobalRank && rankChange !== 0 && (
-        <div className="absolute -right-3 flex items-center gap-1">
+      {!matches && (
+        <div className="text-base font-bold">
+          <span>{rank}</span>
+        </div>
+      )}
+      {(rankChange !== 0 || !matches) && (
+        <div className={cn('absolute right-0 flex items-center gap-1', matches && 'hidden')}>
           {/*<ArrowUpIconFixedColor />*/}
           <Image
             src={ArrowImage.src}
@@ -81,7 +83,7 @@ export const BookmarkTooltip = ({
   const isDark = resolvedTheme === 'dark';
   const { withAuth } = useAuthContext();
   const handleToggleWatchList = async () => {
-    await teleService.addWatchList(username.replace('@', ''));
+    await teleService.addWatchList(username);
   };
   return (
     <TooltipProvider>
