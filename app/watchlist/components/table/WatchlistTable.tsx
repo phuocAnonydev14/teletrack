@@ -30,6 +30,7 @@ import { BadgeIcon } from '@/components/icons';
 import { AppTrackTableRank } from '@/app/components/AppTrackTable/AppTrackTableRank';
 import { getLogoUrl } from '@/lib/utils/image.util';
 import { useMediaQuery } from 'usehooks-ts';
+import { useAuthContext } from '@/components/providers/AuthProvider';
 
 interface AppTrackTableProps {
   data: AppWatch[];
@@ -42,7 +43,7 @@ export const WatchlistTable = (props: AppTrackTableProps) => {
     data.map((item) => ({ ...item, id: item.Name })),
   );
   const matches = useMediaQuery(`(max-width: 1024px)`);
-
+  const { withAuth } = useAuthContext();
   const columns: ColumnDef<AppWatch>[] = [
     {
       accessorKey: 'rank',
@@ -54,6 +55,10 @@ export const WatchlistTable = (props: AppTrackTableProps) => {
             rankChange={row.original.Bot.rankChange}
             rank={row.original.Bot.rank}
             isGlobalRank={false}
+            isBookmarked={true}
+            bookMarkAction={async () => {
+              setAppTracks((prev) => prev.filter((item) => item.Name !== row.original.Name));
+            }}
           />
         );
       },
@@ -333,6 +338,7 @@ export const WatchlistTable = (props: AppTrackTableProps) => {
   }, [activeId, table]);
 
   useEffect(() => {
+    withAuth(() => {});
     if (matches) {
       table.getColumn('rank')?.pin('left');
       table.getColumn('username')?.pin('left');

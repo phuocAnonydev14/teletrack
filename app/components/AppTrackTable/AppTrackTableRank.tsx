@@ -11,23 +11,40 @@ import { teleService } from '@/services/tele.service';
 import { useTheme } from 'next-themes';
 import { useAuthContext } from '@/components/providers/AuthProvider';
 import { useMediaQuery } from 'usehooks-ts';
+import { toast } from 'sonner';
 
 interface AppTrackTableRankProps {
   isGlobalRank: boolean;
   rankChange: number;
   rank: number;
   username: string;
+  isBookmarked?: boolean;
+  bookMarkAction?: () => void;
 }
 
 export const AppTrackTableRank = (props: AppTrackTableRankProps) => {
-  const { isGlobalRank, username, rank, rankChange } = props;
-  const [isBookmarked, setIsBookmarked] = useState(false);
+  const {
+    isGlobalRank,
+    username,
+    rank,
+    rankChange,
+    isBookmarked: initBookmarked,
+    bookMarkAction,
+  } = props;
+  const [isBookmarked, setIsBookmarked] = useState(initBookmarked);
   const ArrowImage = rankChange > 0 ? ArrowUp : ArrowDown;
   const matches = useMediaQuery(`(max-width: 1024px)`);
 
   const handleToggleWatchList = async () => {
-    await teleService.addWatchList(username);
-    setIsBookmarked(!isBookmarked);
+    try {
+      if (isBookmarked) await teleService.unWatchList(username);
+      else await teleService.addWatchList(username);
+      if (bookMarkAction) bookMarkAction();
+      toast.success(isBookmarked ? 'Removed from watchlist' : 'Added to watchlist');
+      setIsBookmarked(!isBookmarked);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -96,14 +113,14 @@ export const BookmarkTooltip = ({
             onClick={() => withAuth(handleToggleWatchList)}
           />
         </TooltipTrigger>
-        <TooltipContent
-          className={cn(
-            'bg-[#BEFCFF4D] font-medium text-[#BEFCFF] backdrop-blur-3xl',
-            !isDark && 'bg-[#befcffb3] text-[#27ACD2]',
-          )}
-        >
-          <p>Add to watchlist</p>
-        </TooltipContent>
+        {/*<TooltipContent*/}
+        {/*  className={cn(*/}
+        {/*    'bg-[#BEFCFF4D] font-medium text-[#BEFCFF] backdrop-blur-3xl',*/}
+        {/*    !isDark && 'bg-[#befcffb3] text-[#27ACD2]',*/}
+        {/*  )}*/}
+        {/*>*/}
+        {/*  <p>Add to watchlist</p>*/}
+        {/*</TooltipContent>*/}
       </Tooltip>
     </TooltipProvider>
   );

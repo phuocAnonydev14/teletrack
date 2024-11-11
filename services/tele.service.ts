@@ -43,6 +43,15 @@ class TeleService extends HttpService {
     );
   }
 
+  async unWatchList(username: string) {
+    return await this.update<ResponseData<{}>, { username: string }>(
+      `/user/watchlist`,
+      { username },
+      {},
+      false,
+    );
+  }
+
   async searchAppTrack(keyword: string, type: 'bot' | '' = '') {
     return await this.get<ResponseData<{ data: string[] }>>(
       `/app/search`,

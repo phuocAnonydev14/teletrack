@@ -8,6 +8,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { LoginModal } from '@/components/auth/LoginModal';
+import { useQueryState } from 'nuqs';
 
 interface AuthContextType {
   name: string;
@@ -20,22 +21,32 @@ const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 export const AuthProvider = (props: PropsWithChildren) => {
   const { children } = props;
-  const searchParams = useSearchParams();
-  const authId = searchParams.get('auth');
+  const [authId] = useQueryState('auth');
   const [user, setUser] = useState<{ name: string; id: string }>({ name: '', id: '' });
   const pathname = usePathname();
   const router = useRouter();
   const [openLogin, setOpenLogin] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const searchParams = useSearchParams();
 
   const handleLogin = async (authId: string) => {
     try {
+      const currentAccessToken = getCookie(TokenEnum.ACCESS);
+      if (currentAccessToken || user.name || loggedIn) {
+        handleGetCurrentUser();
+        return;
+      }
       const res = await authService.login(authId);
       const decoded = jwtDecode<{ name: string; sub: string }>(res.data.data);
       setCookie(TokenEnum.ACCESS, res.data.data);
       const userData = { name: decoded.name, id: decoded.sub };
       setUser(userData);
-      router.push(pathname, { scroll: true });
+      const params = new URLSearchParams(searchParams.toString());
+      params.delete('auth');
+      const newPathname = `${window.location.pathname}?${params.toString()}`;
+      router.replace(newPathname);
       toast.success('Login successful');
+      setLoggedIn(true);
       return res.data;
     } catch (e) {
       console.log(e);
@@ -57,7 +68,8 @@ export const AuthProvider = (props: PropsWithChildren) => {
   };
 
   const withAuth = async (callback: () => any) => {
-    if (user.name) {
+    const access = getCookie(TokenEnum.ACCESS);
+    if (access) {
       return callback();
     }
     setOpenLogin(true);
@@ -67,7 +79,7 @@ export const AuthProvider = (props: PropsWithChildren) => {
     if (authId) {
       handleLogin(authId).finally();
     }
-  }, [searchParams]);
+  }, [authId]);
 
   useEffect(() => {
     handleGetCurrentUser();
