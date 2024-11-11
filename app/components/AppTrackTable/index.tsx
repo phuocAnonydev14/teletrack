@@ -19,12 +19,8 @@ import Link from 'next/link';
 import { BadgeIcon } from '@/components/icons';
 import { CommonTable } from '@/components/table';
 import { DataTablePagination } from '@/components/common/DataPagnation';
-import { teleService } from '@/services/tele.service';
 import { getLogoUrl } from '@/lib/utils/image.util';
-import {
-  AppTrackTableRank,
-  BookmarkTooltip,
-} from '@/app/components/AppTrackTable/AppTrackTableRank';
+import { AppTrackTableRank } from '@/app/components/AppTrackTable/AppTrackTableRank';
 import { useMediaQuery } from 'usehooks-ts';
 
 const tagRanks = {
@@ -61,7 +57,9 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
   const { total } = props;
   const [sorting, setSorting] = useState<SortingState>([]);
   const [selectedCate, setSelectedCate] = useQueryState('q');
-  const [appTracks, setAppTracks] = useState<(AppTrack | AppDetail)[]>(props.data);
+  const [appTracks, setAppTracks] = useState<(AppTrack | AppDetail)[]>(
+    props.data.map((item, index) => ({ ...item, Order: index + 1 })),
+  );
   const [, setCurrentPage] = useQueryState('page');
   const [totalState, setTotalState] = useState(total);
   const matches = useMediaQuery(`(max-width: 1024px)`);
@@ -328,22 +326,22 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
 
   const handleFetchPost = async (page: number) => {
     try {
-      // if (appTracks.length > 0) return;
-      if (!selectedCate) {
-        const res = await teleService.getTop50<AppDetail>({ page, limit: 100 }, 'fdv');
-        setAppTracks(
-          (res.data?.data.map((item, index) => ({ ...item, Order: index + 1 })) as AppDetail[]) ||
-            [],
-        );
-        setTotalState(res.data?.total || 0);
-        return;
-      }
-      const res = await teleService.getTop50<AppTrack>(
-        { page },
-        tagRanks[selectedCate as 'users' | 'subscribers'],
-      );
-      setTotalState(res.data?.total || 0);
-      setAppTracks(res.data?.data || []);
+      if (appTracks.length > 0) return;
+      // if (!selectedCate) {
+      //   const res = await teleService.getTop50<AppDetail>({ page, limit: 100 }, 'fdv');
+      //   setAppTracks(
+      //     (res.data?.data.map((item, index) => ({ ...item, Order: index + 1 })) as AppDetail[]) ||
+      //       [],
+      //   );
+      //   setTotalState(res.data?.total || 0);
+      //   return;
+      // }
+      // const res = await teleService.getTop50<AppTrack>(
+      //   { page },
+      //   tagRanks[selectedCate as 'users' | 'subscribers'],
+      // );
+      // setTotalState(res.data?.total || 0);
+      // setAppTracks(res.data?.data || []);
     } catch (e) {
       console.log(e);
     }

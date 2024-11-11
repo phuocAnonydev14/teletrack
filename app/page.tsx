@@ -7,7 +7,7 @@ const fetchTop50 = async () => {
     const res = await teleService.getTop50<AppDetail>(
       {
         page: 1,
-        limit: 10,
+        limit: 100,
       },
       'fdv',
     );
