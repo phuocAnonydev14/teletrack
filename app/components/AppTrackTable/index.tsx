@@ -115,19 +115,19 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
           : appTrack?.Order || 0;
         return (
           <div className="flex min-w-fit items-center gap-2 overflow-hidden pr-2">
-            {/*{matches && (*/}
-            {/*  <>*/}
-            {/*    <BookmarkTooltip*/}
-            {/*      username={*/}
-            {/*        isOfType<AppTrack>(appTrack, ['rank'])*/}
-            {/*          ? appTrack.username*/}
-            {/*          : appTrack.Bot?.username || ''*/}
-            {/*      }*/}
-            {/*      isBookmarked={false}*/}
-            {/*    />*/}
-            {/*    <span className="text-base font-semibold">{rankRender}</span>*/}
-            {/*  </>*/}
-            {/*)}*/}
+            {matches && (
+              <>
+                {/*<BookmarkTooltip*/}
+                {/*  username={*/}
+                {/*    isOfType<AppTrack>(appTrack, ['rank'])*/}
+                {/*      ? appTrack.username*/}
+                {/*      : appTrack.Bot?.username || ''*/}
+                {/*  }*/}
+                {/*  isBookmarked={false}*/}
+                {/*/>*/}
+                <span className="text-base font-semibold">{rankRender}</span>
+              </>
+            )}
             <Link
               href={`/apps/${(isOfType<AppTrack>(row.original, ['username']) ? nameRender : row.original?.Bot?.username).replace('@', '')}`}
               className="inline-flex w-fit items-center gap-2"

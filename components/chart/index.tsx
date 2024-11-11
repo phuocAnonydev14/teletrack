@@ -96,7 +96,7 @@ export function Chart(props: CharProps) {
                 <YAxis
                   tickLine={false}
                   axisLine={false}
-                  tickFormatter={(val) => formatNumber(val, true).replace('0', '')}
+                  tickFormatter={(val) => formatNumber(val, true)}
                   width={35}
                 />
               </>
