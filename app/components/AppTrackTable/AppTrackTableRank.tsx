@@ -1,7 +1,7 @@
 'use client';
 
 import { BookMarkIcon } from '@/components/icons';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Tooltip, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useState } from 'react';
 import ArrowUp from '@/components/assets/table/arrow-up.png';
 import ArrowDown from '@/components/assets/table/arrow-down.png';
@@ -23,14 +23,7 @@ interface AppTrackTableRankProps {
 }
 
 export const AppTrackTableRank = (props: AppTrackTableRankProps) => {
-  const {
-    isGlobalRank,
-    username,
-    rank,
-    rankChange,
-    isBookmarked: initBookmarked,
-    bookMarkAction,
-  } = props;
+  const { username, rank, rankChange, isBookmarked: initBookmarked, bookMarkAction } = props;
   const [isBookmarked, setIsBookmarked] = useState(initBookmarked);
   const ArrowImage = rankChange > 0 ? ArrowUp : ArrowDown;
   const matches = useMediaQuery(`(max-width: 1024px)`);
@@ -65,7 +58,7 @@ export const AppTrackTableRank = (props: AppTrackTableRankProps) => {
       </div>
 
       {!matches && (
-        <div className="text-base font-bold">
+        <div className="text-base font-medium">
           <span>{rank}</span>
         </div>
       )}
@@ -79,7 +72,10 @@ export const AppTrackTableRank = (props: AppTrackTableRankProps) => {
             height={ArrowImage.height}
           />
           <p
-            className={cn('text-base font-bold text-[#1DC467]', rankChange < 0 && 'text-[#F73131]')}
+            className={cn(
+              'text-base font-medium text-[#1DC467]',
+              rankChange < 0 && 'text-[#F73131]',
+            )}
           >
             {Math.abs(rankChange)}
           </p>

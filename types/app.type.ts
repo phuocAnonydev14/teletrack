@@ -41,6 +41,12 @@ export interface AppWatch {
   Name: string;
 }
 
+export interface Stats {
+  mau_change: number;
+  gainers: number;
+  losers: number;
+}
+
 export interface AppHistory {
   Bot: Record<string, number>;
   Channel: Record<string, number>;

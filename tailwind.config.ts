@@ -64,6 +64,7 @@ const config: Config = {
         analysisBg: 'hsl(var(--analysis-bg))',
         analysisForeground: 'hsl(var(--analysis-foreground))',
         tooltipBg: 'hsla(var(--tooltip-bg))',
+        statsBg: 'hsl(var(--stats-bg))',
       },
       backgroundImage: {
         btnPrimary: 'var(--btn-primary)',

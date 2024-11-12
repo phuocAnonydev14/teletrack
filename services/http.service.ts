@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosRequestConfig } from 'axios';
-import { getCookie, getCookies } from 'cookies-next';
+import { getCookie } from 'cookies-next';
 import axiosRetry from 'axios-retry';
 import { CacheRequestConfig, setupCache } from 'axios-cache-interceptor';
 import { HttpMethodEnum, TokenEnum } from '@/common/enums/app.enum';

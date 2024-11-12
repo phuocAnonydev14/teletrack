@@ -23,7 +23,7 @@ export const CommonTable = (props: CommonTableProps) => {
   return (
     <Table className="bg-[#3A485680]">
       <TableHeader>
-        {table.getHeaderGroups().map((headerGroup, index) => (
+        {table.getHeaderGroups().map((headerGroup) => (
           <TableRow
             style={{ backgroundColor: '#3A485680' }}
             className="border-tableBorder"

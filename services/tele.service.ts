@@ -68,6 +68,12 @@ class TeleService extends HttpService {
       false,
     );
   }
+
+  async getStats() {
+    return await this.get<ResponseData<{ mau_change: number; gainers: number; losers: number }>>(
+      '/app/stats',
+    );
+  }
 }
 
 export const teleService = new TeleService();

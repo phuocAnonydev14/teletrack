@@ -10,7 +10,6 @@ import { SearchPopover } from '@/app/compare/components/SearchPopover';
 import { LoadingIcon } from '@/components/icons';
 import { teleService } from '@/services/tele.service';
 import { getLogoUrl } from '@/lib/utils/image.util';
-import { useSearchParams } from 'next/navigation';
 import { cn } from '@/lib/utils/utils';
 import { RecentSearch } from '@/components/common/RecentSearch';
 import { useTheme } from 'next-themes';
@@ -28,24 +27,8 @@ export const SelectApp = (props: SelectAppProps) => {
   const [isFocus, setIsFocus] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
   const [searchData, setSearchData] = useState<string[]>([]);
-  const searchParams = useSearchParams();
-  const initApp = searchParams.get('app');
 
   useClickOutside(ref, () => setIsFocus(false));
-
-  // const handleCheckInitApp = async () => {
-  //   try {
-  //     if (typeof initApp !== 'string') return;
-  //     await teleService.getAppDetail(initApp);
-  //     setResults([initApp]);
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   handleCheckInitApp().finally();
-  // }, [initApp]);
 
   const handleSearch = async () => {
     try {

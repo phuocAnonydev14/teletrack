@@ -18,15 +18,25 @@ const fetchTop50 = async () => {
   }
 };
 
+const fetchStats = async () => {
+  try {
+    const res = await teleService.getStats();
+    console.log('res', res);
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+};
+
 export default async function Home() {
   const { data, total } = await fetchTop50();
-
-  if (!data) return;
+  const stats = await fetchStats();
+  if (!data || !stats) return;
   return (
     <Container isMobileDisablePx>
       <div className="flex flex-col lg:gap-[50px]">
         {/*<TopSection />*/}
-        <AppTrackTable data={data} total={total} />
+        <AppTrackTable stats={stats} data={data} total={total} />
       </div>
     </Container>
   );

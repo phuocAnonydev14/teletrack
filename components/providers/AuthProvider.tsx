@@ -4,7 +4,7 @@ import { authService } from '@/services/auth.service';
 import { jwtDecode } from 'jwt-decode';
 import { deleteCookie, getCookie, setCookie } from 'cookies-next';
 import { TokenEnum } from '@/common/enums/app.enum';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { LoginModal } from '@/components/auth/LoginModal';
@@ -23,7 +23,6 @@ export const AuthProvider = (props: PropsWithChildren) => {
   const { children } = props;
   const [authId] = useQueryState('auth');
   const [user, setUser] = useState<{ name: string; id: string }>({ name: '', id: '' });
-  const pathname = usePathname();
   const router = useRouter();
   const [openLogin, setOpenLogin] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);

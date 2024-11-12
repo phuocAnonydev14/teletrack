@@ -16,7 +16,7 @@ interface Props {
 }
 
 export function SortableItem({ row, index }: Props) {
-  const { attributes, listeners, transform, transition, setNodeRef, isDragging } = useSortable({
+  const { attributes, listeners, transform, transition, setNodeRef } = useSortable({
     id: row.original.id || '',
   } as any);
   const matches = useMediaQuery(`(max-width: 1024px)`);

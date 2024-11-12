@@ -1,6 +1,6 @@
 'use client';
 
-import { AppDetail, AppTrack } from '@/types/app.type';
+import { AppDetail, AppTrack, Stats } from '@/types/app.type';
 import {
   Column,
   ColumnDef,
@@ -23,6 +23,7 @@ import { getLogoUrl } from '@/lib/utils/image.util';
 import { AppTrackTableRank } from '@/app/components/AppTrackTable/AppTrackTableRank';
 import { useMediaQuery } from 'usehooks-ts';
 import { teleService } from '@/services/tele.service';
+import { StatsOverall } from '@/app/components/AppTrackTable/StatsOverall';
 
 const tagRanks = {
   users: TableCategory.USERS,
@@ -32,6 +33,7 @@ const tagRanks = {
 interface AppTrackTableProps {
   data: AppDetail[];
   total: number;
+  stats: Stats;
 }
 
 export const getCommonPinningStyles = (column: Column<any>, status?: boolean): CSSProperties => {
@@ -56,7 +58,7 @@ export const getCommonPinningStyles = (column: Column<any>, status?: boolean): C
 };
 
 export const AppTrackTable = (props: AppTrackTableProps) => {
-  const { total } = props;
+  const { total, stats } = props;
   const [sorting, setSorting] = useState<SortingState>([]);
   const [selectedCate, setSelectedCate] = useQueryState('q');
   const [appTracks, setAppTracks] = useState<(AppTrack | AppDetail)[]>(
@@ -125,7 +127,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
                 {/*  }*/}
                 {/*  isBookmarked={false}*/}
                 {/*/>*/}
-                <p className="w-[20px] text-base font-semibold">{rankRender}</p>
+                <p className="w-[20px] text-base font-medium">{rankRender}</p>
               </div>
             )}
             <Link
@@ -151,7 +153,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
               {/*    {rankRender}*/}
               {/*  </div>*/}
               {/*)}*/}
-              <span className="inline max-w-[80px] overflow-hidden truncate overflow-ellipsis whitespace-nowrap text-base font-semibold leading-none sm:min-w-[20px] sm:max-w-[150px] lg:max-w-[20dvw]">
+              <span className="inline max-w-[80px] overflow-hidden truncate overflow-ellipsis whitespace-nowrap text-base font-medium leading-none sm:min-w-[20px] sm:max-w-[150px] lg:max-w-[20dvw]">
                 {nameRender}
               </span>
               <div className="hidden min-w-[20px] lg:block">
@@ -394,25 +396,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
 
   return (
     <div>
-      {/*<div className="flex items-center justify-center gap-3 border-4 border-tableBorder bg-tableBg px-8 py-3 text-primary-foreground">*/}
-      {/*  <p className="text-xl font-bold">Ranked By:</p>*/}
-      {/*  <RadioGroup>*/}
-      {/*    <div className="flex items-center gap-5 rounded-xl bg-rankTagBg px-5 py-2">*/}
-      {/*      {Object.keys(tagRanks).map((rank) => {*/}
-      {/*        return (*/}
-      {/*          <TagRank*/}
-      {/*            selectedCate={selectedCate || ''}*/}
-      {/*            key={rank}*/}
-      {/*            name={rank}*/}
-      {/*            action={() => {*/}
-      {/*              setSelectedCate((state) => (state === rank ? '' : rank));*/}
-      {/*            }}*/}
-      {/*          />*/}
-      {/*        );*/}
-      {/*      })}*/}
-      {/*    </div>*/}
-      {/*  </RadioGroup>*/}
-      {/*</div>*/}
+      <StatsOverall stats={stats} />
       <CommonTable table={table}>
         {table.getRowModel().rows?.length ? (
           table.getRowModel().rows.map((row, index) => {
