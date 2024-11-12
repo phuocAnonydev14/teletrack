@@ -17,7 +17,18 @@ export const metadata: Metadata = {
     'Mini app performance',
     'Active user statistics',
   ],
-  icons: logo.src,
+  icons: {
+    icon: [
+      {
+        url: logo.src,
+        media: '(prefers-color-scheme: light)',
+      },
+      {
+        url: logo.src,
+        media: '(prefers-color-scheme: dark)',
+      },
+    ],
+  },
 };
 const catamaranFont = Catamaran({ subsets: ['latin'], display: 'swap' });
 export default function RootLayout({

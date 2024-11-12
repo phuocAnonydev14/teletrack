@@ -41,7 +41,7 @@ export function Chart(props: CharProps) {
             {amount && (matches ? formatNumber(amount) : formatNumberWithSpacing(amount))}
           </p>
         </div>
-        {username && <CompareNavigate username={username} />}
+        {!matchExtraSmall && username && <CompareNavigate username={username} />}
       </div>
       <CardContent className="h-full overflow-hidden px-0 py-0">
         <div
@@ -51,33 +51,43 @@ export function Chart(props: CharProps) {
             isCompare ? 'px-4 lg:px-6' : '',
           )}
         >
-          <div className={cn('flex w-[30%] flex-col gap-2 md:w-[15%]', isCompare ? 'hidden' : '')}>
-            <div className="flex justify-between gap-3">
-              <p
-                className={cn('font-semibold', todayChange < 0 ? 'text-red-500' : 'text-green-500')}
-              >
-                {todayChange < 0 ? '-' : '+'}
-                {formatNumber(
-                  chartData[chartData.length - 1]?.amount - chartData[chartData.length - 2]?.amount,
-                  true,
-                )}
-              </p>
-              <p className="font-medium text-gray-500">today</p>
+          <div className="flex justify-between">
+            <div className={cn('flex w-max flex-col gap-2', isCompare ? 'hidden' : '')}>
+              <div className="flex justify-between gap-5 md:gap-10">
+                <p
+                  className={cn(
+                    'font-semibold',
+                    todayChange < 0 ? 'text-red-500' : 'text-green-500',
+                  )}
+                >
+                  {todayChange < 0 ? '-' : '+'}
+                  {formatNumber(
+                    chartData[chartData.length - 1]?.amount -
+                      chartData[chartData.length - 2]?.amount,
+                    true,
+                  )}
+                </p>
+                <p className="font-medium text-gray-500">today</p>
+              </div>
+              <div className="flex justify-between gap-3">
+                <p
+                  className={cn(
+                    'font-semibold',
+                    difference < 0 ? 'text-red-500' : 'text-green-500',
+                  )}
+                >
+                  {difference < 0 ? '-' : '+'}
+                  {formatNumber(difference, true)}
+                </p>
+                <p className="font-medium text-gray-500">week</p>
+              </div>
             </div>
-            <div className="flex justify-between gap-3">
-              <p
-                className={cn('font-semibold', difference < 0 ? 'text-red-500' : 'text-green-500')}
-              >
-                {difference < 0 ? '-' : '+'}
-                {formatNumber(difference, true)}
-              </p>
-              <p className="font-medium text-gray-500">week</p>
-            </div>
+            {matchExtraSmall && username && <CompareNavigate username={username} />}
           </div>
           <ChartContainer
             config={chartConfig}
             className={cn(
-              'h-[150px] w-[70%] md:w-full lg:h-[300px]',
+              'h-[150px] w-[75%] md:w-full lg:h-[300px]',
               isCompare || matchExtraSmall ? 'w-full' : '',
             )}
           >

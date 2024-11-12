@@ -18,7 +18,6 @@ import { TableCategory } from '@/common/enums/tableCategory';
 import Link from 'next/link';
 import { BadgeIcon } from '@/components/icons';
 import { CommonTable } from '@/components/table';
-import { DataTablePagination } from '@/components/common/DataPagnation';
 import { getLogoUrl } from '@/lib/utils/image.util';
 import { AppTrackTableRank } from '@/app/components/AppTrackTable/AppTrackTableRank';
 import { useMediaQuery } from 'usehooks-ts';

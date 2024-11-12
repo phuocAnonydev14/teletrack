@@ -54,7 +54,7 @@ export const SelectApp = (props: SelectAppProps) => {
           {loading ? <LoadingIcon /> : <Search size={20} />}
         </div>
         <Input
-          placeholder="Enter bot you want to compare here..."
+          placeholder="Enter bot to compare..."
           className="bg-white pl-10 pr-4"
           onFocus={() => {
             setIsFocus(true);
@@ -119,7 +119,7 @@ export const SelectedBtn = ({
     <Button
       variant="secondary"
       className={cn(
-        'flex items-center gap-2 bg-[#BEFCFF] font-bold text-[#0F0F0F] hover:bg-[#9ff7fb] hover:text-[#0F0F0F]',
+        'flex items-center gap-2 bg-[#BEFCFF] font-medium text-[#0F0F0F] hover:bg-[#9ff7fb] hover:text-[#0F0F0F]',
         isRecent &&
           `${isDark ? 'bg-[#394551]' : 'bg-tableBg'} ${isDark ? 'text-white' : 'text-black'}`,
       )}
