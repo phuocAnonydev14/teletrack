@@ -434,12 +434,12 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
           </TableRow>
         )}
       </CommonTable>
-      <DataTablePagination
-        total={totalState}
-        fetchAction={handleFetchPost}
-        table={table}
-        limit={10}
-      />
+      {/*<DataTablePagination*/}
+      {/*  total={totalState}*/}
+      {/*  fetchAction={handleFetchPost}*/}
+      {/*  table={table}*/}
+      {/*  limit={10}*/}
+      {/*/>*/}
     </div>
   );
 };

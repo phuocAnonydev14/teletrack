@@ -21,17 +21,17 @@ interface DataTablePaginationProps<TData> {
 export function DataTablePagination<TData>(props: DataTablePaginationProps<TData>) {
   const { table, fetchAction, total, limit } = props;
   const [currentPage, setCurrentPage] = useQueryState('page', {
-    defaultValue: '1',
+    parse: (value) => Number(value) || 1,
+    defaultValue: 1,
   });
   const maxPage = Math.floor(total / limit) + 1;
 
   const handleFetchPage = async (page: number) => {
     await fetchAction(page);
-    await setCurrentPage(page.toString());
+    await setCurrentPage(page);
   };
 
   if (!total) return null;
-
   return (
     <div className="mt-5 flex w-full items-center justify-end px-2">
       <div className="flex items-center space-x-6 lg:space-x-8">
@@ -56,7 +56,7 @@ export function DataTablePagination<TData>(props: DataTablePaginationProps<TData
         {/*  </Select>*/}
         {/*</div>*/}
         <div className="flex w-[100px] items-center justify-center text-[16px] font-medium">
-          Page {currentPage} of {maxPage}
+          Page {currentPage || 1} of {maxPage}
         </div>
         <div className="flex items-center space-x-1">
           <Button
@@ -64,7 +64,7 @@ export function DataTablePagination<TData>(props: DataTablePaginationProps<TData
             variant="link"
             className="hidden w-10 border-gray-400 p-0 md:h-2 lg:flex"
             onClick={() => handleFetchPage(1)}
-            disabled={+currentPage === 1}
+            disabled={+(currentPage || 1) === 1}
           >
             <span className="sr-only">Go to first page</span>
             <DoubleArrowLeftIcon className="h-4 w-4" />
@@ -72,7 +72,7 @@ export function DataTablePagination<TData>(props: DataTablePaginationProps<TData
           <Button
             size="icon"
             variant="link"
-            onClick={async () => handleFetchPage(+currentPage - 1)}
+            onClick={async () => handleFetchPage(+(currentPage || 1) - 1)}
             disabled={+currentPage === 1}
             className="border-gray-400 p-0 px-2"
           >

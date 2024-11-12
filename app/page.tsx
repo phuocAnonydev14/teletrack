@@ -21,7 +21,6 @@ const fetchTop50 = async () => {
 const fetchStats = async () => {
   try {
     const res = await teleService.getStats();
-    console.log('res', res);
     return res.data;
   } catch (e) {
     return null;
