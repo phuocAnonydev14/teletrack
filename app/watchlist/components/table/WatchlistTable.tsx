@@ -48,7 +48,7 @@ export const WatchlistTable = (props: AppTrackTableProps) => {
     {
       accessorKey: 'rank',
       header: () => <div className="w-full text-center">{matches ? '' : 'Rank'}</div>,
-      cell: ({ row, renderValue }) => {
+      cell: ({ row }) => {
         return (
           <AppTrackTableRank
             username={row.original.Bot.username}
@@ -68,7 +68,7 @@ export const WatchlistTable = (props: AppTrackTableProps) => {
       id: 'username',
       accessorKey: 'username',
       header: 'Name',
-      cell: ({ row, renderValue }) => {
+      cell: ({ row }) => {
         const appTrack = row.original;
         const nameRender = (
           isOfType<AppTrack>(appTrack, ['username']) ? appTrack.username : appTrack.Name
@@ -143,7 +143,7 @@ export const WatchlistTable = (props: AppTrackTableProps) => {
           </div>
         );
       },
-      cell: ({ row, renderValue }) => {
+      cell: ({ row }) => {
         const mauRender = isOfType<AppTrack>(row.original, ['users'])
           ? row.original.users
           : 'Bot' in row.original
@@ -174,7 +174,7 @@ export const WatchlistTable = (props: AppTrackTableProps) => {
           </div>
         );
       },
-      cell: ({ row, renderValue }) => {
+      cell: ({ row }) => {
         const changeRender = isOfType<AppTrack>(row.original, ['change'])
           ? row.original.change
           : 'Bot' in row.original
@@ -205,7 +205,7 @@ export const WatchlistTable = (props: AppTrackTableProps) => {
       id: 'totalSub',
       accessorKey: 'totalSub',
       header: () => <p className="w-full text-center">Channel Subscribers</p>,
-      cell: ({ row, renderValue }) => {
+      cell: ({ row }) => {
         const totalSubRender = isOfType<AppTrack>(row.original, ['users'])
           ? row.original.users
           : 'Channel' in row.original
@@ -232,7 +232,7 @@ export const WatchlistTable = (props: AppTrackTableProps) => {
       id: 'daySub',
       accessorKey: 'daySub',
       header: () => <p className="w-full text-center">Channel Today</p>,
-      cell: ({ row, renderValue }) => {
+      cell: ({ row }) => {
         const changeRender = isOfType<AppTrack>(row.original, ['change'])
           ? row.original.change
           : 'Channel' in row.original
@@ -265,7 +265,7 @@ export const WatchlistTable = (props: AppTrackTableProps) => {
       id: 'fdv',
       accessorKey: 'fdv',
       header: () => <p className="w-full text-center">FDV</p>,
-      cell: ({ row, renderValue }) => {
+      cell: ({ row }) => {
         const fdvRender = isOfType<AppTrack>(row.original, ['rank'])
           ? 'N/A'
           : 'FDV' in row.original
@@ -340,11 +340,12 @@ export const WatchlistTable = (props: AppTrackTableProps) => {
   useEffect(() => {
     withAuth(() => {});
     if (matches) {
+      table.getColumn('rank')?.pin('left');
       table.getColumn('username')?.pin('left');
     } else {
       table.getColumn('username')?.pin(false);
     }
-  }, []);
+  }, [matches]);
 
   return (
     <div>

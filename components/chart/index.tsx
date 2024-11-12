@@ -26,8 +26,7 @@ export function Chart(props: CharProps) {
   const { chartData, chartConfig, title, amount, isCompare, username } = props;
   const matches = useMediaQuery('(max-width: 728px)');
   const matchExtraSmall = useMediaQuery('(max-width: 400px)');
-  const todayChange =
-    chartData[chartData.length - 1]?.amount - chartData[chartData.length - 2]?.amount;
+  const todayChange = chartData[chartData.length - 1]?.mau - chartData[chartData.length - 2]?.mau;
   const { difference } = calculateWeekDifference(chartData);
 
   return (
@@ -61,11 +60,7 @@ export function Chart(props: CharProps) {
                   )}
                 >
                   {todayChange < 0 ? '-' : '+'}
-                  {formatNumber(
-                    chartData[chartData.length - 1]?.amount -
-                      chartData[chartData.length - 2]?.amount,
-                    true,
-                  )}
+                  {formatNumber(todayChange, true)}
                 </p>
                 <p className="font-medium text-gray-500">today</p>
               </div>

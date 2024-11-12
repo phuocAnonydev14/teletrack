@@ -15,8 +15,8 @@ export const Logo = () => {
     <Image
       src={isDarkTheme ? logoDark.src : logoLight.src}
       alt="Teletrack Logo"
-      width={matches ? 100 : logoLight.width}
-      height={matches ? 100 : logoLight.height}
+      width={matches ? 130 : 200}
+      height={matches ? 130 : 200}
     />
   );
 };

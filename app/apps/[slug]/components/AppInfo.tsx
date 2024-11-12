@@ -9,6 +9,10 @@ import Link from 'next/link';
 import { getLogoUrl } from '@/lib/utils/image.util';
 import { useMediaQuery } from 'usehooks-ts';
 import { useTheme } from 'next-themes';
+import Image from 'next/image';
+import ArrowUp from '@/components/assets/table/arrow-up.png';
+import ArrowDown from '@/components/assets/table/arrow-down.png';
+import { ReactNode } from 'react';
 
 interface AppInfoProps {
   appDetail: AppDetail;
@@ -17,12 +21,31 @@ interface AppInfoProps {
 export const AppInfo = (props: AppInfoProps) => {
   const { appDetail } = props;
   const matches = useMediaQuery(`(max-width: 728px)`);
-  console.log('appDetail', appDetail);
+  const ArrowImage = appDetail.Bot.rankChange > 0 ? ArrowUp : ArrowDown;
 
-  const metricList = [
+  const metricList: MetricBox[] = [
     {
       name: 'Global Rank by Users',
       amount: '#' + appDetail.Bot.rank,
+      customContent: appDetail.Bot.rankChange > 0 && (
+        <div className="flex items-center gap-1">
+          <Image
+            className="-translate-y-[1px]"
+            src={ArrowImage.src}
+            alt="Arrow up"
+            width={ArrowImage.width}
+            height={ArrowImage.height}
+          />
+          <p
+            className={cn(
+              'text-base font-medium text-[#1DC467]',
+              appDetail.Bot.rankChange < 0 && 'text-[#F73131]',
+            )}
+          >
+            {Math.abs(appDetail.Bot.rankChange)}
+          </p>
+        </div>
+      ),
     },
     {
       name: 'MAU',
@@ -97,7 +120,14 @@ export const AppInfo = (props: AppInfoProps) => {
         <div className="my-6 h-[1px] w-full bg-[#525961] lg:my-9" />
         <div className="flex flex-wrap gap-3 lg:gap-6">
           {metricList.map((item) => {
-            return <MetricBox name={item.name} amount={item.amount} key={item.name} />;
+            return (
+              <MetricBox
+                name={item.name}
+                amount={item.amount}
+                key={item.name}
+                customContent={item?.customContent}
+              />
+            );
           })}
         </div>
       </div>
@@ -108,20 +138,21 @@ export const AppInfo = (props: AppInfoProps) => {
 interface MetricBox {
   name: string;
   amount: string;
+  customContent?: ReactNode;
 }
 
 const MetricBox = (props: MetricBox) => {
-  const { amount, name } = props;
+  const { amount, name, customContent } = props;
   const { resolvedTheme } = useTheme();
   return (
     <div className="flex min-w-[40%] flex-1 flex-col rounded-xl bg-appInfoMetric px-4 py-[10px] lg:min-w-[30%]">
       <p
         className={cn(
-          'text-lg font-bold text-secondary lg:text-2xl',
+          'flex items-center gap-3 text-lg font-bold text-secondary lg:text-2xl',
           resolvedTheme === 'dark' && 'text-linear',
         )}
       >
-        {amount}
+        {amount} {customContent}
       </p>
       <p className="text-base font-semibold lg:text-lg">{name}</p>
     </div>

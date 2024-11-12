@@ -12,8 +12,8 @@ const chartConfig = {
   date: {
     label: 'DATE',
   },
-  amount: {
-    label: 'AMOUNT',
+  mau: {
+    label: 'MAU',
   },
 } satisfies ChartConfig;
 
@@ -46,9 +46,9 @@ export const AppDetailChart = (props: AppDetailChartProps) => {
     <div className="flex flex-col gap-5 lg:gap-10">
       <Chart
         chartConfig={chartConfig}
-        chartData={Object.entries(history.Bot).map(([date, amount]) => ({
+        chartData={Object.entries(history.Bot).map(([date, mau]) => ({
           date: showDateChart(date),
-          amount,
+          mau,
         }))}
         title="USERS"
         amount={appDetail.Bot.users}
@@ -56,9 +56,9 @@ export const AppDetailChart = (props: AppDetailChartProps) => {
       />
       <Chart
         chartConfig={chartConfig}
-        chartData={Object.entries(history.Channel).map(([date, amount]) => ({
+        chartData={Object.entries(history.Channel).map(([date, mau]) => ({
           date: showDateChart(date),
-          amount,
+          mau,
         }))}
         title="SUBSCRIBERS"
         amount={appDetail.Channel.users}

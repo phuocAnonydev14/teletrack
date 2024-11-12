@@ -1,6 +1,5 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { AppDetail, AppTrack } from '@/types/app.type';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -34,10 +33,6 @@ export const formatNumber = (num: number | string, isNotPlus = false): string =>
   }
 
   return `${formatted}${suffix}`;
-};
-
-export const isAppTrackType = (item: AppTrack | AppDetail): item is AppTrack => {
-  return 'username' in item;
 };
 
 export const isOfType = <T>(data: any, keys: (keyof T)[]): data is T => {

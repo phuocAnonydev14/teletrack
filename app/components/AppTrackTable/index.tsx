@@ -115,7 +115,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
           ? appTrack.rank
           : appTrack?.Order || 0;
         return (
-          <div className="flex min-w-fit items-center gap-2 overflow-hidden pr-2">
+          <div className="flex min-w-fit items-center gap-2 overflow-hidden pr-0">
             {matches && (
               <div className="w-[17px]">
                 {/*<BookmarkTooltip*/}
@@ -152,7 +152,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
               {/*    {rankRender}*/}
               {/*  </div>*/}
               {/*)}*/}
-              <span className="inline max-w-[80px] overflow-hidden truncate overflow-ellipsis whitespace-nowrap text-base font-medium leading-none sm:min-w-[20px] sm:max-w-[150px] lg:max-w-[20dvw]">
+              <span className="inline max-w-[100px] overflow-hidden truncate overflow-ellipsis whitespace-nowrap text-base font-medium leading-none sm:min-w-[20px] sm:max-w-[150px] lg:max-w-[20dvw]">
                 {nameRender}
               </span>
               <div className="hidden min-w-[20px] lg:block">
@@ -305,12 +305,12 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
       header: () => <p className="w-full text-center">FDV</p>,
       cell: ({ row, renderValue }) => {
         const fdvRender = isOfType<AppTrack>(row.original, ['rank'])
-          ? 'N/A'
+          ? ''
           : 'FDV' in row.original
             ? row.original?.FDV
               ? '$' + formatNumber(row.original?.FDV, true)
-              : 'N/A'
-            : 'N/A';
+              : ''
+            : '';
         return <p className="w-full text-end text-base font-medium xl:text-center">{fdvRender}</p>;
       },
       sortingFn: (rowA: any, rowB: any, columnId) => {

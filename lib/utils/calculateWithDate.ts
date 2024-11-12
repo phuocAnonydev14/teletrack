@@ -14,9 +14,9 @@ export function calculateWeekDifference(data: DataEntry[]) {
 
   data.map((entry, index) => {
     if (index <= 6) {
-      lastWeekSum += entry.amount;
+      lastWeekSum += entry.mau;
     } else if (index <= 13) {
-      previousWeekSum += entry.amount;
+      previousWeekSum += entry.mau;
     }
   });
 

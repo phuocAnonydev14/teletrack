@@ -4,7 +4,7 @@ import { Logo } from '@/components/layouts/MainLayout/Logo';
 export const Footer = () => {
   return (
     <div className="mt-10 bg-homeMenuBg p-10">
-      <div className="flex flex-wrap items-center justify-between gap-5">
+      <div className="flex flex-wrap items-start justify-between gap-5">
         <Link href={'/'}>
           <Logo />
         </Link>
@@ -27,7 +27,13 @@ export const Footer = () => {
           @teletrending_bot
         </Link>
       </div>
-      <p className="mt-4 text-center text-gray-600"> All rights reserved.</p>
+      <p className="mt-4 flex items-center justify-center gap-x-1 text-center text-gray-600">
+        {' '}
+        Copyright ©|{' '}
+        <Link className="underline" href="https://playable.gg/" target="_blank">
+          Playable Studio.
+        </Link>
+      </p>
     </div>
   );
 };

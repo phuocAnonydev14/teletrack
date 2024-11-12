@@ -4,7 +4,7 @@ import { MainLayout } from '@/components/layouts/MainLayout';
 import { Catamaran } from 'next/font/google';
 import { Suspense } from 'react';
 import { AppProviders } from '@/components/providers/AppProviders';
-import logo from '@/components/assets/logo-dark.png';
+import logo from './favicon.ico';
 
 export const metadata: Metadata = {
   title: 'Tgecko',

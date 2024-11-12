@@ -40,7 +40,6 @@ export async function generateMetadata(
   const logo = getLogoUrl(data.Bot.username.replace('@', ''));
 
   return {
-    // title: data?.Name || 'App',
     openGraph: {
       images: [logo, ...previousImages],
       description: `Explore ${data.Name} on Telegram. Track engagement, growth, and channel metrics on Tgecko.`,
@@ -52,16 +51,6 @@ export async function generateMetadata(
       title: data.Name,
     },
     description: `Explore ${data.Name} on Telegram. Track engagement, growth, and channel metrics on Tgecko.`,
-    // icons: [logo],
-    keywords: [
-      data.Name,
-      data?.Bot.username || '',
-      'Tgecko',
-      'analytics',
-      'Telegram mini apps tracker',
-      'Mini app performance',
-      'Active user statistics',
-    ],
   };
 }
 

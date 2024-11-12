@@ -19,20 +19,26 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useMediaQuery } from 'usehooks-ts';
 export const Header = () => {
   const [openLogin, setOpenLogin] = useState(false);
   const [isOpenSheet, setIsOpenSheet] = useState(false);
   const [openSearchModal, setOpenSearchModal] = useState(false);
   const { name, id, handleLogout } = useAuthContext();
+  const matches = useMediaQuery(`(max-width: 400px)`);
 
   return (
     <div className="flex items-center justify-between gap-3 py-4">
       <div className="flex items-center gap-2">
-        <div className="block md:hidden">
+        <div className="block h-max md:hidden">
           <Sheet open={isOpenSheet} onOpenChange={setIsOpenSheet}>
             <SheetTrigger>
               {/*<Button size="icon" variant="secondary">*/}
-              <MenuIcon />
+              <MenuIcon
+                className="translate-y-1"
+                width={matches ? '16' : '20'}
+                height={matches ? '16' : '20'}
+              />
               {/*</Button>*/}
             </SheetTrigger>
             <SheetContent side="left" className={'bg-homeMenuBg'}>
@@ -52,8 +58,8 @@ export const Header = () => {
         <div className="block md:hidden">
           <Dialog open={openSearchModal} onOpenChange={setOpenSearchModal}>
             <DialogTrigger asChild>
-              <Button size="icon" variant="secondary">
-                <SearchIcon />
+              <Button size={matches ? 'sm' : 'icon'} variant="secondary">
+                <SearchIcon width={matches ? '16' : '20'} height={matches ? '16' : '20'} />
               </Button>
             </DialogTrigger>
             <DialogContent className="top-[10%] min-w-[90dvw]">
@@ -69,7 +75,7 @@ export const Header = () => {
               <Button variant="ghost">
                 <p className="hidden md:block">{name}</p>
                 <div className="block md:hidden">
-                  <User />
+                  <User width={matches ? '16' : '20'} height={matches ? '16' : '20'} />
                 </div>
               </Button>
             </DropdownMenuTrigger>
@@ -79,6 +85,7 @@ export const Header = () => {
           </DropdownMenu>
         ) : (
           <Button
+            size={matches ? 'sm' : 'default'}
             className="flex items-center gap-1 font-semibold"
             onClick={() => setOpenLogin(true)}
           >

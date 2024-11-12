@@ -2,6 +2,7 @@ import { teleService } from '@/services/tele.service';
 import { AppDetail } from '@/types/app.type';
 import { AppTrackTable } from '@/app/components/AppTrackTable';
 import { Container } from '@/components/common/Container';
+import { calculateStats } from '@/lib/utils/calculateStats';
 
 const fetchTop50 = async () => {
   try {
@@ -18,19 +19,12 @@ const fetchTop50 = async () => {
   }
 };
 
-const fetchStats = async () => {
-  try {
-    const res = await teleService.getStats();
-    return res.data;
-  } catch (e) {
-    return null;
-  }
-};
-
 export default async function Home() {
   const { data, total } = await fetchTop50();
-  const stats = await fetchStats();
-  if (!data || !stats) return;
+  if (!data) return;
+  const stats = calculateStats(
+    data.map((item) => ({ change: item.Bot.change || 0, users: item.Bot.users || 0 })),
+  );
   return (
     <Container isMobileDisablePx>
       <div className="flex flex-col lg:gap-[50px]">
