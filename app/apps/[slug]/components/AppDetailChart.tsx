@@ -29,7 +29,7 @@ export const AppDetailChart = (props: AppDetailChartProps) => {
   const handleFetchChartData = async () => {
     try {
       const { data } = await teleService.getAppHistory(slug.toString());
-      setHistory(data.data);
+      setHistory(data);
     } catch (e) {
       console.log(e);
     }
