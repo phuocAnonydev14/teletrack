@@ -81,7 +81,7 @@ export default function ComparePage() {
       });
       if (overflowResult) {
         const { data } = await teleService.getAppHistory(overflowResult);
-        setAppList((state) => [...state, { ...data.data, username: overflowResult }]);
+        setAppList((state) => [...state, { ...data, username: overflowResult }]);
       }
     } catch (e) {
       console.log(e);

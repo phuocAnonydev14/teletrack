@@ -13,7 +13,7 @@ const fetchAppDetail = async (username: string) => {
 export default async function AppDetailPage({ params }: { params: { slug: string } }) {
   const { slug } = params;
 
-  const { data } = await fetchAppDetail(slug);
+  const data = await fetchAppDetail(slug);
 
   if (!data) return;
   return (

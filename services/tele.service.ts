@@ -23,11 +23,11 @@ class TeleService extends HttpService {
   }
 
   async getAppDetail(username: string) {
-    return await this.get<ResponseData<{ data: AppDetail }>>(`/app/${username}`);
+    return await this.get<ResponseData<AppDetail>>(`/app/${username}`);
   }
 
   async getAppHistory(username: string) {
-    return await this.get<ResponseData<{ data: AppHistory }>>(`/app/${username}/history`);
+    return await this.get<ResponseData<AppHistory>>(`/app/${username}/history`);
   }
 
   async getWatchList() {

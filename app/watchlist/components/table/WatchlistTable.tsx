@@ -1,6 +1,6 @@
 'use client';
 
-import { AppDetail, AppTrack, AppWatch } from '@/types/app.type';
+import { AppTrack, AppWatch } from '@/types/app.type';
 import {
   ColumnDef,
   getCoreRowModel,
