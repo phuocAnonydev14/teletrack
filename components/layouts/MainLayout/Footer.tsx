@@ -43,7 +43,7 @@ export const Footer = () => {
       </div>
       <p className="mt-4 flex items-center justify-center gap-x-1 text-center text-gray-600">
         {' '}
-        Copyright ©|{' '}
+        Copyright © 2024 |{' '}
         <Link className="underline underline-offset-2" href="https://playable.gg/" target="_blank">
           Playable Studio.
         </Link>

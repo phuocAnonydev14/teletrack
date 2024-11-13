@@ -50,12 +50,12 @@ export async function generateMetadata(
 
   return {
     openGraph: {
-      images: [logo, ...previousImages],
+      images: [...previousImages, logo],
       description: `Explore ${data.Name} on Telegram. Track engagement, growth, and channel metrics on Botgecko.`,
       title: data.Name,
     },
     twitter: {
-      images: [logo, ...previousImages],
+      images: [...previousImages, logo],
       description: `Explore ${data.Name} on Telegram. Track engagement, growth, and channel metrics on Botgecko.`,
       title: data.Name,
     },

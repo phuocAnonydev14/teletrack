@@ -15,13 +15,13 @@ export async function generateMetadata(params: any, parent: ResolvingMetadata) {
       title: 'Botgecko',
       description:
         'Botgecko offers real-time analytics for tracking Telegram mini apps, focusing on user activity, growth trends, and performance insights.',
-      images: [sortLogo.src, ...previousImages],
+      images: [...previousImages, sortLogo.src],
     },
     twitter: {
       title: 'Botgecko',
       description:
         'Botgecko offers real-time analytics for tracking Telegram mini apps, focusing on user activity, growth trends, and performance insights.',
-      images: [sortLogo.src, ...previousImages],
+      images: [...previousImages, sortLogo.src],
     },
   };
 }
