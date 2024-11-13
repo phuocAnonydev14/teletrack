@@ -7,7 +7,7 @@ import logo from '@/app/favicon.ico';
 import sortLogo from '@/components/assets/short-logo.png';
 import { ResolvingMetadata } from 'next';
 
-export async function generateMetadata(parent: ResolvingMetadata) {
+export async function generateMetadata(params: any, parent: ResolvingMetadata) {
   const previousImages = (await parent).openGraph?.images || [];
 
   return {
