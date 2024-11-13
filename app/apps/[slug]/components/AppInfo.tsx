@@ -2,7 +2,7 @@
 
 import { BadgeIcon, BookMarkIcon } from '@/components/icons';
 import { Button } from '@/components/ui/button';
-import { PlusIcon } from 'lucide-react';
+import { Minus, MinusIcon, PlusIcon } from 'lucide-react';
 import { AppDetail } from '@/types/app.type';
 import { cn, formatNumber } from '@/lib/utils/utils';
 import Link from 'next/link';
@@ -12,7 +12,9 @@ import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import ArrowUp from '@/components/assets/table/arrow-up.png';
 import ArrowDown from '@/components/assets/table/arrow-down.png';
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
+import { teleService } from '@/services/tele.service';
+import { toast } from 'sonner';
 
 interface AppInfoProps {
   appDetail: AppDetail;
@@ -22,6 +24,17 @@ export const AppInfo = (props: AppInfoProps) => {
   const { appDetail } = props;
   const matches = useMediaQuery(`(max-width: 728px)`);
   const ArrowImage = appDetail.Bot.rankChange > 0 ? ArrowUp : ArrowDown;
+  const [isBookmarked, setIsBookmarked] = useState(false);
+  const handleToggleWatchList = async () => {
+    try {
+      if (isBookmarked) await teleService.unWatchList(appDetail.Bot.username);
+      else await teleService.addWatchList(appDetail.Bot.username);
+      toast.success(isBookmarked ? 'Removed from watchlist' : 'Added to watchlist');
+      setIsBookmarked(!isBookmarked);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const metricList: MetricBox[] = [
     {
@@ -106,14 +119,20 @@ export const AppInfo = (props: AppInfoProps) => {
           </div>
           <div className="flex flex-wrap items-center gap-3">
             <div className="flex items-center gap-[5px] rounded-xl bg-[#CCD8DA] px-3 py-1 text-black">
-              <BookMarkIcon fill="hsl(var(--app-info-button))" width={18} height={18} /> 2.2M
+              <BookMarkIcon fill="hsl(var(--app-info-button))" width={18} height={18} /> 0
             </div>
             <Button
               size="sm"
               className="flex gap-1 font-semibold text-appInfoButton"
               variant="outline"
+              onClick={handleToggleWatchList}
             >
-              <PlusIcon fill="hsl(var(--app-info-button))" size={18} /> Add To Watchlist
+              {isBookmarked ? (
+                <MinusIcon fill="hsl(var(--app-info-button))" size={18} />
+              ) : (
+                <PlusIcon fill="hsl(var(--app-info-button))" size={18} />
+              )}
+              {isBookmarked ? 'Unwatch' : 'Add To Watchlist'}
             </Button>
           </div>
         </div>

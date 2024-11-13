@@ -25,7 +25,7 @@ interface CharProps {
 export function Chart(props: CharProps) {
   const { chartData, chartConfig, title, amount, isCompare, username } = props;
   const matches = useMediaQuery('(max-width: 728px)');
-  const matchExtraSmall = useMediaQuery('(max-width: 400px)');
+  const matchExtraSmall = useMediaQuery('(max-width: 450px)');
   const todayChange = chartData[chartData.length - 1]?.mau - chartData[chartData.length - 2]?.mau;
   const difference = calculateWeekDifference(chartData);
 
@@ -45,7 +45,7 @@ export function Chart(props: CharProps) {
       <CardContent className="h-full overflow-hidden px-0 py-0">
         <div
           className={cn(
-            'flex h-[150px] w-full justify-between gap-4 pl-6 pr-2 lg:h-[300px]',
+            'flex w-full justify-between gap-4 pl-6 pr-2',
             matchExtraSmall ? 'flex-col' : '',
             isCompare ? 'px-4 lg:px-6' : '',
           )}

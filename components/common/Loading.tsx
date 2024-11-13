@@ -8,7 +8,7 @@ export const Loading = () => {
   const matches = useMediaQuery(`(max-width: 728px)`);
 
   return (
-    <div className="flex h-[80dvh] w-full flex-col items-center justify-center gap-2">
+    <div className="flex h-[90dvh] w-full flex-col items-center justify-center gap-2">
       <Image
         src={loading}
         height={matches ? 50 : 65}

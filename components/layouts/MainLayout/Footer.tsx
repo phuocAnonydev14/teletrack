@@ -10,7 +10,7 @@ export const Footer = () => {
         </Link>
         <div className="flex flex-col justify-start gap-x-10 gap-y-2 md:flex-row md:items-center">
           <Link href={'/compare'}>
-            <p className="text-lg font-semibold">Compare</p>
+            <p className="text-lg font-medium">Compare</p>
           </Link>
           <Link href={'/watchlist'}>
             <p className="text-lg font-semibold">Watchlist</p>
@@ -23,19 +23,19 @@ export const Footer = () => {
       <div className="mb-10 mt-2 h-[1px] w-full bg-foreground" />
       <div className="flex flex-col justify-center gap-x-5 gap-y-1 md:flex-row">
         <div className="flex justify-center gap-1 text-center">
-          <p className="font-bold text-foreground">Our bot:</p>
+          <p className="font-medium text-foreground">Our bot:</p>
           <Link className="text-linear" href={'https://t.me/botgecko_bot'} target="_blank">
             @botgecko_bot
           </Link>
         </div>
         <div className="flex justify-center gap-1 text-center">
-          <p className="font-bold text-foreground">Our channel:</p>
+          <p className="font-medium text-foreground">Our channel:</p>
           <Link className="text-linear" href={'https://t.me/botgecko_news'} target="_blank">
             @botgecko_news
           </Link>
         </div>
         <div className="flex justify-center gap-1 text-center">
-          <p className="font-bold text-foreground">Our tool:</p>
+          <p className="font-medium text-foreground">Our tool:</p>
           <Link className="text-linear" href={'https://tonsend.io/'} target="_blank">
             @tonsend.io
           </Link>

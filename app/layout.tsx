@@ -9,42 +9,46 @@ import { Loading } from '@/components/common/Loading';
 import Script from 'next/script';
 import { GA_KEY } from '@/common/const/envKeys';
 import { GoogleAnalytics } from '@next/third-parties/google';
-export const metadata: Metadata = {
-  title: 'Botgecko',
-  description:
-    'Botgecko offers real-time analytics for tracking Telegram mini apps, focusing on user activity, growth trends, and performance insights.',
-  keywords: [
-    'Botgecko',
-    'analytics',
-    'Telegram mini apps tracker',
-    'Mini app performance',
-    'Active user statistics',
-  ],
-  openGraph: {
+import sortLogo from '@/components/assets/short-logo.png';
+
+export async function generateMetadata() {
+  return {
     title: 'Botgecko',
     description:
       'Botgecko offers real-time analytics for tracking Telegram mini apps, focusing on user activity, growth trends, and performance insights.',
-    images: [logo.src],
-  },
-  twitter: {
-    title: 'Botgecko',
-    description:
-      'Botgecko offers real-time analytics for tracking Telegram mini apps, focusing on user activity, growth trends, and performance insights.',
-    images: [logo.src],
-  },
-  icons: {
-    icon: [
-      {
-        url: logo.src,
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: logo.src,
-        media: '(prefers-color-scheme: dark)',
-      },
+    keywords: [
+      'Botgecko',
+      'analytics',
+      'Telegram mini apps tracker',
+      'Mini app performance',
+      'Active user statistics',
     ],
-  },
-};
+    openGraph: {
+      title: 'Botgecko',
+      description:
+        'Botgecko offers real-time analytics for tracking Telegram mini apps, focusing on user activity, growth trends, and performance insights.',
+      images: [sortLogo.src],
+    },
+    twitter: {
+      title: 'Botgecko',
+      description:
+        'Botgecko offers real-time analytics for tracking Telegram mini apps, focusing on user activity, growth trends, and performance insights.',
+      images: [sortLogo.src],
+    },
+    icons: {
+      icon: [
+        {
+          url: logo.src,
+          media: '(prefers-color-scheme: light)',
+        },
+        {
+          url: logo.src,
+          media: '(prefers-color-scheme: dark)',
+        },
+      ],
+    },
+  };
+}
 
 const catamaranFont = Catamaran({ subsets: ['latin'], display: 'swap' });
 export default function RootLayout({

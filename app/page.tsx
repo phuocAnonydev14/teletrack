@@ -4,20 +4,24 @@ import { AppTrackTable } from '@/app/components/AppTrackTable';
 import { Container } from '@/components/common/Container';
 import { calculateStats } from '@/lib/utils/calculateStats';
 import logo from '@/app/favicon.ico';
+import sortLogo from '@/components/assets/short-logo.png';
+import { ResolvingMetadata } from 'next';
 
-export async function generateMetadata() {
+export async function generateMetadata(parent: ResolvingMetadata) {
+  const previousImages = (await parent).openGraph?.images || [];
+
   return {
     openGraph: {
       title: 'Botgecko',
       description:
         'Botgecko offers real-time analytics for tracking Telegram mini apps, focusing on user activity, growth trends, and performance insights.',
-      images: [logo.src],
+      images: [sortLogo.src, ...previousImages],
     },
     twitter: {
       title: 'Botgecko',
       description:
         'Botgecko offers real-time analytics for tracking Telegram mini apps, focusing on user activity, growth trends, and performance insights.',
-      images: [logo.src],
+      images: [sortLogo.src, ...previousImages],
     },
   };
 }
