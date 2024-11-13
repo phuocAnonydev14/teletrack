@@ -5,7 +5,6 @@ import * as React from 'react';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
 import { AuthProvider } from '@/components/providers/AuthProvider';
 import { Toaster } from '@/components/ui/sonner';
-
 export const AppProviders = (props: PropsWithChildren) => {
   const { children } = props;
   return (

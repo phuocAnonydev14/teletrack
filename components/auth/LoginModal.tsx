@@ -24,9 +24,9 @@ export const LoginModal = (props: LoginModalProps) => {
         <DialogHeader>
           <DialogTitle className="mb-2 text-3xl font-bold">LOGIN</DialogTitle>
           <DialogDescription className="bg-tableRowOdd p-8 font-semibold">
-            <p className="mb-2">You will be sent to a dialog with our @teletrending_bot.</p>
+            <p className="mb-2">You will be sent to a dialog with our @botgecko_bot.</p>
             <p>Press the /start button in the dialog with the bot</p>
-            <Link href={'https://t.me/teletrending_bot'} target="_blank">
+            <Link href={'https://t.me/botgecko_bot'} target="_blank">
               <Button className="mt-8 w-full">Sign In With Telegram</Button>
             </Link>
           </DialogDescription>

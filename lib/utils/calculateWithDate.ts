@@ -1,32 +1,23 @@
 type DataEntry = Record<any, any>;
 
 export function calculateWeekDifference(data: DataEntry[]) {
-  // const sortedData = data.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-  let lastWeekSum = 0,
-    previousWeekSum = 0,
-    difference = 0;
-  if (data.length < 8)
-    return {
-      lastWeekSum: 0,
-      previousWeekSum: 0,
-      difference: 0,
-    };
+  const dataDescent = [...data].reverse();
 
-  data.map((entry, index) => {
-    if (index <= 6) {
-      lastWeekSum += entry.mau;
-    } else if (index <= 13) {
-      previousWeekSum += entry.mau;
+  if (dataDescent.length === 0) return 0;
+
+  const todayMau = dataDescent[0].mau;
+
+  if (dataDescent[6]) {
+    return todayMau - dataDescent[6].mau;
+  }
+
+  for (let i = 1; i < dataDescent.length && i <= 6; i++) {
+    if (dataDescent[i]) {
+      return todayMau - dataDescent[i].mau;
     }
-  });
+  }
 
-  difference = lastWeekSum - previousWeekSum;
-
-  return {
-    lastWeekSum,
-    previousWeekSum,
-    difference,
-  };
+  return 0;
 }
 
 export function showDateChart(initDate: string) {

@@ -5,7 +5,7 @@ import { HomeMenu } from '@/components/layouts/MainLayout/HomeMenu';
 
 export const MainLayout = ({ children }: PropsWithChildren) => {
   return (
-    <>
+    <div className="mx-auto max-w-[1600px]">
       <div className="px-4 md:px-10 lg:px-14 xl:px-20">
         <Header />
         <div className="hidden md:block">
@@ -16,6 +16,6 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
       <div className="px-0 md:px-10 lg:px-14 xl:px-20">
         <Footer />
       </div>
-    </>
+    </div>
   );
 };

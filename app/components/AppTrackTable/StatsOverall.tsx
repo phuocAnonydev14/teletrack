@@ -16,10 +16,10 @@ export const StatsOverall = ({ stats }: StatsProps) => {
   const ArrowImage = stats.mau_change > 0 ? ArrowUp : ArrowDown;
 
   return (
-    <div className="flex items-center justify-center gap-3 rounded-t-lg border-2 border-tableBorder bg-tableBg px-8 py-3 text-primary-foreground md:justify-between">
+    <div className="flex flex-col items-center justify-center gap-3 rounded-t-lg border-2 border-tableBorder bg-tableBg px-8 py-3 text-primary-foreground md:flex-row md:justify-between">
       <p
         className={cn(
-          'hidden text-xl font-bold text-secondary md:inline-block',
+          'text-base font-medium font-semibold text-secondary md:text-xl',
           resolvedTheme === 'dark' && 'text-white',
         )}
       >
@@ -48,7 +48,7 @@ export const StatsOverall = ({ stats }: StatsProps) => {
           </span>
         </div>
         <div>
-          <span className="font-medium">Gainer: </span>
+          <span className="font-medium">Gainers: </span>
           <span className="font-bold text-[#1DC467]">{stats.gainers}</span>
         </div>
         <div>

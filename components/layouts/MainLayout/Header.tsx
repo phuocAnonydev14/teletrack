@@ -89,7 +89,7 @@ export const Header = () => {
             className="flex items-center gap-1 font-semibold"
             onClick={() => setOpenLogin(true)}
           >
-            <EnterIcon height={18} width={18} /> <p className="hidden md:block">Sign Up</p>
+            <EnterIcon height={18} width={18} /> <p className="hidden md:block">Sign In</p>
           </Button>
         )}
       </div>

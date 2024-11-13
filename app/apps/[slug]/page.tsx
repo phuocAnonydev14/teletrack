@@ -18,6 +18,15 @@ const fetchAppDetail = async (username: string) => {
   }
 };
 
+const handleFetchChartData = async (slug: string) => {
+  try {
+    const { data } = await teleService.getAppHistory(slug);
+    return data;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 export async function generateMetadata(
   { params, searchParams }: Props,
   parent: ResolvingMetadata,
@@ -32,7 +41,7 @@ export async function generateMetadata(
         images: [],
       },
       description:
-        'Explore app on Telegram. Track engagement, growth, and channel metrics on Tgecko.',
+        'Explore app on Telegram. Track engagement, growth, and channel metrics on Botgecko.',
     };
 
   // optionally access and extend (rather than replace) parent metadata
@@ -42,15 +51,15 @@ export async function generateMetadata(
   return {
     openGraph: {
       images: [logo, ...previousImages],
-      description: `Explore ${data.Name} on Telegram. Track engagement, growth, and channel metrics on Tgecko.`,
+      description: `Explore ${data.Name} on Telegram. Track engagement, growth, and channel metrics on Botgecko.`,
       title: data.Name,
     },
     twitter: {
       images: [logo, ...previousImages],
-      description: `Explore ${data.Name} on Telegram. Track engagement, growth, and channel metrics on Tgecko.`,
+      description: `Explore ${data.Name} on Telegram. Track engagement, growth, and channel metrics on Botgecko.`,
       title: data.Name,
     },
-    description: `Explore ${data.Name} on Telegram. Track engagement, growth, and channel metrics on Tgecko.`,
+    description: `Explore ${data.Name} on Telegram. Track engagement, growth, and channel metrics on Botgecko.`,
   };
 }
 
@@ -58,12 +67,12 @@ export default async function AppDetailPage({ params }: { params: { slug: string
   const { slug } = params;
 
   const data: AppDetail | null = await fetchAppDetail(slug);
-
-  if (!data) return;
+  const history = await handleFetchChartData(slug);
+  if (!data || !history) return;
   return (
     <div className="flex flex-col gap-5 lg:gap-10">
       <AppInfo appDetail={data} />
-      <AppDetailChart appDetail={data} />
+      <AppDetailChart appDetail={data} history={history} />
     </div>
   );
 }

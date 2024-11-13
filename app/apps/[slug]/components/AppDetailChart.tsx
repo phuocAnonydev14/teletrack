@@ -19,34 +19,21 @@ const chartConfig = {
 
 interface AppDetailChartProps {
   appDetail: AppDetail;
+  history: AppHistory;
 }
 
 export const AppDetailChart = (props: AppDetailChartProps) => {
-  const { appDetail } = props;
+  const { appDetail, history: initHistory } = props;
   const { slug } = useParams();
-  const [history, setHistory] = useState<AppHistory | null>(null);
+  const [history, setHistory] = useState<AppHistory | null>(initHistory);
 
-  const handleFetchChartData = async () => {
-    try {
-      const { data } = await teleService.getAppHistory(slug.toString());
-      setHistory(data);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  useEffect(() => {
-    handleFetchChartData().finally();
-  }, [slug]);
-
-  if (!history) return;
   const username = appDetail.Bot.username.replace('@', '');
 
   return (
     <div className="flex flex-col gap-5 lg:gap-10">
       <Chart
         chartConfig={chartConfig}
-        chartData={Object.entries(history.Bot).map(([date, mau]) => ({
+        chartData={Object.entries(history?.Bot || []).map(([date, mau]) => ({
           date: showDateChart(date),
           mau,
         }))}
@@ -56,7 +43,7 @@ export const AppDetailChart = (props: AppDetailChartProps) => {
       />
       <Chart
         chartConfig={chartConfig}
-        chartData={Object.entries(history.Channel).map(([date, mau]) => ({
+        chartData={Object.entries(history?.Channel || []).map(([date, mau]) => ({
           date: showDateChart(date),
           mau,
         }))}

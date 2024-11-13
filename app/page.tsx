@@ -3,6 +3,24 @@ import { AppDetail } from '@/types/app.type';
 import { AppTrackTable } from '@/app/components/AppTrackTable';
 import { Container } from '@/components/common/Container';
 import { calculateStats } from '@/lib/utils/calculateStats';
+import logo from '@/app/favicon.ico';
+
+export async function generateMetadata() {
+  return {
+    openGraph: {
+      title: 'Botgecko',
+      description:
+        'Botgecko offers real-time analytics for tracking Telegram mini apps, focusing on user activity, growth trends, and performance insights.',
+      images: [logo.src],
+    },
+    twitter: {
+      title: 'Botgecko',
+      description:
+        'Botgecko offers real-time analytics for tracking Telegram mini apps, focusing on user activity, growth trends, and performance insights.',
+      images: [logo.src],
+    },
+  };
+}
 
 const fetchTop50 = async () => {
   try {

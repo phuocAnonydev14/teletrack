@@ -21,6 +21,7 @@
     "react/prop-types": 0,
     "@typescript-eslint/no-empty-object-type": "warn",
     "@typescript-eslint/no-explicit-any": "off",
-    "no-unsafe-optional-chaining": "off"
+    "no-unsafe-optional-chaining": "off",
+    "@typescript-eslint/ban-ts-comment": "off"
   }
 }

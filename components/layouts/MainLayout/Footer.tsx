@@ -21,16 +21,30 @@ export const Footer = () => {
         </div>
       </div>
       <div className="mb-10 mt-2 h-[1px] w-full bg-foreground" />
-      <div className="flex justify-center gap-1 text-center">
-        <p className="font-bold text-foreground">Our bot:</p>
-        <Link className="text-linear" href={'https://t.me/teletrending_bot'} target="_blank">
-          @teletrending_bot
-        </Link>
+      <div className="flex flex-col justify-center gap-x-5 gap-y-1 md:flex-row">
+        <div className="flex justify-center gap-1 text-center">
+          <p className="font-bold text-foreground">Our bot:</p>
+          <Link className="text-linear" href={'https://t.me/botgecko_bot'} target="_blank">
+            @botgecko_bot
+          </Link>
+        </div>
+        <div className="flex justify-center gap-1 text-center">
+          <p className="font-bold text-foreground">Our channel:</p>
+          <Link className="text-linear" href={'https://t.me/botgecko_news'} target="_blank">
+            @botgecko_news
+          </Link>
+        </div>
+        <div className="flex justify-center gap-1 text-center">
+          <p className="font-bold text-foreground">Our tool:</p>
+          <Link className="text-linear" href={'https://tonsend.io/'} target="_blank">
+            @tonsend.io
+          </Link>
+        </div>
       </div>
       <p className="mt-4 flex items-center justify-center gap-x-1 text-center text-gray-600">
         {' '}
         Copyright ©|{' '}
-        <Link className="underline" href="https://playable.gg/" target="_blank">
+        <Link className="underline underline-offset-2" href="https://playable.gg/" target="_blank">
           Playable Studio.
         </Link>
       </p>

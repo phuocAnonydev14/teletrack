@@ -21,9 +21,7 @@ export function calculateStats(appList: { change: number; users: number }[]): St
       unchanged++;
     }
   });
-
   const percentChange = (((sumToday - sumYesterday) / sumYesterday) * 100).toFixed(2);
-
   return {
     mau_change: +percentChange,
     gainers: rise,

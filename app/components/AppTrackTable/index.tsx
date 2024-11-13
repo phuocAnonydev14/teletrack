@@ -388,7 +388,7 @@ export const AppTrackTable = (props: AppTrackTableProps) => {
         }
       });
       handleFetchPost(1).then(async () => {
-        await setCurrentPage('1');
+        // await setCurrentPage('1');
       });
     })();
   }, [selectedCate, matches]);
